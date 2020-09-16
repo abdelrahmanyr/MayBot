@@ -1,1 +1,2 @@
-python-3.8.5
+worker: python bot.py
+web: java -jar target/Lavalink.jar
