@@ -1,5 +1,3 @@
-discord
-lavalink
-wavelink
-typing
-asyncio
+version https://git-lfs.github.com/spec/v1
+oid sha256:e75c9203b79d3cbe6d7218dbc884f0db5e8bfe367f2b3c8a30c7a5246f9f5508
+size 41
