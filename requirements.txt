@@ -1,5 +1,4 @@
 discord
-random
 lavalink
 wavelink
 typing
