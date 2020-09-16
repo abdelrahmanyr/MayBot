@@ -3,4 +3,3 @@ lavalink
 wavelink
 typing
 asyncio
-os
