@@ -1,6 +1,7 @@
 import discord
 import random
 import lavalink
+import os
 from discord import Member
 from discord.ext import commands, tasks
 
@@ -127,4 +128,4 @@ async def unmute(ctx, *, member : discord.Member):
     await member.remove_roles(role)
     await ctx.send(f"{member.mention} has been unmuted.")
 
-client.run("NzQ3OTY1MTI1NTk5ODIxOTE0.X0Wizg.eCMYgg1dcel92InAj-lHJt_Jjss")
+client.run(os.environ["token"])
