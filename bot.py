@@ -1,6 +1,7 @@
 import discord
 import random
 import lavalink
+import os
 from discord import Member
 from discord.ext import commands, tasks
 
