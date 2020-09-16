@@ -1,0 +1,7 @@
+discord
+random
+lavalink
+wavelink
+typing
+math
+asyncio
