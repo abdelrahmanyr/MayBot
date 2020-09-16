@@ -2,6 +2,5 @@ discord
 lavalink
 wavelink
 typing
-math
 asyncio
 os
