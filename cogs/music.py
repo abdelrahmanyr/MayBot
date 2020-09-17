@@ -21,17 +21,14 @@ class Music(commands.Cog):
     async def start_nodes(self):
         await self.bot.wait_until_ready()
 
-        node = await self.bot.wavelink.get_best_node()
-
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        if not node:
-            node = await self.bot.wavelink.initiate_node(host='127.0.0.1',
-                                                  port=2333,
-                                                  rest_uri='http://127.0.0.1:2333',
-                                                  password='youshallnotpass',
-                                                  identifier='TEST',
-                                                  region='south_africa')
+        await self.bot.wavelink.initiate_node(host='127.0.0.1',
+                                              port=2333,
+                                              rest_uri='http://127.0.0.1:2333',
+                                              password='youshallnotpass',
+                                              identifier='TEST',
+                                              region='south_africa')
 
     @commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
