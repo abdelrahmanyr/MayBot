@@ -3,3 +3,4 @@ lavalink
 wavelink
 asyncio
 typing
+aiohttp
