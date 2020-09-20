@@ -17,23 +17,19 @@ class Music(commands.Cog):
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
 
-    self.bot.loop.create_task(self.start_nodes())
+        self.bot.loop.create_task(self.start_nodes())
 
     async def start_nodes(self):
         await self.bot.wait_until_ready()
-        self.bot = bot
-
-        node = self.bot.wavelink.get_best_node()
-        if not node:
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-            await self.bot.wavelink.initiate_node(host='0.0.0.0',
-                                                  port=80,
-                                                  rest_uri='http://0.0.0.0:2333',
-                                                  password='youshallnotpass',
-                                                  identifier='TEST',
-                                                  region='us_central')
+        await self.bot.wavelink.initiate_node(host='127.0.0.1',
+                                              port=2333,
+                                              rest_uri='http://127.0.0.1:2333',
+                                              password='youshallnotpass',
+                                              identifier='TEST',
+                                              region='south_africa')
 
     @commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
