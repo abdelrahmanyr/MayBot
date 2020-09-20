@@ -23,7 +23,7 @@ class Music(commands.Cog):
         await self.bot.wait_until_ready()
         self.bot = bot
 
-        node = self.bot.wavelink.get_best_node
+        node = self.bot.wavelink.get_best_node()
         if not node:
 
         # Initiate our nodes. For this example we will use one server.
