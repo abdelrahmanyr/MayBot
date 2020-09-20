@@ -21,6 +21,7 @@ class Music(commands.Cog):
 
     async def start_nodes(self):
         await self.bot.wait_until_ready()
+        self.bot = bot
 
         node = self.bot.wavelink.get_best_node
         if not node:
