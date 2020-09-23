@@ -23,22 +23,22 @@ async def help(ctx):
 
     embed = discord.Embed(
         title = "About MayBot:",
-        description = ":guitar: Maybot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n Roll band **Queen**. :guitar: \n Check the list of the commands below:",
+        description = ":guitar: Maybot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. :guitar: \n Check the list of the commands below:",
         colour = discord.Colour.dark_red()
     )
-    embed.set_author(name = "MayBot", icon_url = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/38c9468957365.560c6217e00fd.jpg")
-    embed.add_field(name = "Bot Info Commands", value = "`help`, `ping`", inline = False)
-    embed.add_field(name = "Fun Commands", value = "`8ball`, `avatar`, `kill`", inline = False)
-    embed.add_field(name = "Music Commands", value = "`connect`, `play`, `length`, `seek`, `skip`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
-    embed.add_field(name = "Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`", inline = False)
-    embed.set_footer(text = "Command Prefix is ." )
+    embed.set_author(name = "MayBot :guitar:", icon_url = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/38c9468957365.560c6217e00fd.jpg")
+    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `ping`", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `kill`", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `length`, `seek`, `skip`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
+    embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`", inline = False)
+    embed.set_footer(text = "Command Prefix is: ." )
 
     await ctx.send(embed = embed)
 
 
 @client.command(aliases = ["Ping"])
 async def ping(ctx):
-    await ctx.send(f"Picking speed ?!\n{round(client.latency * 1000)} ms")
+    await ctx.send(f":question: | __**Picking speed ?!**__\n:gear: | {round(client.latency * 1000)} ms.")
 
 
 #fun commands
@@ -63,7 +63,7 @@ async def _8ball(ctx, *, question ):
                  "My sources say no.",
                  "Outlook not so good.",
                  "Very doubtful."]
-    await ctx.send(f"{random.choice(responses)}")
+    await ctx.send(f":8ball: | {random.choice(responses)}")
 
 @client.command(aliases = ["Kill"])
 async def kill(ctx, *, member : discord.Member):
@@ -71,7 +71,7 @@ async def kill(ctx, *, member : discord.Member):
                  f"`{ctx.message.author.name}` played heavy metal for `{member.name}` until death.",
                  f"`{ctx.message.author.name}` played heavy metal for `{member.name}` until death."
                 ]
-    await ctx.send(f"{random.choice(responses)}")
+    await ctx.send(f":crossed_swords: | {random.choice(responses)}")
 
 @client.command(aliases = ["Avatar"])
 async def avatar(ctx, *, member : discord.Member):
@@ -94,13 +94,13 @@ async def clear(ctx, amount = 1):
 @commands.has_permissions(kick_members = True)
 async def kick(ctx, member : discord.Member):
     await member.kick()
-    await ctx.send(f"{member} has been kicked.")
+    await ctx.send(f":wave: | {member} has been kicked.")
 
 @client.command(aliases = ["Ban"])
 @commands.has_permissions(ban_members = True)
 async def ban(ctx, member : discord.Member):
     await member.ban()
-    await ctx.send(f"{member} has been banned.")
+    await ctx.send(f":wave: | {member} has been banned.")
 
 @client.command(aliases = ["Unban"])
 @commands.has_permissions(ban_members = True)
@@ -111,7 +111,7 @@ async def unban(ctx, *, member):
         user = ban_entry.user
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
-            await ctx.send(f"{user.name}#{user.discriminator} has been unbanned.")
+            await ctx.send(f":handshake: | {user.name}#{user.discriminator} has been unbanned.")
             return
 
 @client.command(aliases = ["Mute"])
@@ -119,13 +119,13 @@ async def unban(ctx, *, member):
 async def mute(ctx, *, member : discord.Member):
     role = discord.utils.get(member.guild.roles, name="Muted")
     await member.add_roles(role)
-    await ctx.send(f"{member.mention} has been muted.")
+    await ctx.send(f":mute: | {member.mention} has been muted.")
 
 @client.command(aliases = ["Unmute"])
 @commands.has_permissions(manage_roles = True)
 async def unmute(ctx, *, member : discord.Member):
     role = discord.utils.get(member.guild.roles, name="Muted")
     await member.remove_roles(role)
-    await ctx.send(f"{member.mention} has been unmuted.")
+    await ctx.send(f":sound: | {member.mention} has been unmuted.")
 
 client.run("NzQ3OTY1MTI1NTk5ODIxOTE0.X0Wizg.eCMYgg1dcel92InAj-lHJt_Jjss")
