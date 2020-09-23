@@ -23,10 +23,10 @@ async def help(ctx):
 
     embed = discord.Embed(
         title = "About MayBot:",
-        description = ":guitar: Maybot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. :guitar: \n Check the list of the commands below:",
+        description = ":guitar: | Maybot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n __**Check the list of the commands below:**__",
         colour = discord.Colour.dark_red()
     )
-    embed.set_author(name = "MayBot :guitar:", icon_url = "https://mir-s3-cdn-cf.behance.net/project_modules/disp/38c9468957365.560c6217e00fd.jpg")
+    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `ping`", inline = False)
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `kill`", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `length`, `seek`, `skip`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
