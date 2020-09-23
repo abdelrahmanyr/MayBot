@@ -40,7 +40,7 @@ class Music(commands.Cog):
                 raise discord.DiscordException("No channel to join. Please either specify a valid channel or join one.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f"Connecting to **`{channel.name}`**..")
+        await ctx.send(f":gear: | Connecting to **`{channel.name}`**..")
         await player.connect(channel.id)
 
     @commands.command(aliases = ["p"])
@@ -48,13 +48,13 @@ class Music(commands.Cog):
         tracks = await self.bot.wavelink.get_tracks(f'ytsearch:{query}')
 
         if not tracks:
-            return await ctx.send('Could not find any songs with that query.')
+            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        await ctx.send(f'Added **{str(tracks[0])}** to the queue.')
+        await ctx.send(f':play_pause: | **{str(tracks[0])}** has been added to the queue.')
         await player.play(tracks[0], replace = False)
 
     @commands.command()
@@ -67,7 +67,7 @@ class Music(commands.Cog):
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.seek(position = position * 1000)
-        await ctx.send(f"Seeked to **{position}**.")
+        await ctx.send(f":fast_forward: | Your song has been seeked to **{position}** second.")
 
     @commands.command()
     async def skip(self,ctx):
@@ -78,25 +78,25 @@ class Music(commands.Cog):
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = True)
-        await ctx.send(f"Paused.")
+        await ctx.send(f":pause_button: | Player has been paused.")
 
     @commands.command()
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = False)
-        await ctx.send(f"Resumed.")
+        await ctx.send(f":arrow_forward: | Player has been resumed.")
 
     @commands.command()
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.stop()
-        await ctx.send(f"Stopped.")
+        await ctx.send(f":stop_button: | Player has stopped.")
 
     @commands.command(aliases = ["dc", "leave"])
     async def disconnect(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.disconnect()
-        await ctx.send(f"Disconnected.")
+        await ctx.send(f":eject: | Disconnecting from **`{ctx.author.voice.channel.name}`**.")
 
 def setup(client):
     client.add_cog(Music(client))
