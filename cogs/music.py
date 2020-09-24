@@ -7,6 +7,7 @@ import lavalink
 import wavelink
 import asyncio
 import aiohttp
+import datetime
 
 
 class Music(commands.Cog):
@@ -31,7 +32,7 @@ class Music(commands.Cog):
                                               identifier='TEST',
                                               region='south_africa')
 
-    @commands.command(name='connect')
+    @commands.command(name='connect', aliases = ["c", "join"])
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             try:
@@ -54,20 +55,27 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        await ctx.send(f':play_pause: | **{str(tracks[0])}** has been added to the queue.')
+        await ctx.send(f':play_pause: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.')
         await player.play(tracks[0], replace = False)
 
-    @commands.command()
-    async def length(self, ctx):
+    @commands.command(aliases = ["np", "now"])
+    async def nowplaying(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        length = self.bot.wavelink.player.Track.length()
-        await ctx.send(f"**{length}**")
+
+        embed = discord.Embed(title = f"{player.current.title}",
+                              description = f":left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
+                              color = discord.Colour.dark_red()
+                              )
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+
+        await ctx.send(embed = embed)
 
     @commands.command()
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.seek(position = position * 1000)
-        await ctx.send(f":fast_forward: | Your song has been seeked to **{position}** second.")
+        await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command()
     async def skip(self,ctx):
@@ -92,11 +100,14 @@ class Music(commands.Cog):
         await player.stop()
         await ctx.send(f":stop_button: | Player has stopped.")
 
-    @commands.command(aliases = ["dc", "leave"])
-    async def disconnect(self, ctx):
+    @commands.command(aliases = ["dc", "leave"], )
+    async def disconnect(self, ctx, *, channel: discord.VoiceChannel=None):
+        if not channel:
+            channel = ctx.author.voice.channel
+
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.disconnect()
-        await ctx.send(f":eject: | Disconnecting from **`{ctx.author.voice.channel.name}`**.")
+        await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
 
 def setup(client):
     client.add_cog(Music(client))
