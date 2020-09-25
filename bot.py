@@ -18,23 +18,37 @@ async def on_ready():
 
 
 #bot info commands
-@client.command()
+@client.command(aliases = ["Help"])
 async def help(ctx):
 
     embed = discord.Embed(
         title = "About MayBot:",
-        description = ":guitar: | Maybot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n __**Check the list of the commands below:**__",
+        description = ":guitar: | MayBot is a multipurpose bot which can be used in Moderating your server, play music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n __**Check the list of the commands below:**__",
         colour = discord.Colour.dark_red()
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `ping`", inline = False)
-    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `seek`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
-    embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`", inline = False)
+    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `seek`, `pause`, `resume`, `stop`, `disconnect`.", inline = False)
+    embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
     await ctx.send(embed = embed)
 
+@client.command(aliases = ["Aliases"])
+async def aliases(ctx):
+
+    embed = discord.Embed(
+        title = "Commands aliases and abbreviations:",
+        description = "Commands aliases if exist.",
+        colour = discord.Colour.dark_red()
+                         )
+    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
+    embed.add_field(name = ":tada: | Fun Commands", value = "**8Ball:** `8b`. \n **Avatar:** `av.` \n **ServerIcon:** `serveravatar`, `icon`. \n **HowMuch:** `how`. \n **Repeat:** `say`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "**Connect:** `join`, `c`. \n **Play:** `p`. \n **NowPlaying:** `now`, `np`. \n **Stop:** `st`. \n **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed.")
+
+    await ctx.send(embed = embed)
 
 @client.command(aliases = ["Ping"])
 async def ping(ctx):
@@ -42,7 +56,7 @@ async def ping(ctx):
 
 
 #fun commands
-@client.command(aliases = ["8ball", "8Ball"])
+@client.command(aliases = ["8ball", "8Ball", "8b", "8B"])
 async def _8ball(ctx, *, question ):
     responses = ["It is certain.",
                  "It is decidedly so.",
@@ -67,13 +81,14 @@ async def _8ball(ctx, *, question ):
 
 @client.command(aliases = ["Kill"])
 async def kill(ctx, *, member : discord.Member):
-    responses = [f"`{ctx.message.author.name}` killed `{member.name}` with a flying guitar.",
-                 f"`{ctx.message.author.name}` played heavy metal for `{member.name}` until death.",
-                 f"`{ctx.message.author.name}` played heavy metal for `{member.name}` until death."
+    author = ctx.message.author
+    responses = [f"`{author.name}` killed `{member.name}` with a flying guitar.",
+                 f"`{author.name}` played black metal for `{member.name}` until death.",
+                 f"`{member.name}` battled `{aauthor.name}` but he died falling out of the stage",
                 ]
     await ctx.send(f":crossed_swords: | {random.choice(responses)}")
 
-@client.command(aliases = ["Avatar"])
+@client.command(aliases = ["Avatar", "av", "Av","AV"])
 async def avatar(ctx, *, member : discord.Member = None):
     embed = discord.Embed(colour = discord.Colour.dark_red()
     )
@@ -86,7 +101,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Icon"])
+@client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon" "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
 async def icon(ctx):
     embed = discord.Embed(colour = discord.Colour.dark_red()
     )

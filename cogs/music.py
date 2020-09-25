@@ -32,7 +32,7 @@ class Music(commands.Cog):
                                               identifier='TEST',
                                               region='south_africa')
 
-    @commands.command(name='connect', aliases = ["c", "join"])
+    @commands.command(name='connect', aliases = ["Connect", "c", "join", "Join"])
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             try:
@@ -44,7 +44,7 @@ class Music(commands.Cog):
         await ctx.send(f":gear: | Connecting to **`{channel.name}`**..")
         await player.connect(channel.id)
 
-    @commands.command(aliases = ["p"])
+    @commands.command(aliases = ["Play", "p"])
     async def play(self, ctx, *, query: str):
         tracks = await self.bot.wavelink.get_tracks(f'ytsearch:{query}')
 
@@ -58,7 +58,7 @@ class Music(commands.Cog):
         await ctx.send(f':play_pause: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.')
         await player.play(tracks[0], replace = False)
 
-    @commands.command(aliases = ["np", "now"])
+    @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -71,7 +71,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command()
+    @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.seek(position = position * 1000)
@@ -82,25 +82,25 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.play()
 
-    @commands.command()
+    @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = True)
         await ctx.send(f":pause_button: | Player has been paused.")
 
-    @commands.command()
+    @commands.command(aliases = ["Resume"])
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = False)
         await ctx.send(f":arrow_forward: | Player has been resumed.")
 
-    @commands.command()
+    @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.stop()
         await ctx.send(f":stop_button: | Player has stopped.")
 
-    @commands.command(aliases = ["dc", "leave"], )
+    @commands.command(aliases = ["Disconnect", "dc", "DC" "leave", "Leave"], )
     async def disconnect(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             channel = ctx.author.voice.channel
