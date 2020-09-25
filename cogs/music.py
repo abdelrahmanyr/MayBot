@@ -67,7 +67,7 @@ class Music(commands.Cog):
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
