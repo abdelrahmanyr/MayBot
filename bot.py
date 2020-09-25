@@ -101,7 +101,7 @@ async def icon(ctx):
 async def howmuch(ctx, adjective, *, member : discord.Member):
     percentage = list(range(0, 101))
     embed = discord.Embed(title = f"Red Special rates how much {adjective} you are:",
-                          description = f":1234: | `{member.name}` is {random.choice(percentage)}% {adjective}",
+                          description = f":1234: | `{member.name}` is {random.choice(percentage)}% {adjective}.",
                           colour = discord.Colour.dark_red())
 
     embed.set_author(name = member, icon_url = member.avatar_url)
