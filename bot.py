@@ -45,8 +45,8 @@ async def aliases(ctx):
         colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "• **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **NowPlaying:** `now`, `np`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = " • **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **NowPlaying:** `now`, `np`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed.")
 
     await ctx.send(embed = embed)
@@ -88,7 +88,7 @@ async def kill(ctx, *, member : discord.Member):
              f"`{member.name}` battled `{author.name}` but he died falling out of the stage.",
              f"`{member.name}` died with an unknown cause of death, but a broken guitar string was found in his room"
              f"While playing Fortnite `{member.name}` died out of cringe.",
-             f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __*I am inevitable*__"
+             f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__."
              ]
     await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
