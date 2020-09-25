@@ -6,6 +6,7 @@ from discord import Member
 from discord.ext import commands, tasks
 
 client = commands.Bot(command_prefix = ".")
+
 client.remove_command("help")
 
 #bot status
@@ -44,7 +45,7 @@ async def aliases(ctx):
         colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n • **Avatar:** `av.` \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = "• **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **NowPlaying:** `now`, `np`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed.")
 
@@ -74,7 +75,7 @@ async def _8ball(ctx, *, question ):
                  "Concentrate and ask again.",
                  "Don't count on it.",
                  "My reply is no.",
-                 "My sources say no.",
+                 "My guitar says no.",
                  "Outlook not so good.",
                  "Very doubtful."]
     await ctx.send(f":8ball: | {random.choice(responses)}")
@@ -82,11 +83,14 @@ async def _8ball(ctx, *, question ):
 @client.command(aliases = ["Kill"])
 async def kill(ctx, *, member : discord.Member):
     author = ctx.message.author
-    responses = [f"`{author.name}` killed `{member.name}` with a flying guitar.",
-                 f"`{author.name}` played black metal for `{member.name}` until death.",
-                 f"`{member.name}` battled `{aauthor.name}` but he died falling out of the stage",
-                ]
-    await ctx.send(f":crossed_swords: | {random.choice(responses)}")
+    deaths = [f"`{author.name}` killed `{member.name}` with a flying guitar.",
+             f"`{author.name}` played black metal for `{member.name}` until death.",
+             f"`{member.name}` battled `{author.name}` but he died falling out of the stage.",
+             f"`{member.name}` died with an unknown cause of death, but a broken guitar string was found in his room"
+             f"While playing Fortnite `{member.name}` died out of cringe.",
+             f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __*I am inevitable*__"
+             ]
+    await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
 @client.command(aliases = ["Avatar", "av", "Av","AV"])
 async def avatar(ctx, *, member : discord.Member = None):
@@ -112,7 +116,7 @@ async def icon(ctx):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ("Howmuch", "how", "How"))
+@client.command(aliases = ("Howmuch", "HowMuch", "how", "How"))
 async def howmuch(ctx, adjective, *, member : discord.Member = None):
     if member is None:
         await ctx.send(":question: | Please mention a specified member.")
