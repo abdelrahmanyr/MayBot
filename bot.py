@@ -28,7 +28,7 @@ async def help(ctx):
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `ping`", inline = False)
-    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `seek`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
@@ -98,7 +98,9 @@ async def icon(ctx):
     await ctx.send(embed = embed)
 
 @client.command(aliases = ("Howmuch", "how", "How"))
-async def howmuch(ctx, adjective, *, member : discord.Member):
+async def howmuch(ctx, adjective, *, member : discord.Member = None):
+    if member is None:
+        await ctx.send(":question: | Please mention a specified member.")
     percentage = list(range(0, 101))
     embed = discord.Embed(title = f"Red Special rates how much {adjective} you are:",
                           description = f":1234: | `{member.name}` is {random.choice(percentage)}% {adjective}.",
@@ -108,6 +110,14 @@ async def howmuch(ctx, adjective, *, member : discord.Member):
     embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
     await ctx.send(embed = embed)
+
+@client.command(aliases = ["Say", "repeat", "Repeat"])
+async def say(ctx, *, message = None):
+    await ctx.channel.purge(limit = 1)
+    if message is None:
+        await ctx.send(f":question: | I have nothing to say")
+    elif message is not None:
+            await ctx.send(f":loudspeaker: | {message}")
 
 #management commands
 @client.command(aliases = ["Clear"])
