@@ -28,8 +28,8 @@ async def help(ctx):
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `ping`", inline = False)
-    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `seek`, `skip`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `seek`, `pause`, `resume`, `stop`, `disconnect`", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
@@ -93,6 +93,18 @@ async def icon(ctx):
     guild = ctx.guild
     embed.set_author(name = guild.name, icon_url = guild.icon_url)
     embed.set_image(url = guild.icon_url)
+    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+
+    await ctx.send(embed = embed)
+
+@client.command(aliases = ("Howmuch", "how", "How"))
+async def howmuch(ctx, adjective, *, member : discord.Member):
+    percentage = list(range(0, 101))
+    embed = discord.Embed(title = f"Red Special rates how much {adjective} you are:",
+                          description = f":1234: | `{member.name}` is {random.choice(percentage)}% {adjective}",
+                          colour = discord.Colour.dark_red())
+
+    embed.set_author(name = member, icon_url = member.avatar_url)
     embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
     await ctx.send(embed = embed)
