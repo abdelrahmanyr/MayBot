@@ -192,7 +192,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.stop()
-        await player.disconnect
+        await player.disconnect()
         await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc" "leave", "Leave"], )
