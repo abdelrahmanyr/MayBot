@@ -168,7 +168,7 @@ class Music(commands.Cog):
         vol = max(min(vol, 1000), 0)
         controller.volume = vol
 
-        await ctx.send(f'Setting the player volume to `{vol}`')
+        await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
         await player.set_volume(vol)
 
     @commands.command(aliases = ["Seek"])
