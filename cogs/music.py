@@ -191,6 +191,8 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        if not player.is_playing:
+            await ctx.send(":question: | Nothing is currently playing, you can use `disconnect` command to disconnect the bot from your voice channel" )
         await player.stop()
         await player.disconnect()
         await ctx.send(f":stop_button: | Player has stopped and disconnected.")
