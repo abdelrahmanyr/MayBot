@@ -88,7 +88,7 @@ async def kill(ctx, *, member : discord.Member):
              f"`{member.name}` battled `{author.name}` but he died falling out of the stage.",
              f"`{member.name}` died with an unknown cause of death, but a broken guitar string was found in his room"
              f"While playing Fortnite `{member.name}` died out of cringe.",
-             f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__."
+             f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__.",
              ]
     await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
