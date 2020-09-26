@@ -179,7 +179,7 @@ class Music(commands.Cog):
         if not player.is_playing:
             await ctx.send(f":question: | Nothing is currently playing.")
 
-        await ctx.send(f":fast_forward: | Your track has been forwarded to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
+        await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx, number = 0):
