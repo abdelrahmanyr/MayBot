@@ -21,7 +21,7 @@ class MusicController:
         self.next = asyncio.Event()
         self.queue = asyncio.Queue()
 
-        self.volume = 40
+        self.volume = 100
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
