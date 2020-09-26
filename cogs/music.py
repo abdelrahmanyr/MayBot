@@ -160,6 +160,17 @@ class Music(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command(aliases = ["Volume", "vol", "Vol"])
+    async def volume(self, ctx, *, vol: int):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+
+        vol = max(min(vol, 1000), 0)
+        controller.volume = vol
+
+        await ctx.send(f'Setting the player volume to `{vol}`')
+        await player.set_volume(vol)
+
     @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)

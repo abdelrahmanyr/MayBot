@@ -30,7 +30,7 @@ async def help(ctx):
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `queue`,`seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `np`, `volume`,`queue`,`seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
@@ -46,7 +46,7 @@ async def aliases(ctx):
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":tada: | Fun Commands", value = " • **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **NowPlaying:** `now`, `np`. \n • **Queue:** `q`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **NowPlaying:** `now`, `np`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed.")
 
     await ctx.send(embed = embed)
