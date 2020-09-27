@@ -148,7 +148,7 @@ class Music(commands.Cog):
         embed = discord.Embed(title=f"MayBot Queue:" , description = "",colour = discord.Colour.dark_red())
         upcoming = list(itertools.islice(controller.queue._queue, 0, 50))
 
-        tracks_list = '\n'.join(f"『**{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**』" for song in upcoming)
+        tracks_list = '\n'.join(f"• **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
 
         if not player.current or not controller.queue._queue:
@@ -156,7 +156,7 @@ class Music(commands.Cog):
 
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Upcoming Tracks | {len(upcoming)}", value = f"{tracks_list}", inline = False)
-        embed.add_field(name = f"Currently playing tracks", value = f"**『{player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`』", inline = False)
+        embed.add_field(name = f"Currently playing tracks", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = False)
         embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed=embed)
