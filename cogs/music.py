@@ -146,7 +146,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
 
         embed = discord.Embed(title=f"MayBot Queue:" , description = "",colour = discord.Colour.dark_red())
-        upcoming = list(itertools.islice(controller.queue._queue, 0, 50))
+        upcoming = list(itertools.islice(controller.queue._queue, 0, 10))
 
         tracks_list = '\n'.join(f"• **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
