@@ -143,6 +143,9 @@ class Music(commands.Cog):
                  "https://www.youtube.com/watch?v=VHkiSRUIgTg",                                                  #16-Cool Cat
                 ]
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{random.choice(songs)}")
+        if not tracks:
+            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
+
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
