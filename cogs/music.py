@@ -125,22 +125,22 @@ class Music(commands.Cog):
 
     @commands.command(aliases = ["Queen"])
     async def queen(self, ctx):
-        songs = ["https://www.youtube.com/watch?v=xG16sdjLtc0&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=17", #1-Bohemian Rhapsody
-                 "https://www.youtube.com/watch?v=5rGtnqZOdrw&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=16", #2-Love Of My Life
-                 "https://www.youtube.com/watch?v=-g3RD7zvTLg&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=22", #3-We Will Rock You
-                 "https://www.youtube.com/watch?v=62v4y43D-3k&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=23", #4-We Are The Champions
-                 "https://www.youtube.com/watch?v=R8xYWbRNzyA&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=31", #5-Don't Stop Me Now
-                 "https://www.youtube.com/watch?v=1tLYYSofs3U&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=34", #6-Another One Bites The Dust
-                 "https://www.youtube.com/watch?v=XuY8Ck7-7z8&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=40", #7-Under Pressure
-                 "https://www.youtube.com/watch?v=qlZqEFbVxgo&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=42", #8-Radio Ga Ga
-                 "https://www.youtube.com/watch?v=Ki9fRkAiNWI&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=45", #9-I Want To Break Free
-                 "https://www.youtube.com/watch?v=PmmK-Y8GTDE&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=63", #10-The Show Must Go On
-                 "https://www.youtube.com/watch?v=cBMXQrW3VNA&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=7",  #11-Killer queen
-                 "https://www.youtube.com/watch?v=EKpHL483Bzw&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=19", #12-Somebody To Love
-                 "https://www.youtube.com/watch?v=2AXfaUyalvA&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=38", #13-Life Is Real
-                 "https://www.youtube.com/watch?v=1r9coJYxbcY&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=64", #14-Made In Heaven
-                 "https://www.youtube.com/watch?v=pv2nXlcarzw&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC&index=74", #15-God Save The Queen
-                 "https://www.youtube.com/watch?v=VHkiSRUIgTg",                                                  #16-Cool Cat
+        songs = ["https://www.youtube.com/watch?v=xG16sdjLtc0", #1-Bohemian Rhapsody
+                 "https://www.youtube.com/watch?v=5rGtnqZOdrw", #2-Love Of My Life
+                 "https://www.youtube.com/watch?v=-g3RD7zvTLg", #3-We Will Rock You
+                 "https://www.youtube.com/watch?v=62v4y43D-3k", #4-We Are The Champions
+                 "https://www.youtube.com/watch?v=R8xYWbRNzyA", #5-Don't Stop Me Now
+                 "https://www.youtube.com/watch?v=1tLYYSofs3U", #6-Another One Bites The Dust
+                 "https://www.youtube.com/watch?v=XuY8Ck7-7z8", #7-Under Pressure
+                 "https://www.youtube.com/watch?v=qlZqEFbVxgo", #8-Radio Ga Ga
+                 "https://www.youtube.com/watch?v=Ki9fRkAiNWI", #9-I Want To Break Free
+                 "https://www.youtube.com/watch?v=PmmK-Y8GTDE", #10-The Show Must Go On
+                 "https://www.youtube.com/watch?v=cBMXQrW3VNA", #11-Killer queen
+                 "https://www.youtube.com/watch?v=EKpHL483Bzw", #12-Somebody To Love
+                 "https://www.youtube.com/watch?v=2AXfaUyalvA", #13-Life Is Real
+                 "https://www.youtube.com/watch?v=1r9coJYxbcY", #14-Made In Heaven
+                 "https://www.youtube.com/watch?v=pv2nXlcarzw", #15-God Save The Queen
+                 "https://www.youtube.com/watch?v=VHkiSRUIgTg"  #16-Cool Cat
                 ]
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{random.choice(songs)}")
         if not tracks:
