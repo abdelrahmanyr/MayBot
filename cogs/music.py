@@ -4,7 +4,6 @@ from discord import utils
 import typing
 from typing import Union
 import math
-import lavalink
 import wavelink
 import asyncio
 import aiohttp
