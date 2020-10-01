@@ -5,7 +5,6 @@ from discord import Member
 from discord.ext import commands, tasks
 
 client = commands.Bot(command_prefix = ".")
-
 client.remove_command("help")
 
 #bot status
@@ -88,6 +87,7 @@ async def kill(ctx, *, member : discord.Member):
              f"`{member.name}` died with an unknown cause of death, but a broken guitar string was found in his room",
              f"While playing Fortnite `{member.name}` died out of cringe.",
              f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__.",
+             f"{author.name} planted TNT in {member.name}'s piano."
              ]
     await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
@@ -104,7 +104,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon" "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
+@client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon", "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
 async def icon(ctx):
     embed = discord.Embed(colour = discord.Colour.dark_red()
     )
