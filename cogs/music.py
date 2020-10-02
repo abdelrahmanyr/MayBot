@@ -122,6 +122,37 @@ class Music(commands.Cog):
         await controller.queue.put(track)
         await ctx.send(f":notes: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.")
 
+    @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
+    async def search(self, ctx, *, query: str):
+        tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+
+        if not tracks:
+            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
+
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        if not player.is_connected:
+            await ctx.invoke(self.connect_)
+
+
+        embed = discord.Embed(title = "Search Results:",
+                              description = f"**1-{tracks[0]}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** \n **2-{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n **3-{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n **4-{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n **5-{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n **6-{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n **7-{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n **8-{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n **9-{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n **10-{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
+                              color = discord.Colour.dark_red()
+                              )
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.set_footer(text = f"Requested by {ctx.message.author} | Type the track number to play it.", icon_url = ctx.message.author.avatar_url)
+
+        await ctx.send(embed = embed)
+
+        msg = await self.bot.wait_for('message', timeout = 15.0)
+        
+
+        controller = self.get_controller(ctx)
+        await controller.queue.put(tracks[int(msg.content) - 1])
+        await ctx.send(f":notes: | **{str(tracks[int(msg.content - 1)])}** **`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content - 1)].length)))}]`** has been added to the queue.")
+
+
+
+
     @commands.command(aliases = ["Queen"])
     async def queen(self, ctx):
         songs = ["https://www.youtube.com/watch?v=xG16sdjLtc0", #1-Bohemian Rhapsody
