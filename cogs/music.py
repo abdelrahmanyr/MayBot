@@ -148,7 +148,7 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         await controller.queue.put(tracks[int(msg.content) - 1])
-        await ctx.send(f":notes: | **{str(tracks[int(msg.content - 1)])}** **`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content - 1)].length)))}]`** has been added to the queue.")
+        await ctx.send(f":notes: | **{str(tracks[int(msg.content) - 1])}** **`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content) - 1].length)))}]`** has been added to the queue.")
 
 
 
