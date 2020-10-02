@@ -144,6 +144,8 @@ class Music(commands.Cog):
         await ctx.send(embed = embed)
 
         msg = await self.bot.wait_for('message', timeout = 15.0)
+        if msg.content is not int:
+            await ctx.send(":question: | Please enter a vaild number.")
         
 
         controller = self.get_controller(ctx)
