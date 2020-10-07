@@ -87,7 +87,7 @@ async def kill(ctx, *, member : discord.Member):
              f"`{member.name}` died with an unknown cause of death, but a broken guitar string was found in his room",
              f"While playing Fortnite `{member.name}` died out of cringe.",
              f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__.",
-             f"{author.name} planted TNT in {member.name}'s piano.",
+             f"`{author.name}` planted TNT in `{member.name}`'s piano.",
              f"`{author.name}` threw `{member.name}` out. \n **`{member.name}` was An impostor!** \n **VICTORY**",
              f"`{author.name}` killed `{member.name}` with a pointed tongue. \n **`{author.name}` was The impostor!** \n **DEFEAT**"
              ]
