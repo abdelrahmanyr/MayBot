@@ -143,7 +143,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-        msg = await self.bot.wait_for('message', timeout = 15.0)
+        msg = await self.bot.wait_for('message', timeout = 20.0)
         
 
         controller = self.get_controller(ctx)
@@ -216,7 +216,7 @@ class Music(commands.Cog):
 
 
         if not player.current or not controller.queue._queue:
-            await ctx.send(":question: | There are no tracks currently in the queue or playing, you can add more tracks with the `play` command.")
+            await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Upcoming Tracks | {len(upcoming)}", value = f"{tracks_list}", inline = False)
