@@ -10,6 +10,9 @@ import aiohttp
 import datetime
 import itertools
 import random
+import ksoftapi
+
+kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
 class MusicController:
 
@@ -127,7 +130,7 @@ class Music(commands.Cog):
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
 
         if not tracks:
-            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
+            return await ctx.send(f":grey_question: | No tracks found with this query.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -200,6 +203,28 @@ class Music(commands.Cog):
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+
+        await ctx.send(embed = embed)
+
+    @commands.command(aliases = ["Lyrics"])
+    async def lyrics(self, ctx, *, query : str = None):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        if query is None:
+            query = str(player.current)
+        try:
+            results = await kclient.music.lyrics(query)
+        except ksoftapi.NoResults:
+            await ctx.send(":question: | No lyrics found for this query")
+        else:
+            first = results[0]
+
+        embed = discord.Embed(title = "Lyrics:",
+                             description = f"**{first.name} - {first.artist}:** \n {first.lyrics}",
+                             color = discord.Colour.dark_red()          
+                             )
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.set_image(url = first.album_art)
         embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)

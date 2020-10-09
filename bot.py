@@ -1,6 +1,7 @@
 import discord
 import random
 import os
+import ksoftapi
 from discord import Member
 from discord.ext import commands, tasks
 
@@ -27,8 +28,8 @@ async def help(ctx):
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
-    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `search`,`np`, `volume`,`queue`,`seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `search`, `np`, `lyrics`, `volume`, `queue`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
@@ -138,6 +139,30 @@ async def say(ctx, *, message = None):
         await ctx.send(f":question: | I have nothing to say")
     elif message is not None:
             await ctx.send(f":loudspeaker: | {message}")
+
+@client.command(aliases = ["Meme"])
+async def meme(ctx):
+    kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
+    meme = await kclient.images.random_meme()
+    embed = discord.Embed(description = f"**[{meme.title}]({meme.source})**",
+                          color = discord.Colour.dark_red()
+                         )
+    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
+    embed.set_image(url = meme.image_url)
+    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
+
+@client.command(aliases = ["Cute"])
+async def cute(ctx):
+    kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
+    cute = await kclient.images.random_aww()
+    embed = discord.Embed(description = f"**[{cute.title}]({cute.source})**",
+                          color = discord.Colour.dark_red()
+                         )
+    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
+    embed.set_image(url = cute.image_url)
+    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 #management commands
 @client.command(aliases = ["Clear"])
