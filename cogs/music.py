@@ -220,7 +220,7 @@ class Music(commands.Cog):
             first = results[0]
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"**{first.name} - {first.artist}:** \n {first.lyrics}",
+                             description = f"__**{first.name} - {first.artist}:**__ \n {first.lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -234,17 +234,19 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
 
-        embed = discord.Embed(title=f"MayBot Queue:" , description = "",colour = discord.Colour.dark_red())
-        upcoming = list(itertools.islice(controller.queue._queue, 0, 10))
+        upcoming = list(itertools.islice(controller.queue._queue, 0, 30))
 
         tracks_list = '\n'.join(f"• **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
+
+        embed = discord.Embed(title=f"MayBot Queue:",
+                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
+                             colour = discord.Colour.dark_red())
 
         if not player.current or not controller.queue._queue:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Upcoming Tracks | {len(upcoming)}", value = f"{tracks_list}", inline = False)
         embed.add_field(name = f"Currently playing tracks", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = False)
         embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
