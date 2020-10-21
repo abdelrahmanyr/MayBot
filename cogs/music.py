@@ -101,7 +101,7 @@ class Music(commands.Cog):
                 raise discord.DiscordException("No channel to join. Please either specify a valid channel or join one.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f":gear: | Connecting to **`{channel.name}`**..")
+        await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
         await player.connect(channel.id)
 
         controller = self.get_controller(ctx)
@@ -297,9 +297,13 @@ class Music(commands.Cog):
         if not player.is_playing:
             await ctx.send(":question: | Nothing is currently playing, you can use `disconnect` command to disconnect the bot from your voice channel" )
 
-        if player.is_playing:
-            await player.stop()
+        try:
+            del self.controllers[ctx.guild.id]
+        except KeyError:
             await player.disconnect()
+            return await ctx.send(":question: | There was no controller to stop.")
+
+        await player.disconnect()
             await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc" "leave", "Leave"], )

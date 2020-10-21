@@ -11,7 +11,7 @@ client.remove_command("help")
 #bot status
 @client.event
 async def on_ready():
-    activity = discord.Game(name="Bohemian Rhapsody", type=0)
+    activity = discord.Game(name="Bohemian Rhapsody | .help", type=0)
     await client.change_presence(status=discord.Status.online, activity=activity)
     print("May is shredding")
     client.load_extension("cogs.music")
