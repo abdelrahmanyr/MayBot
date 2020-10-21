@@ -113,7 +113,7 @@ class Music(commands.Cog):
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
 
         if not tracks:
-            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
+            return await ctx.send(f":grey_question: | No tracks found with this query.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -177,7 +177,7 @@ class Music(commands.Cog):
                 ]
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{random.choice(songs)}")
         if not tracks:
-            return await ctx.send(f":grey_question: | Could not find any songs with that query.")
+            return await ctx.send(f":grey_question: | No tracks found with this query.")
 
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -188,7 +188,7 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.send(f":headphones: | I picked you a random queen song, have fun.")
+        await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 7)
         await ctx.send(f":notes: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.")
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
@@ -225,7 +225,7 @@ class Music(commands.Cog):
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.set_image(url = first.album_art)
-        embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
