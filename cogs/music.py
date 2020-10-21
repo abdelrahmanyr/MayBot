@@ -304,7 +304,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | There was no controller to stop.")
 
         await player.disconnect()
-            await ctx.send(f":stop_button: | Player has stopped and disconnected.")
+        await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc" "leave", "Leave"], )
     async def disconnect(self, ctx, *, channel: discord.VoiceChannel=None):
