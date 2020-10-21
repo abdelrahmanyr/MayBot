@@ -64,12 +64,12 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host='127.0.0.1',
-                                              port=2333,
-                                              rest_uri='http://127.0.0.1:2333',
-                                              password='youshallnotpass',
-                                              identifier='TEST',
-                                              region='south_africa')
+        node = await self.bot.wavelink.initiate_node(host = "127.0.0.1",
+                                                     port = 2333,
+                                                     rest_uri = "http://127.0.0.1:2333",
+                                                     password = "youshallnotpass",
+                                                     identifier = "TEST",
+                                                     region = "south_africa")
         node.set_hook(self.on_event_hook)
 
     async def on_event_hook(self, event):
@@ -199,7 +199,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | **{player.current.title}**. \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
+                              description = f":abc: | [**{player.current.title}**. \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`]({player.current.uri})",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
