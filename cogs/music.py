@@ -199,7 +199,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | **[{player.current.title}]({player.current.uri})**. \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
+                              description = f":abc: | **[{player.current.title}]({player.current.uri})** \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -246,9 +246,10 @@ class Music(commands.Cog):
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
+        guild = ctx.guild
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Currently playing tracks", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = False)
-        embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
 
