@@ -243,7 +243,7 @@ class Music(commands.Cog):
                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
                              colour = discord.Colour.dark_red())
 
-        if not player.current or not controller.queue._queue:
+        if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -303,6 +303,7 @@ class Music(commands.Cog):
             await player.disconnect()
             return await ctx.send(":question: | There was no controller to stop.")
 
+        await player.destroy()
         await player.disconnect()
         await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
