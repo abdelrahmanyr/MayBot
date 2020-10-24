@@ -187,9 +187,9 @@ class Music(commands.Cog):
         track = tracks[0]
 
         controller = self.get_controller(ctx)
-        await controller.queue.put(track)
         await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 7)
         await ctx.send(f":notes: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.")
+        await controller.queue.put(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
@@ -203,7 +203,6 @@ class Music(commands.Cog):
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.set_footer(text = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
