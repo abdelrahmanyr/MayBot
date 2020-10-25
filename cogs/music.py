@@ -267,7 +267,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.seek(position = position * 1000)
+        await player.seek(position = (datetime.timedelta(minutes = int(position * 1000 * 60))))
 
         if not player.is_playing:
             await ctx.send(f":question: | Nothing is currently playing.")
@@ -309,7 +309,7 @@ class Music(commands.Cog):
         await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc", "leave", "Leave"])
-    async def disconnect(self, ctx, *, channel: discord.VoiceChannel=None):
+    async def disconnect(self, ctx, *, channel: discord.VoiceChannel = None):
         if not channel:
             channel = ctx.author.voice.channel
 
