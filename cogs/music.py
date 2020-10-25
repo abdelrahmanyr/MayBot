@@ -315,7 +315,7 @@ class Music(commands.Cog):
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.disconnect()
-        if ctx.voice_client = None:
+        if ctx.voice_client is None:
             await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
 
 def setup(client):
