@@ -17,13 +17,7 @@ async def on_ready():
     client.load_extension("cogs.music")
 
 
-@client.event
-async def on_command_error(ctx, error):
-    error = getattr(error, 'original', error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(f":question: | Sorry, a required argument is missing.")
-    if isinstance(error, commands.BotMissingPermissions):
-        await ctx.send(f":question: | Sorry, a required permission is missing.")
+
 
 
 
