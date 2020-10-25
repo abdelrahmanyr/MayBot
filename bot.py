@@ -19,6 +19,7 @@ async def on_ready():
 
 @client.event
 async def on_command_error(ctx, error):
+    error = getattr(error, 'original', error)
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(f":question: | Sorry, a required argument is missing.")
     if isinstance(error, commands.BotMissingPermissions):

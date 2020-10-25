@@ -98,14 +98,15 @@ class Music(commands.Cog):
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
-                raise discord.DiscordException("No channel to join. Please either specify a valid channel or join one.")
+                await ctx.send(":question: | No channel to join, Type the desired channel's name or join one.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
         await player.connect(channel.id)
 
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
+        if ctx.voice_client:
+            await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
 
 
     @commands.command(aliases = ["Play", "p", "P"])
@@ -314,7 +315,8 @@ class Music(commands.Cog):
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.disconnect()
-        await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
+        if ctx.voice_client = None:
+            await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
 
 def setup(client):
     client.add_cog(Music(client))
