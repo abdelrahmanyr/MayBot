@@ -232,6 +232,7 @@ class Music(commands.Cog):
             query = str(player.current)
         if player.current is None:
             await ctx.send(f":question: | Please either play a song or write its name.")
+            not query
         try:
             results = await kclient.music.lyrics(query)
         except ksoftapi.NoResults:
@@ -245,7 +246,7 @@ class Music(commands.Cog):
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.set_image(url = first.album_art)
-        embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
@@ -306,12 +307,11 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if ctx.guild.voice_client.channel == ctx.author.voice.channel:
-            if player.current:
-                await ctx.send(f":track_next: | The current track has been skipped.")
-            if not player.is_playing:
-                await ctx.send(f":question: | There is no current track to skip.")
-            await player.stop()
+        if player.current:
+            await ctx.send(f":track_next: | The current track has been skipped.")
+        if not player.is_playing:
+            await ctx.send(f":question: | There is no current track to skip.")
+        await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
