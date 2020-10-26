@@ -101,12 +101,14 @@ class Music(commands.Cog):
                 await ctx.send(":question: | No channel to join, Type the desired channel's name or join one.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        if not player.is_connected:
+            await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
+
         await player.connect(channel.id)
 
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
-        if ctx.voice_client is None:
-            await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
+    
 
 
     @commands.command(aliases = ["Play", "p", "P"])
@@ -139,7 +141,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
             embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
-            embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+            embed.add_field(name = "Track player", value = f"**`{ctx.message.author}`**")
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
@@ -228,6 +230,8 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
             query = str(player.current)
+        if player.current is None:
+            await ctx.send(f":question: | Please either play a song or write its name.")
         try:
             results = await kclient.music.lyrics(query)
         except ksoftapi.NoResults:
@@ -303,19 +307,24 @@ class Music(commands.Cog):
     async def skip(self, ctx, number = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.stop()
-        await ctx.send(f":track_next: | The current track has been skipped.")
+        if player.current:
+            await ctx.send(f":track_next: | The current track has been skipped.")
+        if not player.current:
+            await ctx.send(f":question: | There is not current track to skip.")
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = True)
-        await ctx.send(f":pause_button: | Player has been paused.")
+        if not player.is_paused:
+            await ctx.send(f":pause_button: | Player has been paused.")
 
     @commands.command(aliases = ["Resume"])
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.set_pause(pause = False)
-        await ctx.send(f":arrow_forward: | Player has been resumed.")
+        if player.is_paused:
+            await ctx.send(f":arrow_forward: | Player has been resumed.")
 
     @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
@@ -339,7 +348,7 @@ class Music(commands.Cog):
             channel = ctx.author.voice.channel
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if ctx.voice_client:
+        if player.is_connected:
             await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
         await player.disconnect()
 
