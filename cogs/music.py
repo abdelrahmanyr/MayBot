@@ -304,13 +304,13 @@ class Music(commands.Cog):
             await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
-    async def skip(self, ctx, number = 0):
+    async def skip(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.stop()
         if player.current:
             await ctx.send(f":track_next: | The current track has been skipped.")
         if not player.is_playing:
             await ctx.send(f":question: | There is no current track to skip.")
+        await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
@@ -330,8 +330,6 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if not player.is_playing:
-            await ctx.send(":question: | Nothing is currently playing, you can use `disconnect` command to disconnect the bot from your voice channel" )
 
         try:
             del self.controllers[ctx.guild.id]
