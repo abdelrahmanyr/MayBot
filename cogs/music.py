@@ -272,7 +272,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.seek(position = position * 1000 * 60)
+        await player.seek(position = position * 1000)
 
         if not player.is_playing:
             await ctx.send(f":question: | Nothing is currently playing.")
