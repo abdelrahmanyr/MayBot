@@ -306,11 +306,12 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if player.current:
-            await ctx.send(f":track_next: | The current track has been skipped.")
-        if not player.is_playing:
-            await ctx.send(f":question: | There is no current track to skip.")
-        await player.stop()
+        if ctx.guild.voice_client.channel == ctx.author.voice.channel:
+            if player.current:
+                await ctx.send(f":track_next: | The current track has been skipped.")
+            if not player.is_playing:
+                await ctx.send(f":question: | There is no current track to skip.")
+            await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
