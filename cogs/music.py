@@ -309,22 +309,23 @@ class Music(commands.Cog):
         await player.stop()
         if player.current:
             await ctx.send(f":track_next: | The current track has been skipped.")
-        if not player.current:
-            await ctx.send(f":question: | There is not current track to skip.")
+        if not player.is_playing:
+            await ctx.send(f":question: | There is no current track to skip.")
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.set_pause(pause = True)
         if not player.is_paused:
             await ctx.send(f":pause_button: | Player has been paused.")
+        await player.set_pause(pause = True)
 
     @commands.command(aliases = ["Resume"])
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.set_pause(pause = False)
         if player.is_paused:
             await ctx.send(f":arrow_forward: | Player has been resumed.")
+        await player.set_pause(pause = False)
+
 
     @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
