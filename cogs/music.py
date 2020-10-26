@@ -236,7 +236,7 @@ class Music(commands.Cog):
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, 30))
 
-        tracks_list = '\n'.join(f"• **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
 
         embed = discord.Embed(title=f"MayBot Queue:",
@@ -247,8 +247,13 @@ class Music(commands.Cog):
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
         guild = ctx.guild
+        totald = player.current.length
+        for song in upcoming:
+            totald += song.length
+
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Currently playing tracks", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = False)
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = True)
+        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(milliseconds = int(totald)))}]**")
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
