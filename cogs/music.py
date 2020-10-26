@@ -105,7 +105,7 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
-        if ctx.voice_client:
+        if ctx.voice_client is None:
             await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
 
 
@@ -124,7 +124,23 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.send(f":notes: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.")
+
+        if player.is_playing:
+            embed = discord.Embed(title = "Queued:",
+                                description = f":play_pause: | **{str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+            embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+            embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+
+        if not player.is_playing:
+            embed = discord.Embed(title = "Now Playing:",
+                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+            embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+            embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+        await ctx.send(embed = embed)
 
     @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
     async def search(self, ctx, *, query: str):
@@ -234,7 +250,7 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
 
-        upcoming = list(itertools.islice(controller.queue._queue, 0, 30))
+        upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
         tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
@@ -259,12 +275,15 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases = ["Volume", "vol", "Vol"])
-    async def volume(self, ctx, *, vol: int):
+    async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
 
         vol = max(min(vol, 1000), 0)
         controller.volume = vol
+
+        if vol is None:
+            await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
 
         await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
         await player.set_volume(vol)
@@ -277,7 +296,8 @@ class Music(commands.Cog):
         if not player.is_playing:
             await ctx.send(f":question: | Nothing is currently playing.")
 
-        await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
+        if player.is_playing:
+            await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx, number = 0):
@@ -319,9 +339,9 @@ class Music(commands.Cog):
             channel = ctx.author.voice.channel
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.disconnect()
-        if ctx.voice_client is None:
+        if ctx.voice_client:
             await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
+        await player.disconnect()
 
 def setup(client):
     client.add_cog(Music(client))

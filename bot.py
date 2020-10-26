@@ -138,7 +138,7 @@ async def howmuch(ctx, adjective, *, member : discord.Member = None):
 
 @client.command(aliases = ["Say", "repeat", "Repeat"])
 async def say(ctx, *, message = None):
-    await ctx.channel.purge(limit = 1)
+    await ctx.message.delete()
     if message is None:
         await ctx.send(f":question: | I have nothing to say")
     elif message is not None:
