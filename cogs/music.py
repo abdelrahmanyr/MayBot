@@ -230,9 +230,8 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
             query = str(player.current)
-        if player.current is None:
+        if query == 'None':
             await ctx.send(f":question: | Please either play a song or write its name.")
-            not query
         try:
             results = await kclient.music.lyrics(query)
         except ksoftapi.NoResults:
