@@ -42,7 +42,7 @@ class MusicController:
             self.next.clear()
 
             song = await self.queue.get()
-            await player.play(song, replace = False)
+            await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**.")
 
             await self.next.wait()
@@ -122,27 +122,29 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        track = tracks[0]
+        if player.channel_id == ctx.author.voice.channel.id:
 
-        controller = self.get_controller(ctx)
-        await controller.queue.put(track)
+            track = tracks[0]
 
-        if player.is_playing:
-            embed = discord.Embed(title = "Queued:",
+            controller = self.get_controller(ctx)
+            await controller.queue.put(track)
+
+            if player.is_playing:
+                embed = discord.Embed(title = "Queued:",
                                 description = f":play_pause: | **{str(tracks[0])}**",
                                 color = discord.Colour.dark_red()
                                 )
-            embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
-            embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
 
-        if not player.is_playing:
-            embed = discord.Embed(title = "Now Playing:",
+            if not player.is_playing:
+                embed = discord.Embed(title = "Now Playing:",
                                 description = f"**:play_pause: | {str(tracks[0])}**",
                                 color = discord.Colour.dark_red()
                                 )
-            embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
-            embed.add_field(name = "Track player", value = f"**`{ctx.message.author}`**")
-        await ctx.send(embed = embed)
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
     async def search(self, ctx, *, query: str):
@@ -155,23 +157,39 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
+        if player.channel_id == ctx.author.voice.channel.id:
 
-        embed = discord.Embed(title = "Search Results:",
+
+            embed = discord.Embed(title = "Search Results:",
                               description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** \n :two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n :three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n :four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n :five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n :six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n :seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n :eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n :nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n :keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
                               color = discord.Colour.dark_red()
                               )
-        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.set_footer(text = f"Requested by {ctx.message.author} | Type the track number to play.", icon_url = ctx.message.author.avatar_url)
+            embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+            embed.set_footer(text = f"Requested by {ctx.message.author} | Type the track number to play.", icon_url = ctx.message.author.avatar_url)
 
-        await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
 
-        msg = await self.bot.wait_for('message', timeout = 20.0)
+            msg = await self.bot.wait_for('message', timeout = 20.0)
         
 
-        controller = self.get_controller(ctx)
-        await controller.queue.put(tracks[int(msg.content) - 1])
-        await ctx.send(f":notes: | **{str(tracks[int(msg.content) - 1])}** **`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content) - 1].length)))}]`** has been added to the queue.")
+            controller = self.get_controller(ctx)
+            await controller.queue.put(tracks[int(msg.content) - 1])
+            if player.is_playing:
+                embed2 = discord.Embed(title = "Queued:",
+                                description = f":play_pause: | **{str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
 
+            if not player.is_playing:
+                embed2 = discord.Embed(title = "Now Playing:",
+                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed2.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+            await ctx.send(embed = embed2)
 
 
 
@@ -203,12 +221,31 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        track = tracks[0]
+        if player.channel_id == ctx.author.voice.channel.id:
 
-        controller = self.get_controller(ctx)
-        await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 7)
-        await ctx.send(f":notes: | **{str(tracks[0])}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** has been added to the queue.")
-        await controller.queue.put(track)
+
+            track = tracks[0]
+
+            controller = self.get_controller(ctx)
+            await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
+
+            if player.is_playing:
+                embed = discord.Embed(title = "Queued:",
+                                description = f":play_pause: | **{str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+
+            if not player.is_playing:
+                embed = discord.Embed(title = "Now Playing:",
+                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                color = discord.Colour.dark_red()
+                                )
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed.add_field(name = "Track player", value = f"**`{ctx.message.author.name}`**")
+            await ctx.send(embed = embed)
+            await controller.queue.put(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
@@ -233,7 +270,8 @@ class Music(commands.Cog):
         if query == 'None':
             await ctx.send(f":question: | Please either play a song or write its name.")
         try:
-            results = await kclient.music.lyrics(query)
+            if query != "None":
+                results = await kclient.music.lyrics(query)
         except ksoftapi.NoResults:
             await ctx.send(":question: | No lyrics found for this query")
         else:
@@ -281,65 +319,76 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Volume", "vol", "Vol"])
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        controller = self.get_controller(ctx)
+        if player.channel_id == ctx.author.voice.channel.id:
 
-        vol = max(min(vol, 1000), 0)
-        controller.volume = vol
+            controller = self.get_controller(ctx)
 
-        if vol is None:
-            await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
+            vol = max(min(vol, 1000), 0)
+            controller.volume = vol
 
-        await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
-        await player.set_volume(vol)
+            if vol is None:
+                await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
+
+            await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
+            await player.set_volume(vol)
 
     @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await player.seek(position = position * 1000)
 
-        if not player.is_playing:
-            await ctx.send(f":question: | Nothing is currently playing.")
+        if player.channel_id == ctx.author.voice.channel.id:
+            await player.seek(position = position * 1000)
 
-        if player.is_playing:
-            await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
+            if not player.is_playing:
+                await ctx.send(f":question: | Nothing is currently playing.")
+
+            if player.is_playing:
+                await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if player.current:
-            await ctx.send(f":track_next: | The current track has been skipped.")
-        if not player.is_playing:
-            await ctx.send(f":question: | There is no current track to skip.")
-        await player.stop()
+
+        if player.channel_id == ctx.author.voice.channel.id:
+            if player.current:
+                await ctx.send(f":track_next: | The current track has been skipped.")
+            if not player.is_playing:
+                await ctx.send(f":question: | There is no current track to skip.")
+            await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if not player.is_paused:
-            await ctx.send(f":pause_button: | Player has been paused.")
-        await player.set_pause(pause = True)
+
+        if player.channel_id == ctx.author.voice.channel.id:
+            if not player.is_paused:
+                await ctx.send(f":pause_button: | Player has been paused.")
+            await player.set_pause(pause = True)
 
     @commands.command(aliases = ["Resume"])
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if player.is_paused:
-            await ctx.send(f":arrow_forward: | Player has been resumed.")
-        await player.set_pause(pause = False)
+
+        if player.channel_id == ctx.author.voice.channel.id:
+            if player.is_paused:
+                await ctx.send(f":arrow_forward: | Player has been resumed.")
+            await player.set_pause(pause = False)
 
 
     @commands.command(aliases = ["Stop", "st", "St"])
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
-        try:
-            del self.controllers[ctx.guild.id]
-        except KeyError:
-            await player.disconnect()
-            return await ctx.send(":question: | There was no controller to stop.")
+        if player.channel_id == ctx.author.voice.channel.id:
+            try:
+                del self.controllers[ctx.guild.id]
+            except KeyError:
+                await player.disconnect()
+                return await ctx.send(":question: | There was no controller to stop.")
 
-        await player.destroy()
-        await player.disconnect()
-        await ctx.send(f":stop_button: | Player has stopped and disconnected.")
+            await player.destroy()
+            await player.disconnect()
+            await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc", "leave", "Leave"])
     async def disconnect(self, ctx, *, channel: discord.VoiceChannel = None):
@@ -347,9 +396,10 @@ class Music(commands.Cog):
             channel = ctx.author.voice.channel
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        if player.is_connected:
-            await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
-        await player.disconnect()
+        if player.channel_id == ctx.author.voice.channel.id:
+            if player.is_connected:
+                await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
+            await player.disconnect()
 
 def setup(client):
     client.add_cog(Music(client))

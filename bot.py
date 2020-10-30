@@ -3,9 +3,13 @@ import random
 import os
 import ksoftapi
 from discord import Member
-from discord.ext import commands, tasks
+from discord.ext import commands
+from discord.ext import tasks
 
-client = commands.Bot(command_prefix = ".")
+intents = discord.Intents.default()
+intents.members = True
+
+client = commands.Bot(command_prefix = ".", intents = intents)
 client.remove_command("help")
 
 #bot status
@@ -138,11 +142,11 @@ async def howmuch(ctx, adjective, *, member : discord.Member = None):
 
 @client.command(aliases = ["Say", "repeat", "Repeat"])
 async def say(ctx, *, message = None):
-    await ctx.message.delete()
     if message is None:
         await ctx.send(f":question: | I have nothing to say")
     elif message is not None:
-            await ctx.send(f":loudspeaker: | {message}")
+        await ctx.send(f":loudspeaker: | {message}")
+        await ctx.message.delete()
 
 @client.command(aliases = ["Meme"])
 async def meme(ctx):
@@ -167,6 +171,7 @@ async def cute(ctx):
     embed.set_image(url = cute.image_url)
     embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
+
 
 #management commands
 @client.command(aliases = ["Clear"])
