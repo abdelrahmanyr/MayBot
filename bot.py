@@ -19,6 +19,7 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=activity)
     print("May is shredding")
     client.load_extension("cogs.music")
+    client.load_extension("cogs.roleplay")
 
 
 
@@ -171,6 +172,8 @@ async def cute(ctx):
     embed.set_image(url = cute.image_url)
     embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
+
+
 
 
 #management commands
