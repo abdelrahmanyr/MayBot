@@ -176,18 +176,18 @@ class Music(commands.Cog):
             await controller.queue.put(tracks[int(msg.content) - 1])
             if player.is_playing:
                 embed2 = discord.Embed(title = "Queued:",
-                                description = f":play_pause: | **{str(tracks[0])}**",
+                                description = f":play_pause: | **{str(tracks[int(msg.content) - 1])}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content) - 1].length)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**`{ctx.message.author}`**")
 
             if not player.is_playing:
                 embed2 = discord.Embed(title = "Now Playing:",
-                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                description = f"**:play_pause: | {str(tracks[int(msg.content) - 1])}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
+                embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content) - 1].length)))}]`**", inline = True)
                 embed2.add_field(name = "Track player", value = f"**`{ctx.message.author}`**")
             await ctx.send(embed = embed2)
 
@@ -319,15 +319,14 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Volume", "vol", "Vol"])
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        if vol is None:
+            await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
         if player.channel_id == ctx.author.voice.channel.id:
 
             controller = self.get_controller(ctx)
 
             vol = max(min(vol, 1000), 0)
             controller.volume = vol
-
-            if vol is None:
-                await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
 
             await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
             await player.set_volume(vol)
