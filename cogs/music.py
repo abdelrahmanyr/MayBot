@@ -184,7 +184,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[int(msg.content) - 1].length)))}]`**", inline = True)
-                embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
+                embed2.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
                 embed2 = discord.Embed(title = "Now Playing:",
