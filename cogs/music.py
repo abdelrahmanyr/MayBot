@@ -122,9 +122,9 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
+            __slots__ = track.requester
 
             track.requester = ctx.author
-            __slots__ = requester
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
