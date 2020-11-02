@@ -111,7 +111,7 @@ class Music(commands.Cog):
     
     @commands.command(aliases = ["Play", "p", "P"])
     async def play(self, ctx, *, query: str):
-       player = self.bot.wavelink.get_player(ctx.guild.id)
+        player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
