@@ -52,7 +52,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
-        self.requester = None
+        self.requester = []
 
 
         if not hasattr(bot, 'wavelink'):
@@ -127,7 +127,7 @@ class Music(commands.Cog):
             track = tracks[0]
             track.author = ctx.author
             self.requester = track.author
-            
+
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
