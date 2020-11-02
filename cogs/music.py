@@ -202,27 +202,10 @@ class Music(commands.Cog):
 
     @commands.command(aliases = ["Queen"])
     async def queen(self, ctx):
-        songs = ["https://www.youtube.com/watch?v=xG16sdjLtc0", #1-Bohemian Rhapsody
-                 "https://www.youtube.com/watch?v=5rGtnqZOdrw", #2-Love Of My Life
-                 "https://www.youtube.com/watch?v=-g3RD7zvTLg", #3-We Will Rock You
-                 "https://www.youtube.com/watch?v=62v4y43D-3k", #4-We Are The Champions
-                 "https://www.youtube.com/watch?v=R8xYWbRNzyA", #5-Don't Stop Me Now
-                 "https://www.youtube.com/watch?v=1tLYYSofs3U", #6-Another One Bites The Dust
-                 "https://www.youtube.com/watch?v=XuY8Ck7-7z8", #7-Under Pressure
-                 "https://www.youtube.com/watch?v=qlZqEFbVxgo", #8-Radio Ga Ga
-                 "https://www.youtube.com/watch?v=Ki9fRkAiNWI", #9-I Want To Break Free
-                 "https://www.youtube.com/watch?v=PmmK-Y8GTDE", #10-The Show Must Go On
-                 "https://www.youtube.com/watch?v=cBMXQrW3VNA", #11-Killer queen
-                 "https://www.youtube.com/watch?v=EKpHL483Bzw", #12-Somebody To Love
-                 "https://www.youtube.com/watch?v=2AXfaUyalvA", #13-Life Is Real
-                 "https://www.youtube.com/watch?v=1r9coJYxbcY", #14-Made In Heaven
-                 "https://www.youtube.com/watch?v=pv2nXlcarzw", #15-God Save The Queen
-                 "https://www.youtube.com/watch?v=VHkiSRUIgTg"  #16-Cool Cat
-                ]
-        tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{random.choice(songs)}")
-        if not tracks:
-            return await ctx.send(f":grey_question: | No tracks found with this query.")
 
+        playlist = await self.bot.wavelink.get_tracks(query)
+        songs = playlist.tracks
+        track = random.choice(songs)
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -231,26 +214,23 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
 
-            track = tracks[0]
-
-
             controller = self.get_controller(ctx)
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Queued:",
-                                description = f":play_pause: | **{str(tracks[0])}**",
+                                description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Now Playing:",
-                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
             await ctx.send(embed = embed)
             await controller.queue.put(track)
