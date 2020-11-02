@@ -131,7 +131,8 @@ class Music(commands.Cog):
                                                 dexcription = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"[:2047]),
                                                 color = discord.Colour.dark_red()
                                                )
-                    track_embed.set_footer(icon_url = tracks.thumb, text = f"{len(tracks)} tracks has been added.")
+                    track_embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+                    track_embed.set_footer(text = f"{len(tracks)} tracks has been added.")
                     await ctx.send(embed = track_embed)
                     
                 
