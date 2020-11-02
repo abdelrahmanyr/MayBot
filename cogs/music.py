@@ -127,8 +127,8 @@ class Music(commands.Cog):
                     for track_p in tracks:
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
-                    track_embed = discord.Embed(title = tracks.title,
-                                                dexcription = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"),
+                    track_embed = discord.Embed(title = "Playlist:",
+                                                dexcription = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"[:2047]),
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.set_footer(icon_url = tracks.thumb, text = f"{len(tracks)} tracks has been added.")
