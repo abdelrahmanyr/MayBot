@@ -48,11 +48,11 @@ class MusicController:
             await self.next.wait()
 
 class Music(commands.Cog):
+    __slots__ = requester
 
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
-    __slots__ = requester
 
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
