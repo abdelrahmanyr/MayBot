@@ -122,12 +122,12 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
-            class Track(track):
-                __slots__ = ("requester")
-            Track.requester = ctx.author
+            track = {"Track" : track,
+                     "Request": ctx.author}
+
 
             controller = self.get_controller(ctx)
-            await controller.queue.put(Track)
+            await controller.queue.put(track)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Queued:",
@@ -263,7 +263,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]` | {player.current.requester}",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]` | {player.current["Request"]}",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
