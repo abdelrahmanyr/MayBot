@@ -121,7 +121,6 @@ class Music(commands.Cog):
 
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
-                track = tracks[0]
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks = tracks.tracks
@@ -137,7 +136,9 @@ class Music(commands.Cog):
                     track_embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
                     track_embed.set_footer(text = f"{len(tracks)} tracks has been added.")
                     await ctx.send(embed = track_embed)
-                    
+                
+                if not isinstance(tracks, wavelink.player.TrackPlaylist):
+                    track = tracks[0]
                 
             else:
                 tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
