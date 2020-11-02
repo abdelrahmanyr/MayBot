@@ -261,7 +261,7 @@ class Music(commands.Cog):
                               description = f":abc: | **[{player.current.title}]({player.current.uri})** \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
                               color = discord.Colour.dark_red()
                               )
-        embed.add_field(name = "Track Player", value = f"{self.request}")
+        embed.add_field(name = "Track Player", value = f"{self.requester}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
