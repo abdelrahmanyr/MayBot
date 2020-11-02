@@ -134,7 +134,7 @@ class Music(commands.Cog):
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-                    track_embed.set_footer(text = f"{len(tracks)} tracks has been added.")
+                    track_embed.set_footer(text = f"{len(tracks_p)} tracks has been added.")
                     await ctx.send(embed = track_embed)
                 
                 
