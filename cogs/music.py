@@ -127,8 +127,9 @@ class Music(commands.Cog):
                     for track_p in tracks:
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
+                    track_list = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"for track_p in tracks)
                     track_embed = discord.Embed(title = "Playlist:",
-                                                dexcription = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"[:2047] for track_p in tracks),
+                                                dexcription = f"{track_list}"[:2047],
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
