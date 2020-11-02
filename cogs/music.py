@@ -48,7 +48,6 @@ class MusicController:
             await self.next.wait()
 
 class Music(commands.Cog):
-    
 
     def __init__(self, bot):
         self.bot = bot
@@ -123,11 +122,12 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
-            __slots__ = ("requester")
-            track.requester = ctx.author
+            class Track(track):
+                __slots__ = ("requester")
+            Track.requester = ctx.author
 
             controller = self.get_controller(ctx)
-            await controller.queue.put(track)
+            await controller.queue.put(Track)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Queued:",
