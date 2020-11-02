@@ -52,7 +52,6 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
-        __slots__ = "requester"
 
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
@@ -123,8 +122,8 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
-            
-            track.requester = ctx.set_author
+            __slots__ = "requester"
+            track.requester = ctx.author
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
@@ -177,6 +176,7 @@ class Music(commands.Cog):
             controller = self.get_controller(ctx)
 
             track = tracks[int(msg.content) - 1]
+            __slots__ = "requester"
 
             track.requester = ctx.author
             await controller.queue.put(track)
