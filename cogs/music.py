@@ -160,6 +160,8 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
+        self.requester = ctx.author
+
         if player.channel_id == ctx.author.voice.channel.id:
 
 
@@ -224,6 +226,8 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
+        self.requester = ctx.author
+
         if player.channel_id == ctx.author.voice.channel.id:
 
 
@@ -258,10 +262,12 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | **[{player.current.title}]({player.current.uri})** \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
                               color = discord.Colour.dark_red()
                               )
-        embed.add_field(name = "Track Player", value = f"{self.requester}")
+        embed.add_field(name = ":abc: | Title", value = f"__**[{player.current.title}]({player.current.uri})**__", inline = False)
+        embed.add_field(name = ":left_right_arrow: | Duration/Position", value = f"`[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = True)
+        embed.add_field(name = ":arrow_right: | Player", value = f"{self.requester.mention}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
