@@ -125,7 +125,7 @@ class Music(commands.Cog):
             track = tracks[0]
             class Track(track):
                 __slots__ = ("requester")
-            track.requester = ctx.author
+            Track.requester = ctx.author
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
