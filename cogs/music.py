@@ -115,23 +115,31 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        if query.startswith("http"):
-            tracks = await self.bot.wavelink.get_tracks(query)
-            if isinstance(tracks, wavelink.player.TrackPlaylist):
-                await ctx.send(f":play_pause: | {len(tracks.tracks)} tracks has been added.")
-                tracks = tracks.tracks[0]
-                controller = self.get_controller(ctx)
-                await controller.queue.put(tracks)
-
-        else:
-            tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
-
-        if not tracks:
-            return await ctx.send(f":grey_question: | No tracks found with this query.")
-
  
 
         if player.channel_id == ctx.author.voice.channel.id:
+
+            if query.startswith("http"):
+                tracks = await self.bot.wavelink.get_tracks(query)
+
+                if isinstance(tracks, wavelink.player.TrackPlaylist):
+                    tracks = tracks.tracks
+                    for track_p in tracks:
+                        controller = self.get_controller(ctx)
+                        await controller.queue.put(track_p)
+                    track_embed = discord.Embed(title = tracks.title,
+                                                dexcription = "\n".join(f"• {track_p.title} **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**"),
+                                                color = discord.Colour.dark_red()
+                                               )
+                    track_embed.set_footer(icon_url = tracks.thumb, text = f"{len(tracks)} tracks has been added.")
+                    await ctx.send(embed = track_embed)
+                    
+                
+            else:
+                tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+
+            if not tracks:
+                return await ctx.send(f":grey_question: | No tracks found with this query.")
 
             track = tracks[0]
 
