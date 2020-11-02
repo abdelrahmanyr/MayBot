@@ -111,18 +111,25 @@ class Music(commands.Cog):
     
     @commands.command(aliases = ["Play", "p", "P"])
     async def play(self, ctx, *, query: str):
+       player = self.bot.wavelink.get_player(ctx.guild.id)
+        if not player.is_connected:
+            await ctx.invoke(self.connect_)
 
         if query.startswith("http"):
             tracks = await self.bot.wavelink.get_tracks(query)
+            if isinstance(tracks, wavelink.player.TrackPlaylist):
+                await ctx.send(f":play_pause: | {len(tracks.tracks)} tracks has been added.")
+                tracks = tracks.tracks[0]
+                controller = self.get_controller(ctx)
+                await controller.queue.put(tracks)
+
         else:
             tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
 
         if not tracks:
             return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-        player = self.bot.wavelink.get_player(ctx.guild.id)
-        if not player.is_connected:
-            await ctx.invoke(self.connect_)
+ 
 
         if player.channel_id == ctx.author.voice.channel.id:
 
@@ -224,6 +231,8 @@ class Music(commands.Cog):
                                 )
                 embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
+                embed.set_image(url = track.thumb)
+
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Now Playing:",
@@ -232,6 +241,7 @@ class Music(commands.Cog):
                                 )
                 embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
+                embed.set_image(url = track.thumb)
             await ctx.send(embed = embed)
             await controller.queue.put(track)
 
