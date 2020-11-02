@@ -48,7 +48,7 @@ class MusicController:
             await self.next.wait()
 
 class Music(commands.Cog):
-    __slots__ = "requester"
+    __slots__ = ("requester")
 
     def __init__(self, bot):
         self.bot = bot
