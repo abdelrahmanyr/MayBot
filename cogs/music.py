@@ -111,9 +111,10 @@ class Music(commands.Cog):
     
     @commands.command(aliases = ["Play", "p", "P"])
     async def play(self, ctx, *, query: str):
-        tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
-
+        tracks = await self.bot.wavelink.get_tracks(query)
         if not tracks:
+            tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+        elif not tracks:
             return await ctx.send(f":grey_question: | No tracks found with this query.")
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
