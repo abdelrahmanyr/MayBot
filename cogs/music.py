@@ -53,6 +53,7 @@ class Music(commands.Cog):
         self.bot = bot
         self.controllers = {}
 
+
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
 
@@ -122,9 +123,8 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
-            track = {"Track" : track,
-                     "Request": ctx.author}
 
+            track.requester = ctx.author
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
@@ -178,7 +178,6 @@ class Music(commands.Cog):
 
             track = tracks[int(msg.content) - 1]
 
-            track.requester = ctx.author
             await controller.queue.put(track)
             if player.is_playing:
                 embed2 = discord.Embed(title = "Queued:",
@@ -232,7 +231,6 @@ class Music(commands.Cog):
 
             track = tracks[0]
 
-            track.requester = ctx.author
 
             controller = self.get_controller(ctx)
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
@@ -263,7 +261,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]` | {player.current["Request"]}",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)

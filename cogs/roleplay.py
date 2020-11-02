@@ -266,6 +266,7 @@ class Roleplay(commands.Cog):
     @commands.command()
     async def like(self, ctx, *, member : discord.Member = None):
         gifs = ["https://i.imgur.com/xezCm8i.gif",
+                "https://media1.tenor.com/images/bc7f6147063085d89b403cb96de6f883/tenor.gif?itemid=4973579"
                ]
         if member is None:
             embed = discord.Embed(description = f":thumbsup: | **{ctx.message.author.name}** likes",
@@ -283,9 +284,7 @@ class Roleplay(commands.Cog):
 
     @commands.command()
     async def blush(self, ctx, *, member : discord.Member = None):
-        gifs = ["https://i.imgur.com/f8vEHcV.gif",
-                "https://i.imgur.com/KIfA9af.gif"
-               ]
+        gifs = ["https://i.imgur.com/f8vEHcV.gif",               ]
         if member is None:
             embed = discord.Embed(description = f":flushed: | **{ctx.message.author.name}** blushes",
                                   color = discord.Colour.dark_red()
@@ -317,6 +316,7 @@ class Roleplay(commands.Cog):
             embed.set_author(name = ctx.message.author, icon_url = ctx.message.author.avatar_url)
             embed.set_image(url = random.choice(gifs))
         await ctx.send(embed = embed)
+
 
 def setup(client):
     client.add_cog(Roleplay(client))
