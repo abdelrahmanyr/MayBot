@@ -160,7 +160,8 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        self.requester = ctx.author
+        tracks.author = ctx.author
+        self.requester = tracks.author
 
         if player.channel_id == ctx.author.voice.channel.id:
 
@@ -262,7 +263,6 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(milliseconds = int(player.current.length)))}]`",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = ":abc: | Title", value = f"__**[{player.current.title}]({player.current.uri})**__", inline = False)
