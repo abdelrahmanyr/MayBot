@@ -298,7 +298,7 @@ class Music(commands.Cog):
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`** | {song.requester}" for song in upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
 
 
         embed = discord.Embed(title=f"MayBot Queue:",
