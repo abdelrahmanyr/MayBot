@@ -123,9 +123,8 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
-            class track(base):
+            class Track(track):
                 __slots__ = ("requester")
-
             track.requester = ctx.author
 
             controller = self.get_controller(ctx)
