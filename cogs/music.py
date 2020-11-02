@@ -123,12 +123,12 @@ class Music(commands.Cog):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
-                    tracks = tracks.tracks
-                    for track_p in tracks:
+                    tracks_p = tracks.tracks
+                    for track_p in tracks_p:
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
                     
-                    track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks)
+                    track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
                     track_embed = discord.Embed(title = "Playlist:",
                                                 description = f"{track_list}"[:2047],
                                                 color = discord.Colour.dark_red()
@@ -137,17 +137,14 @@ class Music(commands.Cog):
                     track_embed.set_footer(text = f"{len(tracks)} tracks has been added.")
                     await ctx.send(embed = track_embed)
                 
-                if not isinstance(tracks, wavelink.player.TrackPlaylist):
-                    track = tracks[0]
                 
             else:
                 tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
-                track = tracks[0]
 
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-            
+            track = tracks[0]
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
