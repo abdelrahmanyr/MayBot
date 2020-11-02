@@ -144,25 +144,26 @@ class Music(commands.Cog):
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-            track = tracks[0]
+            if not isinstance(tracks, wavelink.player.TrackPlaylist):
+                track = tracks[0]
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Queued:",
-                                description = f":play_pause: | **{str(tracks[0])}**",
+                                description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed.add_field(name = ":1234: | Track duration", value = f"**`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`**", inline = True)
+                embed.add_field(name = ":1234: | Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Now Playing:",
-                                description = f"**:play_pause: | {str(tracks[0])}**",
+                                description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
             await ctx.send(embed = embed)
 
