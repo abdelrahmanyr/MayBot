@@ -121,6 +121,7 @@ class Music(commands.Cog):
 
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
+                track = tracks[0]
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks = tracks.tracks
@@ -140,13 +141,12 @@ class Music(commands.Cog):
                 
             else:
                 tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+                track = tracks[0]
 
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-            if not isinstance(tracks, wavelink.player.TrackPlaylist):
-                track = tracks[0]
-
+            
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
