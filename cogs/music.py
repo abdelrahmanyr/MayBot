@@ -122,7 +122,7 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-                track = {
+            track = {
                 "Track": tracks,
                 "Title": tracks.title,
                 "Length": tracks.length,
