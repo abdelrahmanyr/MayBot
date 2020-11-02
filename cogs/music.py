@@ -53,9 +53,9 @@ class Music(commands.Cog):
         self.bot = bot
         self.controllers = {}
 
-        if not hasattr(ctx, bot, 'wavelink'):
+
+        if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
-            self.request = ctx.author
 
         self.bot.loop.create_task(self.start_nodes())
 
@@ -122,6 +122,16 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
+                track = {
+                "Track": tracks,
+                "Title": tracks.title,
+                "Length": tracks.length,
+                "Thumb": tracks.thumb,
+                "Author": tracks.author,
+                "Request": ctx.author,
+                "Time": time
+                        }
+
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
@@ -135,7 +145,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`**", inline = True)
-                embed.add_field(name = "Track player", value = f"**`{ctx.message.author}`**")
+                embed.add_field(name = "Track player", value = f"**`{track["Request"]}`**")
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Now Playing:",
