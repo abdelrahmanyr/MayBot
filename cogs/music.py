@@ -52,6 +52,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
+        __slots__ = requester
 
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
@@ -119,10 +120,11 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-
         if player.channel_id == ctx.author.voice.channel.id:
 
             track = tracks[0]
+            
+            track.requester = ctx.set_author
             
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
@@ -176,6 +178,7 @@ class Music(commands.Cog):
 
             track = tracks[int(msg.content) - 1]
 
+            track.requester = ctx.author
             await controller.queue.put(track)
             if player.is_playing:
                 embed2 = discord.Embed(title = "Queued:",
@@ -224,12 +227,12 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        self.requester = ctx.author
-
         if player.channel_id == ctx.author.voice.channel.id:
 
 
             track = tracks[0]
+
+            track.requester = ctx.author
 
             controller = self.get_controller(ctx)
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
