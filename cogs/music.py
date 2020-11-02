@@ -203,7 +203,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Queen"])
     async def queen(self, ctx):
 
-        playlist = await self.bot.wavelink.get_tracks(query)
+        playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = playlist.tracks
         track = random.choice(songs)
 
