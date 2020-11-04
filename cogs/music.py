@@ -363,7 +363,7 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | There is no current track to skip.")
             number = number - 1
             queue_list = list(itertools.islice(controller.queue._queue, 0, None))
-            queue_list.append[number]
+            queue_list.append(number)
 
 
     @commands.command(aliases = ["Pause"])
