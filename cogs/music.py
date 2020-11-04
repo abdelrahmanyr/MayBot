@@ -92,7 +92,7 @@ class Music(commands.Cog):
         return controller
 
 
-    @commands.command(name='connect', aliases = ["Connect", "c", "C", "join", "Join"])
+    @commands.command(name='connect', aliases = ["Connect", "c", "join", "Join"])
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             try:
@@ -198,7 +198,7 @@ class Music(commands.Cog):
 
             await controller.queue.put(track)
             if player.is_playing:
-                embed2 = discord.Embed(title = "Enqueued:",
+                embed2 = discord.Embed(title = "Queued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -206,7 +206,7 @@ class Music(commands.Cog):
                 embed2.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
-                embed2 = discord.Embed(title = "Playing:",
+                embed2 = discord.Embed(title = "Now Playing:",
                                 description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -234,7 +234,7 @@ class Music(commands.Cog):
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
             if player.is_playing:
-                embed = discord.Embed(title = "Enqueued:",
+                embed = discord.Embed(title = "Queued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -354,17 +354,13 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx, number : int = 1):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        controller = self.get_controller(ctx)
 
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
                 await ctx.send(f":track_next: | The current track has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
-            number = number - 1
-            queue_list = list(itertools.islice(controller.queue._queue, 0, None))
-            queue_list.append(number)
-
+            await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
