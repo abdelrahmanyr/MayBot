@@ -362,7 +362,7 @@ class Music(commands.Cog):
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
             number = number - 1
-            queue_list = list(controller.queue._queue)
+            queue_list = list(itertools.islice(controller.queue._queue, 0, None))
             queue_list.append(number)
 
 
