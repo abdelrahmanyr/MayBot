@@ -92,7 +92,7 @@ class Music(commands.Cog):
         return controller
 
 
-    @commands.command(name='connect', aliases = ["Connect", "c", "join", "Join"])
+    @commands.command(name='connect', aliases = ["Connect", "c", "C", "join", "Join"])
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             try:
@@ -129,11 +129,10 @@ class Music(commands.Cog):
                         await controller.queue.put(track_p)
                     
                     track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
-                    track_embed = discord.Embed(title = "Playlist:",
+                    track_embed = discord.Embed(title = "Enqueued Playlist:",
                                                 description = f"{track_list}"[:2047],
                                                 color = discord.Colour.dark_red()
                                                )
-                    track_embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
                     track_embed.set_footer(text = f"{len(tracks_p)} tracks has been added.")
                     await ctx.send(embed = track_embed)
                 
@@ -149,15 +148,15 @@ class Music(commands.Cog):
             await controller.queue.put(track)
 
             if player.is_playing:
-                embed = discord.Embed(title = "Queued:",
+                embed = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
-                embed.add_field(name = ":1234: | Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
-                embed = discord.Embed(title = "Now Playing:",
+                embed = discord.Embed(title = "Playing:",
                                 description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -182,7 +181,7 @@ class Music(commands.Cog):
 
 
             embed = discord.Embed(title = "Search Results:",
-                              description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(milliseconds = int(tracks[0].length)))}]`** \n :two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n :three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n :four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n :five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n :six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n :seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n :eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n :nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n :keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
+                              description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`** \n :two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n :three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n :four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n :five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n :six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n :seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n :eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n :nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n :keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
                               color = discord.Colour.dark_red()
                               )
             embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -199,7 +198,7 @@ class Music(commands.Cog):
 
             await controller.queue.put(track)
             if player.is_playing:
-                embed2 = discord.Embed(title = "Queued:",
+                embed2 = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -207,7 +206,7 @@ class Music(commands.Cog):
                 embed2.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
 
             if not player.is_playing:
-                embed2 = discord.Embed(title = "Now Playing:",
+                embed2 = discord.Embed(title = "Playing:",
                                 description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -235,7 +234,7 @@ class Music(commands.Cog):
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
             if player.is_playing:
-                embed = discord.Embed(title = "Queued:",
+                embed = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -245,7 +244,7 @@ class Music(commands.Cog):
 
 
             if not player.is_playing:
-                embed = discord.Embed(title = "Now Playing:",
+                embed = discord.Embed(title = "Playing:",
                                 description = f"**:play_pause: | {str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -302,7 +301,7 @@ class Music(commands.Cog):
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(milliseconds = int(song.length)))}]`**" for song in upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
 
 
         embed = discord.Embed(title=f"MayBot Queue:",
@@ -353,15 +352,19 @@ class Music(commands.Cog):
                 await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
-    async def skip(self, ctx):
+    async def skip(self, ctx, number : int = 1):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
 
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
                 await ctx.send(f":track_next: | The current track has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
-            await player.stop()
+            number = number - 1
+            queue_list = list(itertools.islice(controller.queue._queue, 0, None))
+            queue_list.append[number]
+
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
