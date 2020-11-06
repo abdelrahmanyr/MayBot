@@ -46,7 +46,6 @@ class MusicController(wavelink.Player):
             song = await self.queue[0]
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
-            await self.queue.pop()
             await self.next.wait()
 
 class Music(commands.Cog):
@@ -148,7 +147,6 @@ class Music(commands.Cog):
             track = tracks[0]
             controller = self.get_controller(ctx)
             controller.queue.append(track)
-            print(controller.queue)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
