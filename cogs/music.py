@@ -43,10 +43,10 @@ class MusicController(wavelink.Player):
 
             self.next.clear()
 
-            song = await self.queue.pop()
+            song = await self.queue[0]
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
-
+            await self.queue.pop(0)
             await self.next.wait()
 
 class Music(commands.Cog):
@@ -128,7 +128,7 @@ class Music(commands.Cog):
                     tracks_p = tracks.tracks
                     for track_p in tracks_p:
                         controller = self.get_controller(ctx)
-                        await controller.queue.append(track_p)
+                        await controller.queue.put(track_p)
                     
                     track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
@@ -147,7 +147,7 @@ class Music(commands.Cog):
 
             track = tracks[0]
             controller = self.get_controller(ctx)
-            controller.queue.append(track)
+            await controller.queue.put(track)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
@@ -254,7 +254,7 @@ class Music(commands.Cog):
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
                 embed.set_image(url = track.thumb)
             await ctx.send(embed = embed)
-            await self.queue.append(track)
+            await controller.queue.put(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
