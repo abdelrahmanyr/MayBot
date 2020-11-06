@@ -16,7 +16,7 @@ import ksoftapi
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
-class MusicController(wavelink.Player):
+class MusicController():
 
     def __init__(self, bot, guild_id):
         self.bot = bot
