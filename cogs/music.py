@@ -374,10 +374,11 @@ class Music(commands.Cog):
 
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
-                await ctx.send(f":track_next: | The current track has been skipped.")
+                await ctx.send(f":track_next: | The current track(s) has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
-            await player.stop()
+            for i in range(number):
+                await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
