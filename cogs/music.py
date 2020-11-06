@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord import utils
 import typing
 from typing import Union
+import collections
+from collections import deque
 import math
 import wavelink
 import asyncio
@@ -14,7 +16,7 @@ import ksoftapi
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
-class MusicController:
+class MusicController(wavelink.Player):
 
     def __init__(self, bot, guild_id):
         self.bot = bot
@@ -22,7 +24,7 @@ class MusicController:
         self.channel = None
 
         self.next = asyncio.Event()
-        self.queue = asyncio.Queue()
+        self.queue = collections.deque()
 
         self.volume = 100
         self.now_playing = None
@@ -41,7 +43,7 @@ class MusicController:
 
             self.next.clear()
 
-            song = await self.queue.get()
+            song = await self.queue[0]
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
