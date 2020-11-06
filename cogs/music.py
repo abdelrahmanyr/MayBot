@@ -334,7 +334,7 @@ class Music(commands.Cog):
                 if controller.queue.qsize() < 3:
                     return await ctx.send(":no_entry: | You need more than 3 tracks in your queue to shuffle.")
                 else:
-                    random.shuffle(player.queue._queue)
+                    random.shuffle(controller.queue._queue)
                     await ctx.send(":twisted_rightwards_arrows: | Your queue has been shuffled.")
             else:
                 await ctx.send(f":question: | You need to put more tracks in your queue to shuffle.")
