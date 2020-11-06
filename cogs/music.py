@@ -4,6 +4,7 @@ from discord import utils
 import typing
 from typing import Union
 import math
+import random
 import wavelink
 import asyncio
 import aiohttp
@@ -322,6 +323,22 @@ class Music(commands.Cog):
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
+
+    @commands.command(aliases = ["Shuffle", "mix", "Mix"])
+    async def shuffle(self, ctx):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+
+        if player.channel_id == ctx.author.voice.channel.id:
+            if player.current:
+                if controller.queue.qsize() < 3:
+                    return await ctx.send(":no_entry: | You need more than 3 tracks in your queue to shuffle.")
+                else:
+                    random.shuffle(player.queue._queue)
+                    await ctx.send(":twisted_rightwards_arrows: | Your queue has been shuffled.")
+            else:
+                await ctx.send(f":question: | You need to put more tracks in your queue to shuffle.")
+
 
     @commands.command(aliases = ["Volume", "vol", "Vol"])
     async def volume(self, ctx, *, vol: int = None):
