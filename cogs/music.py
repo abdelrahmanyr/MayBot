@@ -15,6 +15,14 @@ import ksoftapi
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
+class Track(wavelink.Track):
+    __slots__ = ('requester', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args)
+
+        self.requester = kwargs.get('requester')
+
 class MusicController:
 
     def __init__(self, bot, guild_id):
@@ -126,6 +134,7 @@ class Music(commands.Cog):
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks_p = tracks.tracks
                     for track_p in tracks_p:
+                        track = Track(track_p.id, track_p.info, requester = ctx.author)
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
                     
@@ -145,7 +154,7 @@ class Music(commands.Cog):
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
             if not isinstance(tracks, wavelink.player.TrackPlaylist):
-                track = tracks[0]
+                track = Track(tracks[0].id, track[0].info, requester=ctx.author)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
@@ -196,7 +205,7 @@ class Music(commands.Cog):
 
             controller = self.get_controller(ctx)
 
-            track = tracks[int(msg.content) - 1]
+            track = Track(tracks[int(msg.content) - 1].id, tracks[int(msg.content) - 1].info, requester=ctx.author)
 
             await controller.queue.put(track)
             if player.is_playing:
@@ -264,7 +273,7 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{(datetime.timedelta(seconds = int(player.position / 1000)))} / {(datetime.timedelta(seconds = int(player.current.length / 1000)))}]` \n :information_source: | {player.current.requester.mention}",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
