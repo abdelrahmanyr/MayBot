@@ -154,7 +154,7 @@ class Music(commands.Cog):
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
             if not isinstance(tracks, wavelink.player.TrackPlaylist):
-                track = Track(tracks[0].id, track[0].info, requester=ctx.author)
+                track = Track(tracks[0].id, tracks[0].info, requester=ctx.author)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
