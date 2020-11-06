@@ -131,7 +131,7 @@ class Music(commands.Cog):
                     
                     track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f"__**{tracks.data["playlistInfo"]["name"]}:**__ \n {track_list}"[:2047],
+                                                description = f"__**{tracks.data['playlistInfo']['name']}:**__ \n {track_list}"[:2047],
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.set_footer(text = f"{len(tracks_p)} tracks has been added.")
