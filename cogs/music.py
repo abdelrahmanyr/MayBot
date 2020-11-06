@@ -131,7 +131,7 @@ class Music(commands.Cog):
                     
                     track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f"{track_list}"[:2047],
+                                                description = f"__**{tracks.data["playlistInfo"]["name"]}:**__ \n {track_list}"[:2047],
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.set_footer(text = f"{len(tracks_p)} tracks has been added.")
@@ -144,7 +144,8 @@ class Music(commands.Cog):
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-            track = tracks[0]
+            if not isinstance(tracks, wavelink.player.TrackPlaylist):
+                track = tracks[0]
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
@@ -377,8 +378,7 @@ class Music(commands.Cog):
                 await ctx.send(f":track_next: | The current track(s) has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
-            for i in range(0, number + 1):
-                await player.stop()
+            await player.stop()
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
