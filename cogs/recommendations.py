@@ -74,8 +74,8 @@ class Recommendations(commands.Cog):
             tracks = "\n".join(f"{tracks_list.index(track) + 1} - {track['name']}" for track in tracks_list)
 
             embed = discord.Embed(description = f"**• Artist:** {album_artist} \n **• Release date:** {album_date} \n **• Total tracks:** {album_tracks_number} \n **• Spotify link:** [__Link__]({album_link})",
-                                color = discord.Color.dark_red()
-                               )
+                                  color = discord.Color.dark_red()
+                                 )
             embed.set_author(name = album_name, icon_url = album_image)
             embed.add_field(name = f"Tracks", value = tracks)
             embed.set_image(url = album_image)
