@@ -42,8 +42,8 @@ class MusicController(wavelink.Player):
                 await self.now_playing.delete()
 
             self.next.clear()
-
-            song = self.queue.pop()
+            song = self.queue[0]
+            song_q = await self.queue.pop()
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
@@ -254,7 +254,7 @@ class Music(commands.Cog):
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
                 embed.set_image(url = track.thumb)
             await ctx.send(embed = embed)
-            await controller.queue.put(track)
+            await controller.queue.append(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
