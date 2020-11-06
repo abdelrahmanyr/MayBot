@@ -114,7 +114,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 
     embed.set_author(name = member, icon_url = member.avatar_url)
     embed.set_image(url = member.avatar_url)
-    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
     await ctx.send(embed = embed)
 
@@ -125,7 +125,7 @@ async def icon(ctx):
     guild = ctx.guild
     embed.set_author(name = guild.name, icon_url = guild.icon_url)
     embed.set_image(url = guild.icon_url)
-    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
     await ctx.send(embed = embed)
 
@@ -139,7 +139,7 @@ async def howmuch(ctx, adjective, *, member : discord.Member = None):
                           colour = discord.Colour.dark_red())
 
     embed.set_author(name = member, icon_url = member.avatar_url)
-    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 
     await ctx.send(embed = embed)
 
@@ -160,7 +160,7 @@ async def meme(ctx):
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.set_image(url = meme.image_url)
-    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
 @client.command(aliases = ["Cute"])
@@ -172,7 +172,7 @@ async def cute(ctx):
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.set_image(url = cute.image_url)
-    embed.set_footer(text = f"Requested by {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
 

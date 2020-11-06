@@ -196,7 +196,7 @@ class Music(commands.Cog):
                               color = discord.Colour.dark_red()
                               )
             embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-            embed.set_footer(text = f"Requested by {ctx.message.author} | Type the track number to play.", icon_url = ctx.message.author.avatar_url)
+            embed.set_footer(text = f"Requested by: {ctx.message.author} | Type the track number to play.", icon_url = ctx.message.author.avatar_url)
 
             await ctx.send(embed = embed)
 
@@ -232,7 +232,7 @@ class Music(commands.Cog):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = playlist.tracks
-        track = random.choice(songs)
+        track = Track(random.choice(songs).id, random.choice(songs).info, requester = ctx.author)
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -251,8 +251,6 @@ class Music(commands.Cog):
                                 )
                 embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
-                embed.set_image(url = track.thumb)
-
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Playing:",
@@ -261,7 +259,6 @@ class Music(commands.Cog):
                                 )
                 embed.add_field(name = "Track duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
-                embed.set_image(url = track.thumb)
             await ctx.send(embed = embed)
             await controller.queue.put(track)
 
