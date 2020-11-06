@@ -377,7 +377,7 @@ class Music(commands.Cog):
                 await ctx.send(f":track_next: | The current track(s) has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
-            for i in range(0, number):
+            for i in range(0, number + 1):
                 await player.stop()
 
     @commands.command(aliases = ["Pause"])
