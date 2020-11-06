@@ -254,7 +254,7 @@ class Music(commands.Cog):
                 embed.add_field(name = "Track player", value = f"**{ctx.message.author.mention}**")
                 embed.set_image(url = track.thumb)
             await ctx.send(embed = embed)
-            await controller.queue.append(track)
+            await self.queue.append(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
