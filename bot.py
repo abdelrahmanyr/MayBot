@@ -20,6 +20,7 @@ async def on_ready():
     print("May is shredding")
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
+    client.load_extension("cogs.recommendations")
 
 
 
