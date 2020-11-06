@@ -296,7 +296,7 @@ class Music(commands.Cog):
             first = results[0]
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**{first.name} - {first.artist}:**__ \n [{first.lyrics}]({first['data']['url']})"[:2047],
+                             description = f"__**{first.name} - {first.artist}:**__ \n [{first.lyrics}]({first['url']})"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
