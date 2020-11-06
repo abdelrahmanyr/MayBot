@@ -16,7 +16,7 @@ import ksoftapi
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
-class MusicController():
+class MusicController(wavelink.Player):
 
     def __init__(self, bot, guild_id):
         self.bot = bot
@@ -42,8 +42,8 @@ class MusicController():
                 await self.now_playing.delete()
 
             self.next.clear()
-            song = self.queue[0]
-            await self.queue.pop()
+
+            song = await self.queue.pop()
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
