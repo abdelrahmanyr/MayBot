@@ -3,8 +3,6 @@ from discord.ext import commands
 from discord import utils
 import typing
 from typing import Union
-import collections
-from collections import deque
 import math
 import wavelink
 import asyncio
@@ -16,7 +14,7 @@ import ksoftapi
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
-class MusicController(wavelink.Player):
+class MusicController:
 
     def __init__(self, bot, guild_id):
         self.bot = bot
@@ -24,7 +22,7 @@ class MusicController(wavelink.Player):
         self.channel = None
 
         self.next = asyncio.Event()
-        self.queue = collections.deque()
+        self.queue = asyncio.Queue()
 
         self.volume = 100
         self.now_playing = None
@@ -43,9 +41,10 @@ class MusicController(wavelink.Player):
 
             self.next.clear()
 
-            song = self.queue[0]
+            song = await self.queue.get()
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
+
             await self.next.wait()
 
 class Music(commands.Cog):
@@ -146,7 +145,7 @@ class Music(commands.Cog):
 
             track = tracks[0]
             controller = self.get_controller(ctx)
-            controller.queue.append(track)
+            await controller.queue.put(track)
 
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
