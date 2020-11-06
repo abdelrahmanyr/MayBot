@@ -43,7 +43,7 @@ class MusicController(wavelink.Player):
 
             self.next.clear()
             song = self.queue[0]
-            song_q = await self.queue.pop()
+            await self.queue.pop()
             await player.play(song)
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
