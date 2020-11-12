@@ -160,7 +160,7 @@ class Music(commands.Cog):
                         await controller.queue.put(track)
 
                         embed = discord.Embed(title = "Enqueued:",
-                                        description = f":play_pause: | **{str(track.name)}**",
+                                        description = f":play_pause: | **{str(track.title)}**",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Stream Player", value = f"**{ctx.message.author.mention}**")
