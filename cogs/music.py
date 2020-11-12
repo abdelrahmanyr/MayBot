@@ -144,22 +144,22 @@ class Music(commands.Cog):
                     
                     
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f"**[{tracks.data['playlistInfo']['name']}]({query})",
+                                                description = f"__**[{tracks.data['playlistInfo']['name']}]({query})**__",
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
-                    track_embed.add_field(name = "Number of Tracks", value = f"`{len(tracks_p)}`")
+                    track_embed.add_field(name = "Number of Tracks", value = f"{len(tracks_p)}")
                     await ctx.send(embed = track_embed)
                 
                 
             else:
                 tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+                track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
 
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-            if not isinstance(tracks, wavelink.player.TrackPlaylist):
-                track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
+            
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
