@@ -144,11 +144,12 @@ class Music(commands.Cog):
                     
                     
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f"__**[{tracks.data['playlistInfo']['name']}]({query})**__",
+                                                description = f":play_pause: | __**[{tracks.data['playlistInfo']['name']}]({query})**__",
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
-                    track_embed.add_field(name = "Number of Tracks", value = f"{len(tracks_p)}")
+                    track_embed.add_field(name = "Number of Tracks", value = f"{len(tracks_p)}", inline = True)
+                    track_embed.add_field(name = "Playlist Player", value = f"{track_p[0].requester}")
                     await ctx.send(embed = track_embed)
                 
                 
