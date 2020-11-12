@@ -133,7 +133,6 @@ class Music(commands.Cog):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
-                    pprint.pprint(tracks.data)
                     tracks_p = tracks.tracks
                     playlist_duration = 0
                     for track_p in tracks_p:
