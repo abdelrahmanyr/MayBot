@@ -135,17 +135,20 @@ class Music(commands.Cog):
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
                     pprint.pprint(tracks.data)
                     tracks_p = tracks.tracks
+                    playlist_duration = 0
                     for track_p in tracks_p:
                         track = Track(track_p.id, track_p.info, requester = ctx.author)
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
+                        playlist_duration += track_p.length
                     
-                    track_list = "\n".join(f"• **{track_p.title}** **`[{(datetime.timedelta(seconds = int(track_p.length / 1000)))}]`**" for track_p in tracks_p)
+                    
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f"__**{tracks.data['playlistInfo']['name']}:**__ \n {track_list}"[:2047],
+                                                description = f"**[{tracks.data['playlistInfo']['name']}]({query})",
                                                 color = discord.Colour.dark_red()
                                                )
-                    track_embed.set_footer(text = f"{len(tracks_p)} tracks has been added.")
+                    track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
+                    track_embed.add_field(name = "Number of Tracks", value = f"`{len(tracks_p)}`")
                     await ctx.send(embed = track_embed)
                 
                 

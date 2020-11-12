@@ -41,7 +41,7 @@ class Recommendations(commands.Cog):
             image_url = artist['images'][0]['url']
 
             embed = discord.Embed(
-                                  description = f"**• Genres:** {artist_genre} \n **• Followers:** {artist_followers} \n **• Spotify link:** [__Link__]({artist_link})",
+                                  description = f"**• Genres:** {artist_genre} \n **• Followers:** {artist_followers} \n **• Spotify link:** __[Link]({artist_link})__",
                                   color = discord.Colour.dark_red()       
                                  )
             embed.set_author(name = artist_name, icon_url = image_url)
@@ -73,7 +73,7 @@ class Recommendations(commands.Cog):
             tracks_list = list(itertools.islice(album_tracks, 0, None))
             tracks = "\n".join(f"{tracks_list.index(track) + 1} - {track['name']}" for track in tracks_list)
 
-            embed = discord.Embed(description = f"**• Artist:** {album_artist} \n **• Release date:** {album_date} \n **• Total tracks:** {album_tracks_number} \n **• Spotify link:** [__Link__]({album_link})",
+            embed = discord.Embed(description = f"**• Artist:** {album_artist} \n **• Release date:** {album_date} \n **• Total tracks:** {album_tracks_number} \n **• Spotify link:** __[Link]({album_link})__",
                                   color = discord.Color.dark_red()
                                  )
             embed.set_author(name = album_name, icon_url = album_image)
@@ -102,7 +102,7 @@ class Recommendations(commands.Cog):
             image_url = track['album']['images'][0]['url']
 
 
-            embed = discord.Embed(description = f"**• Artist:** {str(track_artist)}\n **• Album:** {track_album} \n **• Spotify link:** [__Link__]({track_url})",
+            embed = discord.Embed(description = f"**• Artist:** {str(track_artist)}\n **• Album:** {track_album} \n **• Spotify link:** __[Link]({track_url})__",
                                   color = discord.Colour.dark_red()
                                  )
             embed.set_author(name = track_name, icon_url = image_url)
