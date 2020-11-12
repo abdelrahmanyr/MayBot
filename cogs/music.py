@@ -12,6 +12,7 @@ import datetime
 import itertools
 import random
 import ksoftapi
+import pprint
 
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
@@ -132,6 +133,7 @@ class Music(commands.Cog):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
+                    pprint.pprint(tracks)
                     tracks_p = tracks.tracks
                     for track_p in tracks_p:
                         track = Track(track_p.id, track_p.info, requester = ctx.author)
