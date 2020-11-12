@@ -148,7 +148,7 @@ class Music(commands.Cog):
                                                )
                     track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
                     track_embed.add_field(name = "Number of Tracks", value = f"{len(tracks_p)}", inline = True)
-                    track_embed.add_field(name = "Playlist Player", value = f"{track_p[0].requester}")
+                    track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
                     await ctx.send(embed = track_embed)
                 
                 
