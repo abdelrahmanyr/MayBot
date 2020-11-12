@@ -133,7 +133,7 @@ class Music(commands.Cog):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
                 if isinstance(tracks, wavelink.player.TrackPlaylist):
-                    pprint.pprint(tracks)
+                    pprint.pprint(tracks.data)
                     tracks_p = tracks.tracks
                     for track_p in tracks_p:
                         track = Track(track_p.id, track_p.info, requester = ctx.author)
