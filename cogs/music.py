@@ -296,8 +296,8 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         if player.current.is_stream:
-            track_length = ∞
-            track_position = ∞
+            track_length = "∞"
+            track_position = "∞"
         else:
             track_length = datetime.timedelta(seconds = int(player.current.length / 1000))
             track_position = datetime.timedelta(seconds = int(player.position / 1000))
