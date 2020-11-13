@@ -150,14 +150,13 @@ class Music(commands.Cog):
                     track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
                     track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
                     await ctx.send(embed = track_embed)
-
-
-                if tracks[0].is_stream:
+                
+                
+                elif tracks[0].is_stream:
+                    track = Track(tracks[0].id, tracks[0].info, requester = ctx.author, length = " ∞ ")
+                    controller = self.get_controller(ctx)
+                    await controller.queue.put(track)
                     if player.is_playing:
-                        track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
-                        controller = self.get_controller(ctx)
-                        await controller.queue.put(track)
-
                         embed = discord.Embed(title = "Enqueued Stream:",
                                         description = f":play_pause: | **{str(track)}**",
                                         color = discord.Colour.dark_red()
@@ -295,8 +294,8 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         if player.current.is_stream:
-            track_length = "∞"
-            track_position = "∞"
+            track_length = "∞ "
+            track_position = " ∞"
         else:
             track_length = datetime.timedelta(seconds = int(player.current.length / 1000))
             track_position = datetime.timedelta(seconds = int(player.position / 1000))
@@ -340,6 +339,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
+
 
         tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
 
