@@ -312,8 +312,8 @@ class Music(commands.Cog):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = playlist.tracks
-        track = random.choice(songs)
-        track.requester = ctx.author
+        song = random.choice(songs)
+        track = Track(requester = ctx.author)
 
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -405,7 +405,7 @@ class Music(commands.Cog):
                 totald += song.length
         except AttributeError:
             totald = player.current.track_length
-            
+
         embed = discord.Embed(title=f"MayBot Queue:",
                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
                              colour = discord.Colour.dark_red())
