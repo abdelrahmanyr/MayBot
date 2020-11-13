@@ -154,7 +154,6 @@ class Music(commands.Cog):
 
                 if tracks[0].is_stream:
                     if player.is_playing:
-                        tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
                         track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track)
