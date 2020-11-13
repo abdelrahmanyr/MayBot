@@ -107,11 +107,12 @@ async def kill(ctx, *, member : discord.Member):
 
 @client.command(aliases = ["Avatar", "av", "Av","AV"])
 async def avatar(ctx, *, member : discord.Member = None):
-    embed = discord.Embed(colour = discord.Colour.dark_red()
-    )
     if member is None:
         member = ctx.message.author
 
+    embed = discord.Embed(description = f"**• Avatar link:** __[Link]({member.avatar_url})__",
+                          colour = discord.Colour.dark_red()
+                         )
     embed.set_author(name = member, icon_url = member.avatar_url)
     embed.set_image(url = member.avatar_url)
     embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
@@ -120,9 +121,11 @@ async def avatar(ctx, *, member : discord.Member = None):
 
 @client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon", "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
 async def icon(ctx):
-    embed = discord.Embed(colour = discord.Colour.dark_red()
-    )
     guild = ctx.guild
+
+    embed = discord.Embed(description = f"**• Icon link:** __[Link]({guild.icon_url})__",
+                          colour = discord.Colour.dark_red()
+                         )
     embed.set_author(name = guild.name, icon_url = guild.icon_url)
     embed.set_image(url = guild.icon_url)
     embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
