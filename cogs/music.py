@@ -136,7 +136,7 @@ class Music(commands.Cog):
                     tracks_p = tracks.tracks
                     playlist_duration = 0
                     for track_p in tracks_p:
-                        track = Track(track_p.id, track_p.info, requester = ctx.author)
+                        track_p = Track(track_p.id, track_p.info, requester = ctx.author)
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track_p)
                         playlist_duration += track_p.length
