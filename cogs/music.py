@@ -313,7 +313,7 @@ class Music(commands.Cog):
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = playlist.tracks
         song = random.choice(songs)
-        track = Track(requester = ctx.author)
+        track = Track(song.id, requester = ctx.author)
 
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
