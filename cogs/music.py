@@ -312,7 +312,9 @@ class Music(commands.Cog):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = playlist.tracks
-        track = Track(random.choice(songs).id, random.choice(songs).info, requester = ctx.author)
+        track = random.choice(songs)
+        track.requester = ctx.author
+
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -320,13 +322,10 @@ class Music(commands.Cog):
 
         if player.channel_id == ctx.author.voice.channel.id:
 
-
-            controller = self.get_controller(ctx)
-            await controller.queue.put(track)
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
             if player.is_playing:
-                embed = discord.Embed(title = "Queued:",
+                embed = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | **{str(track)}**",
                                 color = discord.Colour.dark_red()
                                 )
@@ -341,6 +340,8 @@ class Music(commands.Cog):
                 embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
             await ctx.send(embed = embed)
+            controller = self.get_controller(ctx)
+            await controller.queue.put(track)
 
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
@@ -394,17 +395,17 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         guild = ctx.guild
+
+        upcoming = list(itertools.islice(controller.queue._queue, 0, None))
+
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
         totald = player.current.length
         try:
             for song in upcoming:
                 totald += song.length
         except AttributeError:
             totald = player.current.track_length
-
-        upcoming = list(itertools.islice(controller.queue._queue, 0, None))
-
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
-
+            
         embed = discord.Embed(title=f"MayBot Queue:",
                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
                              colour = discord.Colour.dark_red())
