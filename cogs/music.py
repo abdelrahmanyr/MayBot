@@ -171,6 +171,29 @@ class Music(commands.Cog):
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
                     await ctx.send(embed = embed)
+
+                else:
+                    track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
+
+                    controller = self.get_controller(ctx)
+                    await controller.queue.put(track)
+
+                    if player.is_playing:
+                        embed = discord.Embed(title = "Enqueued:",
+                                        description = f":play_pause: | **{str(track)}**",
+                                        color = discord.Colour.dark_red()
+                                        )
+                        embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                        embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+
+                    if not player.is_playing:
+                        embed = discord.Embed(title = "Playing:",
+                                        description = f"**:play_pause: | {str(track)}**",
+                                        color = discord.Colour.dark_red()
+                                        )
+                        embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                        embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+                    await ctx.send(embed = embed)
                 
                 
             else:
