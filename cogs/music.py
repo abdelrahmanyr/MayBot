@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands, menus
+from discord.ext import commands
 from discord import utils
 import typing
 from typing import Union
@@ -56,37 +56,6 @@ class MusicController:
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
             await self.next.wait()
-
-class PaginatorSource(menus.ListPageSource):
-    """Player queue paginator class."""
-
-    def __init__(self, entries, *, per_page = 10):
-        super().__init__(entries, per_page = per_page)
-
-    async def format_page(self, menu: menus.Menu, page):
-        upcoming = list(itertools.islice(controller.queue._queue, 0, None))
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
-
-        embed = discord.Embed(title=f"MayBot Queue:",
-                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
-                             colour = discord.Colour.dark_red())
-        guild = ctx.guild
-        totald = player.current.length
-        try:
-            for song in upcoming:
-                totald += song.length
-        except AttributeError:
-            totald = player.current.track_length
-
-        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = True)
-        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**")
-        embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
-        return embed
-
-    def is_paginating(self):
-        # We always want to embed even on 1 page of results...
-        return True
 
 class Music(commands.Cog):
 
@@ -425,16 +394,33 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
 
+        upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
+
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
+
+
+        embed = discord.Embed(title=f"MayBot Queue:",
+                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
+                             colour = discord.Colour.dark_red())
 
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
 
-        entries = [song.title for song in controller.queue._queue]
-        pages = PaginatorSource(entries = entries)
-        paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
+        guild = ctx.guild
+        totald = player.current.length
+        try:
+            for song in upcoming:
+                totald += song.length
+        except AttributeError:
+            totald = player.current.track_length
 
-        await paginator.start(ctx)
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = True)
+        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**")
+        embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases = ["Shuffle", "mix", "Mix"])
     async def shuffle(self, ctx):
