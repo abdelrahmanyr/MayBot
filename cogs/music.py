@@ -154,7 +154,7 @@ class Music(commands.Cog):
                 
                 elif tracks[0].is_stream:
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
-                    track.length = " ∞ "
+                    track.length = 0
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     if player.is_playing:
