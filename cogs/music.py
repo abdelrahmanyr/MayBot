@@ -200,6 +200,33 @@ class Music(commands.Cog):
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
+    @commands.command(aliases = ["Soundcloud", "SoundCloud", "scd", "Scd", "SCD"])
+    async def soundcloud(self, ctx, *, query: str):
+        tracks = await self.bot.wavelink.get_tracks(f"scsearch:{query}")
+        track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
+
+        controller = self.get_controller(ctx)
+        await controller.queue.put(track)
+        if player.is_playing:
+            embed = discord.Embed(title = "Enqueued:",
+                                  description = f":play_pause: | **{str(track)}**",
+                                  color = discord.Colour.dark_red()
+                                 )
+            embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+            embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+
+        if not player.is_playing:
+            embed = discord.Embed(title = "Playing:",
+                                  description = f"**:play_pause: | {str(track)}**",
+                                  color = discord.Colour.dark_red()
+                                 )
+            embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+            embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+        await ctx.send(embed = embed)
+        
+        if not tracks:
+            return await ctx.send(f":grey_question: | No tracks found with this query.")
+
     @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
     async def search(self, ctx, *, query: str):
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
@@ -406,7 +433,10 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | Nothing is currently playing.")
 
             if player.is_playing:
-                await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
+                if player.current.is_stream:
+                    await ctx.send(f":no_entry_sign: | You can't seek in a live stream.")
+                else:
+                    await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
     @commands.command(aliases = ["Skip", "s", "S"])
     async def skip(self, ctx, number : int = 1):
