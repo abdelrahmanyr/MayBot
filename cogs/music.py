@@ -311,9 +311,9 @@ class Music(commands.Cog):
     async def queen(self, ctx):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
-        songs = playlist.tracks
+        songs = list(playlist.tracks)
         song = random.choice(songs)
-        track = Track(song.id, requester = ctx.author)
+        track = Track(song.id, song.info, requester = ctx.author)
 
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
