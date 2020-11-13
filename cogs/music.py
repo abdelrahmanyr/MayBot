@@ -390,8 +390,8 @@ class Music(commands.Cog):
             totald += song.length
 
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(milliseconds = int(player.current.length)))}]`", inline = True)
-        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(milliseconds = int(totald)))}]**")
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = True)
+        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**")
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
