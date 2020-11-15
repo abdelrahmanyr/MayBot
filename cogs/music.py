@@ -56,6 +56,7 @@ class MusicController:
             if self.loop_state == True:
                 song = self.previous[0]
             else:
+                self.previous.pop(0)
                 song = await self.queue.get()
 
             await player.play(song)
@@ -376,14 +377,17 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Loop"])
     async def loop(self,ctx):
         controller = self.get_controller(ctx)
-        controller.loop_state = True
-        await ctx.send(f"looped")
-
-    @commands.command()
-    async def state(self, ctx):
-        controller = self.get_controller(ctx)
-        player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f"{controller.loop_state} \n {player.current}")
+        if player.channel_id == ctx.author.voice.channel.id:
+            if player.current:
+                controller.loop_state = True
+                if controller.loop_state = False
+            else:
+                await ctx.send(":question: | You have to play a track first.")
+        if controller.loop_state = True:
+            message == ":repeat_one: | Track looping has been **enabled**."
+        if controller.loop_state = False:
+            message == ":repeat_one: | Track looping has been **disabled**."
+        await ctx.send(message)
 
 
     @commands.command(aliases = ["Lyrics"])
