@@ -33,8 +33,10 @@ class MusicController:
 
         self.next = asyncio.Event()
         self.queue = asyncio.Queue()
+        self.previous = []
 
         self.volume = 100
+        self.loop_state = False
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
@@ -51,8 +53,15 @@ class MusicController:
 
             self.next.clear()
 
+
             song = await self.queue.get()
-            await player.play(song)
+            if self.loop_state == True:
+                self.previous.append(song)
+                same = self.previous[0]
+                await player.play(same)
+            else:
+                await player.play(song)
+            
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
 
             await self.next.wait()
@@ -365,6 +374,12 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
+    @commands.command(aliases = ["Loop"])
+    async def loop(self,ctx):
+        controller = self.get_controller(ctx)
+        await controller.loop_state == True
+        await ctx.send(f"Looped")
+
     @commands.command(aliases = ["Lyrics"])
     async def lyrics(self, ctx, *, query : str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -399,12 +414,15 @@ class Music(commands.Cog):
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
         tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
-        totald = player.current.length
-        try:
-            for song in upcoming:
-                totald += song.length
-        except AttributeError:
-            totald = player.current.track_length
+        if not player.current:
+            await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
+        else:
+            totald = player.current.length
+            try:
+                for song in upcoming:
+                    totald += song.length
+            except AttributeError:
+                totald = player.current.track_length
 
         embed = discord.Embed(title=f"MayBot Queue:",
                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
@@ -415,8 +433,8 @@ class Music(commands.Cog):
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
-        if not player.current:
-            await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
+
+
     @commands.command(aliases = ["Shuffle", "mix", "Mix"])
     async def shuffle(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
