@@ -377,7 +377,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Loop"])
     async def loop(self,ctx):
         controller = self.get_controller(ctx)
-        await controller.loop_state == True
+        controller.loop_state == True
         await ctx.send(f"Looped")
 
     @commands.command(aliases = ["Lyrics"])
