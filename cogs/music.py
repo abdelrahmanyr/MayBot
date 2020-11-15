@@ -210,7 +210,7 @@ class Music(commands.Cog):
             
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
-                await controller.previous.append(track)
+                controller.previous.append(track)
 
                 if player.is_playing:
                     embed = discord.Embed(title = "Enqueued:",
