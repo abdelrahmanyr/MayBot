@@ -56,7 +56,7 @@ class MusicController:
 
             if self.loop_state == True:
                 print(self.queue._queue)
-                track = self.queue._queue[0]
+                track = player.current
                 self.previous.append(track)
                 song = self.previous[0]
             else:
