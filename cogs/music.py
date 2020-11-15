@@ -53,9 +53,7 @@ class MusicController:
 
             self.next.clear()
 
-            track = player.current
             if self.loop_state == True:
-                self.previous.append(track)
                 song = self.previous[0]
             else:
                 song = await self.queue.get()
@@ -212,6 +210,7 @@ class Music(commands.Cog):
             
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
+                await controller.previous.append(track)
 
                 if player.is_playing:
                     embed = discord.Embed(title = "Enqueued:",
