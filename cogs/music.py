@@ -58,7 +58,6 @@ class MusicController:
                 self.previous.append(track)
                 song = self.previous[0]
             else:
-                self.previous.pop(0)
                 song = await self.queue.get()
 
             await player.play(song)
