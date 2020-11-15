@@ -377,6 +377,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Loop", "repeat", "Repeat"])
     async def loop(self,ctx):
         controller = self.get_controller(ctx)
+        player = self.bot.wavelink.get_player(ctx.guild.id)
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
                 if controller.loop_state == False:
@@ -387,9 +388,9 @@ class Music(commands.Cog):
             else:
                 await ctx.send(":question: | You have to play a track first.")
         if controller.loop_state == True:
-            message == ":repeat_one: | Track looping has been **enabled**."
+            message = ":repeat_one: | Track looping has been **enabled**."
         if controller.loop_state == False:
-            message == ":repeat_one: | Track looping has been **disabled**."
+            message = ":repeat_one: | Track looping has been **disabled**."
         await ctx.send(message)
 
 
