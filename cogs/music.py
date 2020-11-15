@@ -374,7 +374,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["Loop"])
+    @commands.command(aliases = ["Loop", "repeat", "Repeat"])
     async def loop(self,ctx):
         controller = self.get_controller(ctx)
         if player.channel_id == ctx.author.voice.channel.id:

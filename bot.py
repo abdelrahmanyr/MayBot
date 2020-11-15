@@ -55,8 +55,8 @@ async def aliases(ctx):
         colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":tada: | Fun Commands", value = " • **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`. \n • **Repeat:** `say`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **SoundCloud:** `scd`. \n • **Search:** `sc`. \n • **NowPlaying:** `now`, `np`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Shuffle:** `mix`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = " • **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **SoundCloud:** `scd`. \n • **Search:** `sc`. \n • **NowPlaying:** `now`, `np`. \n • **Repeat:** `loop`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Shuffle:** `mix`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed")
 
     await ctx.send(embed = embed)
@@ -146,7 +146,7 @@ async def howmuch(ctx, adjective, *, member : discord.Member = None):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Say", "repeat", "Repeat"])
+@client.command(aliases = ["Say"])
 async def say(ctx, *, message = None):
     if message is None:
         await ctx.send(f":question: | I have nothing to say")
