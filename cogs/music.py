@@ -36,7 +36,7 @@ class MusicController:
         self.previous = []
 
         self.volume = 100
-        self.loop_state = None
+        self.loop_state = False
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
@@ -377,7 +377,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Loop"])
     async def loop(self,ctx):
         controller = self.get_controller(ctx)
-        return controller.loop_state == True
+        controller.loop_state = True
         await ctx.send(f"{controller.loop_state}")
 
     @commands.command(aliases = ["Lyrics"])
