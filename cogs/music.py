@@ -379,16 +379,16 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
-                if controller.loop_state = False:
+                if controller.loop_state == False:
                     controller.loop_state = True
-                elif controller.loop_state = True:
+                elif controller.loop_state == True:
                     controller.loop_state = False
 
             else:
                 await ctx.send(":question: | You have to play a track first.")
-        if controller.loop_state = True:
+        if controller.loop_state == True:
             message == ":repeat_one: | Track looping has been **enabled**."
-        if controller.loop_state = False:
+        if controller.loop_state == False:
             message == ":repeat_one: | Track looping has been **disabled**."
         await ctx.send(message)
 
