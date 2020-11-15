@@ -36,7 +36,7 @@ class MusicController:
         self.previous = []
 
         self.volume = 100
-        self.loop_state = False
+        self.loop_state == False
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
