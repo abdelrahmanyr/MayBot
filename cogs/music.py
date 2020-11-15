@@ -384,7 +384,7 @@ class Music(commands.Cog):
     async def state(self, ctx):
         controller = self.get_controller(ctx)
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(controller.loop_state + player.current)
+        await ctx.send(f"{controller.loop_state} \n {player.current}")
 
 
     @commands.command(aliases = ["Lyrics"])
