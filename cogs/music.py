@@ -54,13 +54,20 @@ class MusicController:
             self.next.clear()
 
 
-            if self.loop_state == True:
+            """if self.loop_state == True:
                 print(self.queue._queue)
                 track = player.current
                 self.previous.append(track)
                 song = self.previous[0]
+            else:"""
+
+            song = await self.queue.get()
+            self.previous.append(song)
+            if self.loop_state == True:
+                song = self.previous[0]
             else:
-                song = await self.queue.get()
+                self.previous.pop(0)
+                
             await player.play(song)
             
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
