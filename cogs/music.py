@@ -57,8 +57,10 @@ class MusicController:
                 song = self.previous[0]
             else:
                 song = await self.queue.get()
-                if self.previous[0]:
+                try:
                     self.previous.pop(0)
+                except IndexError:
+                    pass
 
             await player.play(song)
             
