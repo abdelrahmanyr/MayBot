@@ -211,7 +211,7 @@ class Music(commands.Cog):
             
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
-                controller.previous.append(track)
+                
 
                 if player.is_playing:
                     embed = discord.Embed(title = "Enqueued:",
@@ -380,18 +380,19 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
+                controller.previous.append(player.current)
                 if controller.loop_state == False:
                     controller.loop_state = True
                 else:
                     controller.loop_state = False
-
+                if controller.loop_state == True:
+                    message = ":repeat_one: | Track looping has been **enabled**."
+                elif controller.loop_state == False:
+                    message = ":repeat_one: | Track looping has been **disabled**."
+                await ctx.send(message)
             else:
                 await ctx.send(":question: | You have to play a track first.")
-        if controller.loop_state == True:
-            message = ":repeat_one: | Track looping has been **enabled**."
-        if controller.loop_state == False:
-            message = ":repeat_one: | Track looping has been **disabled**."
-        await ctx.send(message)
+
 
 
     @commands.command(aliases = ["Lyrics"])
