@@ -40,7 +40,7 @@ async def help(ctx):
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `soundcloud`, `search`, `np`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 

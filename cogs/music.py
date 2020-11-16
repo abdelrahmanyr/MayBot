@@ -370,7 +370,7 @@ class Music(commands.Cog):
             track_position = datetime.timedelta(seconds = int(player.position / 1000))
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{track_position} / {track_length}]` \n :information_source: | {player.current.requester.mention}",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{track_position} / {track_length}]` \n :information_source: | {player.current.requester.mention} \n :repeat_one: | {controller.loop_state}",
                               color = discord.Colour.dark_red()
                               )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -395,8 +395,6 @@ class Music(commands.Cog):
                 await ctx.send(message)
             else:
                 await ctx.send(":question: | You have to play a track first.")
-
-
 
     @commands.command(aliases = ["Lyrics"])
     async def lyrics(self, ctx, *, query : str = None):
