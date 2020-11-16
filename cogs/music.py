@@ -56,8 +56,8 @@ class MusicController:
             if self.loop_state == True:
                 song = self.previous[0]
             else:
-                self.previous.pop(0)
                 song = await self.queue.get()
+                self.previous.pop(0)
 
             await player.play(song)
             
@@ -382,7 +382,7 @@ class Music(commands.Cog):
             if player.current:
                 if controller.loop_state == False:
                     controller.loop_state = True
-                elif controller.loop_state == True:
+                else:
                     controller.loop_state = False
 
             else:
