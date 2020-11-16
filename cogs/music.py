@@ -358,7 +358,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
     async def nowplaying(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-
+        controller = self.get_controller(ctx)
         if not player.current:
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
