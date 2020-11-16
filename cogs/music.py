@@ -380,9 +380,11 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
-                controller.previous.append(player.current)
                 try:
                     controller.previous.pop(0)
+                except IndexError:
+                    pass
+                controller.previous.append(player.current)
                 if controller.loop_state == False:
                     controller.loop_state = True
                 else:
