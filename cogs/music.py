@@ -57,10 +57,7 @@ class MusicController:
                 song = self.previous[0]
             else:
                 song = await self.queue.get()
-                try:
-                    self.previous.pop(0)
-                except IndexError:
-                    pass
+
 
             await player.play(song)
             
@@ -384,6 +381,8 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
                 controller.previous.append(player.current)
+                try:
+                    controller.previous.pop(0)
                 if controller.loop_state == False:
                     controller.loop_state = True
                 else:
