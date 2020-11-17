@@ -569,6 +569,7 @@ class Music(commands.Cog):
     async def clearqueue(self, ctx):
         controller = self.get_controller(ctx)
         controller.queue._queue.clear()
+        await ctx.send("cleared")
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
