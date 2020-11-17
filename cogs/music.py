@@ -440,6 +440,7 @@ class Music(commands.Cog):
                 controller.previous.append(player.current)
                 if controller.track_loop == True:
                     controller.track_loop = False
+                    controller.queue_loop = False
                     message = ":arrow_right: | Looping has been **disabled**."
                 elif controller.queue_loop == False and controller.track_loop == False:
                     controller.queue_loop = True
