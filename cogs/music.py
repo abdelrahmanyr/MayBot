@@ -438,13 +438,15 @@ class Music(commands.Cog):
                 except IndexError:
                     pass
                 controller.previous.append(player.current)
-                if controller.track_loop == True:
-                    controller.queue_loop = False
-                    controller.track_loop = False
-                    message = ":arrow_right: | Looping has been **disabled**."
-                elif controller.queue_loop == False and controller.track_loop == False:
-                    controller.queue_loop = True
-                    message = ":repeat: | Queue looping has been **enabled**."
+
+                if controller.queue_loop == False and controller.track_loop == False:
+                    if controller.track_loop != True:
+                        controller.queue_loop = True
+                        message = ":repeat: | Queue looping has been **enabled**."
+                    elif controller.track_loop == True:
+                        controller.queue_loop = False
+                        controller.track_loop = False
+                        message = ":arrow_right: | Looping has been **disabled**."
                 elif controller.queue_loop == True:
                     controller.queue_loop = False
                     controller.track_loop == True
