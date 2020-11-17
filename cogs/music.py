@@ -36,8 +36,7 @@ class MusicController:
         self.previous = []
 
         self.volume = 100
-        self.track_loop = False
-        self.queue_loop = False
+        self.loop_state = "0"
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
@@ -54,10 +53,9 @@ class MusicController:
 
             self.next.clear()
 
-            if self.track_loop == True:
+            if self.loop_state == "1":
                 song = self.previous[0]
-            elif self.queue_loop == True:
-                self.track_loop = False
+            elif self.loop_state == "2":
                 await self.queue.put(self.previous[0])
                 song = await self.queue.get()
             else:
@@ -422,7 +420,7 @@ class Music(commands.Cog):
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.add_field(name = "Time Left", value = f"`[{track_left}]`")
-        embed.add_field(name = "Loop State", value = f"{controller.track_loop}")
+        embed.add_field(name = "Loop State", value = f"{controller.loop_state}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
@@ -439,18 +437,16 @@ class Music(commands.Cog):
                     pass
                 controller.previous.append(player.current)
 
-                if controller.queue_loop == True:
-                    controller.queue_loop = False
-                    controller.track_loop == True
+
+                if controller.loop_state == "0":
+                    controller.loop_state = "2"
+                    message = ":repeat: | Queue looping has been **enabled**.
+                elif controller.loop_state == "2":
+                    controller.loop_state = "1"
                     message = ":repeat_one: | Track looping has been **enabled**."
-                elif controller.queue_loop == False:
-                    if controller.track_loop != True:
-                        controller.queue_loop = True
-                        message = ":repeat: | Queue looping has been **enabled**."
-                    elif controller.track_loop == True:
-                        controller.queue_loop = False
-                        controller.track_loop = False
-                        message = ":arrow_right: | Looping has been **disabled**."
+                elif controller.loop_state == "1":
+                    controller.loop_state = "0"
+                    message = ":arrow_right: | Looping has been **disabled**."
 
                 await ctx.send(message)
             else:
