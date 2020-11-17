@@ -56,9 +56,9 @@ class MusicController:
 
             if self.track_loop == True:
                 song = self.previous[0]
-            elif queue_loop == True:
+            elif self.queue_loop == True:
                 self.track_loop = False
-                await self.queue.put(song = self.previous[0])
+                await self.queue.put(self.previous[0])
                 song = await self.queue.get()
             else:
                 song = await self.queue.get()
