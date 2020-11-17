@@ -360,8 +360,8 @@ class Music(commands.Cog):
             return await ctx.send(":question: | Nothing is currently playing, I guess you have to play a track first.")
 
         if player.current.is_stream:
-            track_length = "∞ "
-            track_position = " ∞"
+            track_length = "0:00:00"
+            track_position = "0:00:00"
             track_left = " ∞ "
             player_tracker = "🔴▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔴"
         else:
@@ -415,9 +415,9 @@ class Music(commands.Cog):
                               description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
+        embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.add_field(name = "Loop State", value = f"{controller.loop_state}")
         embed.add_field(name = "Time Left", value = f"`[{track_left}]`")
-        embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
