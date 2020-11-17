@@ -370,7 +370,7 @@ class Music(commands.Cog):
             time_left = int(player.current.length) - int(player.position)
             track_left = datetime.timedelta(seconds = int(time_left / 1000))
             ppp = player.position / player.current.length * 100
-            if ppp == 0:
+            if ppp >= 0:
                 player_tracker = "🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #1
             if ppp >= 5:
                 player_tracker = "▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #2
@@ -412,7 +412,7 @@ class Music(commands.Cog):
                 player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘" #20
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Loop State", value = f"{controller.loop_state}")
