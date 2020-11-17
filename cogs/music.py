@@ -447,7 +447,7 @@ class Music(commands.Cog):
                     message = ":repeat_one: | Track looping has been **enabled**."
                 if controller.track_loop == True:
                     controller.track_loop = False
-                elif controller.track_loop == False:
+                elif controller.track_loop == False and controller.queue_loop = False:
                     message = ":arrow_right: | Looping has been **disabled**."
                 await ctx.send(message)
             else:
