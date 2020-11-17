@@ -439,8 +439,8 @@ class Music(commands.Cog):
                     pass
                 controller.previous.append(player.current)
                 if controller.track_loop == True:
-                    controller.track_loop = False
                     controller.queue_loop = False
+                    controller.track_loop = False
                     message = ":arrow_right: | Looping has been **disabled**."
                 elif controller.queue_loop == False and controller.track_loop == False:
                     controller.queue_loop = True
@@ -449,7 +449,6 @@ class Music(commands.Cog):
                     controller.queue_loop = False
                     controller.track_loop == True
                     message = ":repeat_one: | Track looping has been **enabled**."
-
                 await ctx.send(message)
             else:
                 await ctx.send(":question: | You have to play a track first.")
