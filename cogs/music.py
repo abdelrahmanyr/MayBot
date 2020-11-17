@@ -440,7 +440,7 @@ class Music(commands.Cog):
 
                 if controller.loop_state == "0":
                     controller.loop_state = "2"
-                    message = ":repeat: | Queue looping has been **enabled**.
+                    message = ":repeat: | Queue looping has been **enabled**."
                 elif controller.loop_state == "2":
                     controller.loop_state = "1"
                     message = ":repeat_one: | Track looping has been **enabled**."
