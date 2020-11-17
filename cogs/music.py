@@ -565,6 +565,11 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | There is no current track to skip.")
             await player.stop()
 
+    @commands.command(aliases = ["cq"])
+    async def clearqueue(self, ctx):
+        controller = self.get_controller(ctx)
+        controller.queue._queue.clear()
+
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
