@@ -441,11 +441,11 @@ class Music(commands.Cog):
                 if controller.queue_loop == False:
                     controller.queue_loop = True
                     message = ":repeat: | Queue looping has been **enabled**."
-                if controller.queue_loop == True:
+                elif controller.queue_loop == True:
                     controller.queue_loop = False
                     controller.track_loop == True
                     message = ":repeat_one: | Track looping has been **enabled**."
-                if controller.track_loop == True:
+                elif controller.track_loop == True:
                     controller.track_loop = False
                 elif controller.track_loop == False and controller.queue_loop == False:
                     message = ":arrow_right: | Looping has been **disabled**."
