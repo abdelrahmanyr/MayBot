@@ -414,13 +414,18 @@ class Music(commands.Cog):
             if ppp == 100:
                 player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘" #20
 
+        if controller.loop_state == "1":
+            loop_state = "Enabled"
+        else:
+            loop_state = "Disabled"
+
         embed = discord.Embed(title = "Now Playing:",
                               description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.add_field(name = "Time Left", value = f"`[{track_left}]`")
-        embed.add_field(name = "Loop State", value = f"{controller.loop_state}")
+        embed.add_field(name = "Loop State", value = f"{loop_state}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
@@ -495,13 +500,20 @@ class Music(commands.Cog):
                     totald += song.length
             except AttributeError:
                 totald = player.current.track_length
+            if controller.loop_state == "0":
+                loop_state = "Disabled"
+            elif controller.loop_state == "1":
+                loop_state = "Track Looping"
+            elif controller.loop_state == "2":
+                loop_state = "Queue Looping"
 
         embed = discord.Embed(title=f"MayBot Queue:",
                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
                              colour = discord.Colour.dark_red())
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = True)
-        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**")
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = False)
+        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**", inline = True)
+        embed.add_field(name = f"Loop State", value = loop_state)
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
         await ctx.send(embed=embed)
@@ -567,8 +579,10 @@ class Music(commands.Cog):
 
     @commands.command(aliases = ["cq"])
     async def clearqueue(self, ctx):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         controller.queue._queue.clear()
+        await player.stop()
         await ctx.send("cleared")
 
     @commands.command(aliases = ["Pause"])
