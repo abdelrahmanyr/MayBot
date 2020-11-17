@@ -322,7 +322,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Queen"])
     async def queen(self, ctx):
 
-        playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=gphz_5PEHsk&list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
+        playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/playlist?list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
         songs = list(playlist.tracks)
         song = random.choice(songs)
         track = Track(song.id, song.info, requester = ctx.author)
@@ -431,7 +431,7 @@ class Music(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ["Loop", "repeat", "Repeat"])
-    async def loop(self,ctx):
+    async def loop(self,ctx, state : str = None):
         controller = self.get_controller(ctx)
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if player.channel_id == ctx.author.voice.channel.id:
@@ -443,13 +443,13 @@ class Music(commands.Cog):
                 controller.previous.append(player.current)
 
 
-                if controller.loop_state == "0":
+                if controller.loop_state == "0" or state in ["queue", "Queue", "all", "All", "on", "On"]:
                     controller.loop_state = "2"
                     message = ":repeat: | Queue looping has been **enabled**."
-                elif controller.loop_state == "2":
+                elif controller.loop_state == "2" or state in ["track", "Track", "one", "One", "current", "Current"]:
                     controller.loop_state = "1"
                     message = ":repeat_one: | Track looping has been **enabled**."
-                elif controller.loop_state == "1":
+                elif controller.loop_state == "1" or state in ["off", "Off", "disable", "Disable", "stop", "Stop"]:
                     controller.loop_state = "0"
                     message = ":arrow_right: | Looping has been **disabled**."
 
