@@ -292,10 +292,8 @@ class Music(commands.Cog):
 
             await ctx.send(embed = embed)
 
-            def check(user):
-                return user == ctx.message.author 
 
-            msg = await self.bot.wait_for('message', timeout = 20.0, check = check)
+            msg = await self.bot.wait_for('message', timeout = 20.0)
         
 
             controller = self.get_controller(ctx)
