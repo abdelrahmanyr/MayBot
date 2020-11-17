@@ -362,14 +362,62 @@ class Music(commands.Cog):
         if player.current.is_stream:
             track_length = "∞ "
             track_position = " ∞"
+            track_left = " ∞ "
+            player_tracker = "🔴▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔴"
         else:
             track_length = datetime.timedelta(seconds = int(player.current.length / 1000))
             track_position = datetime.timedelta(seconds = int(player.position / 1000))
+            time_left = int(player.current.length) - int(player.position)
+            track_left = datetime.timedelta(seconds = int(time_left / 1000))
+            ppp = player.position / player.current.length * 100
+            if ppp == 0:
+                player_tracker = "🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #1
+            if ppp >= 5:
+                player_tracker = "▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #2
+            if ppp >= 10:
+                player_tracker = "▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #3
+            if ppp >= 15:
+                player_tracker = "▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #4
+            if ppp >= 20:
+                player_tracker = "▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #5
+            if ppp >= 25:
+                player_tracker = "▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #6
+            if ppp >= 30:
+                player_tracker = "▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬" #7
+            if ppp >= 35:
+                player_tracker = "▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬" #8
+            if ppp >= 40:
+                player_tracker = "▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬" #9
+            if ppp >= 45:
+                player_tracker = "▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬" #10
+            if ppp >= 50:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬" #11
+            if ppp >= 55:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬" #12
+            if ppp >= 60:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬" #13
+            if ppp >= 65:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬" #14
+            if ppp >= 70:
+                player tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬" #15
+            if ppp >= 75:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬" #16
+            if ppp >= 80:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬" #17
+            if ppp >= 85:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬" #18
+            if ppp >= 90:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬" #19
+            if ppp = 100:
+                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘" #20
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n :left_right_arrow: | `[{track_position} / {track_length}]` \n :information_source: | {player.current.requester.mention} \n :repeat_one: | {controller.loop_state}",
+                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}",
                               color = discord.Colour.dark_red()
                               )
+        embed.add_field(name = "Loop State", value = f"{controller.loop_state}")
+        embed.add_field(name = "Time Left", value = f"`[{track_left}]`")
+        embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
