@@ -82,8 +82,8 @@ async def shorten(ctx, url : str = None):
                           colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = "Why do I have to pass through an AD page ?", value = "The bot services is completely free and it's the only way to support the developer \n Note: if you didn't shorten a link you will be redirected to some cool song, have fun!")
-    embed.add_field(name = "What do I benefit from using the command ?", value = "Having a short url instead of a long messy one.")
+    embed.add_field(name = "Why do I have to pass through an advertisement page ?", value = "The bot services is completely free and it's the only way to support the developer \n__Note:__ if you didn't shorten a link you will be redirected to some cool song, have fun!")
+    embed.add_field(name = "What do I benefit from using this command ?", value = "Having a short url instead of a long messy one.")
     embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
