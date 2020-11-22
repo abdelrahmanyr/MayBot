@@ -13,7 +13,9 @@ import itertools
 import random
 import ksoftapi
 import pprint
+from shortest import Shortest
 
+st = "67587c0f933aa8ab2e59377a14d0d315"
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
 class Track(wavelink.Track):
@@ -421,7 +423,7 @@ class Music(commands.Cog):
             loop_state = "Disabled"
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({player.current.uri})**__ \n \n [{track_position} {player_tracker} {track_length}]",
+                              description = f":abc: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n \n [{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
