@@ -423,7 +423,7 @@ class Music(commands.Cog):
             loop_state = "Disabled"
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":abc: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n \n [{track_position} {player_tracker} {track_length}]",
+                              description = f":play_pause: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n \n [{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
