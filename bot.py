@@ -80,7 +80,10 @@ async def shorten(ctx, url : str = None):
     embed.add_field(name = "Why do I have to pass through an AD page ?", value = "The bot services is completely free and it's the only way to support the developer \n Note: if you didn't shorten a link you will be redirected to some cool song, have fun!")
     embed.add_field(name = "What do I benefit from using the command ?", value = "Having a short url instead of a long messy one.")
     embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
-    await ctx.send(embed = embed)
+    try :
+        await ctx.send(embed = embed)
+    except ValueError:
+        raise await ctx.send(":question: | Pass a valid url.")
 
 
 #fun commands
