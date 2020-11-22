@@ -64,11 +64,10 @@ class Recommendations(commands.Cog):
             items = results['albums']['items']
             album = items[0]
             album_name = album['name']
-            Shortest.get(album_link = album['external_urls']['spotify'], st)
+            album_link = Shortest.get(album['external_urls']['spotify'], st)
             album_artist = album['artists'][0]['name']
             album_date = album['release_date']
             album_tracks_number = album['total_tracks']
-            pprint.pprint(album)
             
             album_image = album['images'][0]['url']
 
