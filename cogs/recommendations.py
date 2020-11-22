@@ -7,6 +7,9 @@ import itertools
 import pprint
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from shortest import Shortest
+
+st = "67587c0f933aa8ab2e59377a14d0d315"
 
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id = "4d35b62383e543679384be5c9ff3fd6a",
                                                            client_secret = "100c64fa520d4f98969c5b1bfdd92e46",))
@@ -28,7 +31,7 @@ class Recommendations(commands.Cog):
             artist_genres = artist['genres']
             artist_genre = " - ".join(f"{genre.capitalize()}" for genre in artist_genres)
             artist_followers = artist['followers']['total']
-            artist_link = artist['external_urls']['spotify']
+            artist_link = Shortest.get(artist['external_urls']['spotify'], st)
 
             top_tracks_response = sp.artist_top_tracks(artist['id'])['tracks']
             top_tracks = list(itertools.islice(top_tracks_response, 0, None))
@@ -61,7 +64,7 @@ class Recommendations(commands.Cog):
             items = results['albums']['items']
             album = items[0]
             album_name = album['name']
-            album_link = album['external_urls']['spotify']
+            Shortest.get(album_link = album['external_urls']['spotify'], st)
             album_artist = album['artists'][0]['name']
             album_date = album['release_date']
             album_tracks_number = album['total_tracks']
@@ -91,7 +94,7 @@ class Recommendations(commands.Cog):
             items = results['tracks']['items']
             track = items[0]
             track_name = track['name']
-            track_url = track['external_urls']['spotify']
+            track_url = Shortest.get(track['external_urls']['spotify'], st)
             track_album = track['album']['name']
             track_artist = track['album']['artists'][0]['name']
 

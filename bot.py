@@ -5,6 +5,9 @@ import ksoftapi
 from discord import Member
 from discord.ext import commands
 from discord.ext import tasks
+from shortest import Shortest
+
+st = "67587c0f933aa8ab2e59377a14d0d315"
 
 intents = discord.Intents.default()
 intents.members = True
@@ -37,7 +40,7 @@ async def help(ctx):
         colour = discord.Colour.dark_red()
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
+    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`, `shorten`.", inline = False)
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
@@ -64,6 +67,20 @@ async def aliases(ctx):
 @client.command(aliases = ["Ping"])
 async def ping(ctx):
     await ctx.send(f":question: | __**Picking speed ?!**__\n:gear: | {round(client.latency * 1000)} ms.")
+
+@client.command(aliases = ["Shorten", "short", "Short"])
+async def shorten(ctx, url : str = None):
+    if url is None:
+        url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
+    embed = discord.Embed(title = "Shortened Link",
+                          description = f"{Shortest.get(url, st)}",
+                          colour = discord.Colour.dark_red()
+                         )
+    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
+    embed.add_field(name = "What do I benefit from using the command ?", value = "Having a short url instead of a long messy one.")
+    embed.add_field(name = "Why do I have to pass through an AD page ?", value = "The bot services is completely free and it's the only way to support the developer \n Note: if you didn't shorten a link you will be redirected to some cool song, have fun!")
+    embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 
 #fun commands
@@ -110,7 +127,7 @@ async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
 
-    embed = discord.Embed(description = f"**• Avatar link:** __[Link]({member.avatar_url})__",
+    embed = discord.Embed(description = f"**• Avatar link:** __[Link]({Shortest.get(member.avatar_url, st)})__",
                           colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = member, icon_url = member.avatar_url)
@@ -123,7 +140,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 async def icon(ctx):
     guild = ctx.guild
 
-    embed = discord.Embed(description = f"**• Icon link:** __[Link]({guild.icon_url})__",
+    embed = discord.Embed(description = f"**• Icon link:** __[Link]({Shortest.get(guild.icon_url, st)})__",
                           colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = guild.name, icon_url = guild.icon_url)
@@ -158,7 +175,7 @@ async def say(ctx, *, message = None):
 async def meme(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     meme = await kclient.images.random_meme()
-    embed = discord.Embed(description = f"**[{meme.title}]({meme.source})**",
+    embed = discord.Embed(description = f"**[{meme.title}]({Shortest.get(meme.source, st)})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -170,7 +187,7 @@ async def meme(ctx):
 async def cute(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     cute = await kclient.images.random_aww()
-    embed = discord.Embed(description = f"**[{cute.title}]({cute.source})**",
+    embed = discord.Embed(description = f"**[{cute.title}]({Shortest.get(cute.source, st)})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
