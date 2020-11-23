@@ -24,8 +24,9 @@ async def on_ready():
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
     client.load_extension("cogs.recommendations")
+    print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
-        print(f"Joined servers {len(client.guilds)}: \n{client.guilds.index(server) + 1}{server.name} - {server.owner}")
+        print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner}")
 
 
 
@@ -131,7 +132,7 @@ async def kill(ctx, *, member : discord.Member):
 async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
-    url = await member.avatar_url.read()
+    url = str(member.avatar_url)
     short = Shortest.get(url, st)
     embed = discord.Embed(description = f"**• Avatar link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
