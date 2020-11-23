@@ -580,7 +580,7 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | There is no current track to skip.")
             await player.stop()
 
-    @commands.command(aliases = ["cq"])
+    @commands.command(aliases = ["Clearqueue", "ClearQueue", "cq", "Cq", "CQ"])
     async def clearqueue(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -600,10 +600,31 @@ class Music(commands.Cog):
             if not controller.queue._queue:
                 await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
             else:
-                value = controller.queue._queue[number - 1]
-                await ctx.send(f":track_next: | Track **{value.title}** has been removed")
-                controller.queue._queue.remove(value)
+                if number == 0:
+                    await player.stop()
+                else:
+                    value = controller.queue._queue[number - 1]
+                    await ctx.send(f":track_next: | Track **{value.title}** has been removed")
+                    controller.queue._queue.remove(value)
             
+    @commands.command(aliases = ["Skipto"])
+    async def skipto(self, ctx, number : int):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+        if player.channel_id == ctx.author.voice.channel.id:
+            if not controller.queue._queue:
+                await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
+            else:
+                number = number - 1
+                skipped = 0
+                while skipped < number:
+                    value = controller.queue._queue[skipped]
+                    controller.queue._queue.remove(value)
+                    skipped += 1
+                await player.stop()
+                await ctx.send("done")
+
+
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
