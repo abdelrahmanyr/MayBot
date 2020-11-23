@@ -53,6 +53,8 @@ class Recommendations(commands.Cog):
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
+            if not items:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
     @commands.command(aliases = ["Album"])
     async def album(self, ctx, *, album = None):
@@ -67,8 +69,7 @@ class Recommendations(commands.Cog):
             album_link = Shortest.get(album['external_urls']['spotify'], st)
             album_artist = album['artists'][0]['name']
             album_date = album['release_date']
-            album_tracks_number = album['total_tracks']
-            
+            album_tracks_number = album['total_tracks']            
             album_image = album['images'][0]['url']
 
             album_tracks = sp.album_tracks(album['id'])['items']
@@ -82,6 +83,9 @@ class Recommendations(commands.Cog):
             embed.add_field(name = f"Tracks", value = tracks)
             embed.set_image(url = album_image)
             await ctx.send(embed = embed)
+
+            if not items:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
     @commands.command(aliases = ["Track"])
     async def track(self, ctx, *, track = None):
@@ -112,7 +116,8 @@ class Recommendations(commands.Cog):
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
-
+            if not items:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
 def setup(client):
     client.add_cog(Recommendations(client))

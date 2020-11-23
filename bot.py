@@ -40,10 +40,11 @@ async def help(ctx):
         colour = discord.Colour.dark_red()
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`, `shorten`.", inline = False)
+    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
+    embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`")
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`queen`, `connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `skip`, `stop`, `disconnect`. \n`album`, `artist`, `playlist`,`track`", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
@@ -58,8 +59,8 @@ async def aliases(ctx):
         colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":tada: | Fun Commands", value = " • **8Ball:** `8b`. \n • **Avatar:** `av`. \n • **ServerIcon:** `serveravatar`, `icon`. \n • **HowMuch:** `how`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n • **Play:** `p`. \n • **SoundCloud:** `scd`. \n • **Search:** `sc`. \n • **NowPlaying:** `now`, `np`. \n • **Repeat:** `loop`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Shuffle:** `mix`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n• **Avatar:** `av`. \n• **ServerIcon:** `serveravatar`, `icon`. \n• **HowMuch:** `how`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n• **Play:** `p`. \n• **SoundCloud:** `scd`. \n• **Search:** `sc`. \n• **NowPlaying:** `now`, `np`. \n • **Repeat:** `loop`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Shuffle:** `mix`. \n • **Skip:** `s`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed")
 
     await ctx.send(embed = embed)
@@ -146,7 +147,8 @@ async def avatar(ctx, *, member : discord.Member = None):
 @client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon", "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
 async def icon(ctx):
     guild = ctx.guild
-    short = Shortest.get(guild.icon_url, st)
+    url = str(guild.icon_url)
+    short = Shortest.get(url, st)
     embed = discord.Embed(description = f"**• Icon link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
