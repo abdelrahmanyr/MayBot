@@ -600,7 +600,8 @@ class Music(commands.Cog):
             if not controller.queue._queue:
                 await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
             else:
-                controller.queue._queue.pop(number - 1)
+                value = controller.queue._queue[number - 1]
+                controller.queue._queue.remove(value)
             
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
