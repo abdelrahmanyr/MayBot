@@ -428,7 +428,7 @@ class Music(commands.Cog):
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
         embed.add_field(name = "Time Left", value = f"`[{track_left}]`")
-        embed.add_field(name = "Loop State", value = f"{loop_state}")
+        embed.add_field(name = "Track Loop", value = f"{loop_state}")
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         await ctx.send(embed = embed)
