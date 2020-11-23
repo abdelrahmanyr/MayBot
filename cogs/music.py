@@ -621,7 +621,7 @@ class Music(commands.Cog):
                     controller.queue._queue.remove(value)
                     time.sleep(0.001)
                 await player.stop()
-                await ctx.send("done")
+                await ctx.send(f":track_next: | Player has skipped to {player.current}")
 
 
     @commands.command(aliases = ["Pause"])
