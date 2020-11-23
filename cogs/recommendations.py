@@ -97,7 +97,7 @@ class Recommendations(commands.Cog):
             results = sp.search(q={album}, type='playlist')
             items = results['playlists']['items']
             playlist = items[0]
-            pprint(pplaylist)
+            pprint(playlist)
 
     @commands.command(aliases = ["Track"])
     async def track(self, ctx, *, track = None):
