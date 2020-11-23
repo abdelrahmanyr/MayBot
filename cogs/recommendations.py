@@ -31,7 +31,7 @@ class Recommendations(commands.Cog):
             artist_genres = artist['genres']
             artist_genre = " - ".join(f"{genre.capitalize()}" for genre in artist_genres)
             artist_followers = artist['followers']['total']
-            artist_link = Shortest.get(artist['external_urls']['spotify'], st)
+            artist_link = Shortest.get(str(artist['external_urls']['spotify']), st)
 
             top_tracks_response = sp.artist_top_tracks(artist['id'])['tracks']
             top_tracks = list(itertools.islice(top_tracks_response, 0, None))
@@ -66,7 +66,7 @@ class Recommendations(commands.Cog):
             items = results['albums']['items']
             album = items[0]
             album_name = album['name']
-            album_link = Shortest.get(album['external_urls']['spotify'], st)
+            album_link = Shortest.get(str(album['external_urls']['spotify']), st)
             album_artist = album['artists'][0]['name']
             album_date = album['release_date']
             album_tracks_number = album['total_tracks']            
@@ -105,7 +105,9 @@ class Recommendations(commands.Cog):
             playlist_link = Shortest.get(str(playlist['external_urls']['spotify']), st)
 
             playlist_id = playlist['uri']
-            playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=2, offset=0, market=None, additional_types=('track', ))
+            playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=100, offset=0, market=None, additional_types=('track', ))['items']['track']
+            playlist_tr = list(playlist_tracks)
+            tracks = "\n".join(f"{playlist_tr.index(track)} - {playlist_tr['name']}" for track in playlist_tr)
             pprint.pprint(playlist_tracks)
             image_url = playlist['images'][0]['url']
 
@@ -113,6 +115,7 @@ class Recommendations(commands.Cog):
                                   color = discord.Colour.dark_red()
                                  )
             embed.set_author(name = playlist_name, icon_url = image_url)
+            embed.add_field(name = "Total Tracks", value = f"{tracks}")
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
@@ -126,7 +129,7 @@ class Recommendations(commands.Cog):
             items = results['tracks']['items']
             track = items[0]
             track_name = track['name']
-            track_url = Shortest.get(track['external_urls']['spotify'], st)
+            track_url = Shortest.get(str(track['external_urls']['spotify']), st)
             track_album = track['album']['name']
             track_artist = track['album']['artists'][0]['name']
 
