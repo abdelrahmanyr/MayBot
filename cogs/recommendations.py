@@ -104,7 +104,7 @@ class Recommendations(commands.Cog):
             playlist_tracks_n = playlist['tracks']['total']
             playlist_link = Shortest.get(playlist['external_urls']['spotify'], st)
 
-            playlist_id = playlist['id']
+            playlist_id = playlist['uri']
             playlist_tracks = sp.playlist_items(playlist_id, fields=None, limit=100, offset=0, market=None, additional_types=('track'))['items']
             pprint.pprint(playlist_tracks)
             image_url = playlist['images'][0]['url']
