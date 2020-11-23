@@ -26,7 +26,10 @@ class Recommendations(commands.Cog):
         else:
             results = sp.search(q={artist}, type='artist')
             items = results['artists']['items']
-            artist = items[0]
+            try:
+                artist = items[0]
+            except IndexError:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
             artist_name = artist['name']
             artist_genres = artist['genres']
             artist_genre = " - ".join(f"{genre.capitalize()}" for genre in artist_genres)
@@ -53,8 +56,6 @@ class Recommendations(commands.Cog):
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
-            if not items:
-                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
     @commands.command(aliases = ["Album"])
     async def album(self, ctx, *, album = None):
@@ -64,7 +65,10 @@ class Recommendations(commands.Cog):
         else:
             results = sp.search(q={album}, type='album')
             items = results['albums']['items']
-            album = items[0]
+            try:
+                album = items[0]
+            except IndexError:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
             album_name = album['name']
             album_link = Shortest.get(str(album['external_urls']['spotify']), st)
             album_artist = album['artists'][0]['name']
@@ -84,19 +88,20 @@ class Recommendations(commands.Cog):
             embed.set_image(url = album_image)
             await ctx.send(embed = embed)
 
-            if not items:
-                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
 
     @commands.command(aliases = ["Playlist"])
-    async def playlist(self, ctx, *, album = None):
+    async def playlist(self, ctx, *, playlist = None):
 
-        if album is None:
+        if playlist is None:
             await ctx.send(":question: | Give a playlisy name to search for.")
         else:
-            results = sp.search(q={album}, type='playlist')
+            results = sp.search(q={playlist}, type='playlist')
             items = results['playlists']['items']
-            playlist = items[0]
+            try:
+                playlist = items[0]
+            except IndexError:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
             playlist_name = playlist['name']
             playlist_owner = playlist['owner']['display_name']
@@ -125,7 +130,11 @@ class Recommendations(commands.Cog):
         else:
             results = sp.search(q={track}, type='track')
             items = results['tracks']['items']
-            track = items[0]
+            try:
+                track = items[0]
+            except IndexError:
+                await ctx.send(":bangbang: | Sorry I couldn't find any results")
+
             track_name = track['name']
             track_url = Shortest.get(str(track['external_urls']['spotify']), st)
             track_album = track['album']['name']
@@ -146,8 +155,6 @@ class Recommendations(commands.Cog):
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
-            if not items:
-                await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
 def setup(client):
     client.add_cog(Recommendations(client))

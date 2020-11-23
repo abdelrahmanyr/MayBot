@@ -584,10 +584,24 @@ class Music(commands.Cog):
     async def clearqueue(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
-        controller.queue._queue.clear()
-        await player.stop()
-        await ctx.send("cleared")
+        if player.channel_id == ctx.author.voice.channel.id:
+            if not player.current or not controller.queue._queue:
+                await ctx.send(f":no_entry: | You can't clear an empty queue.")
+            else:
+                await player.stop()
+                controller.queue._queue.clear()
+                await ctx.send(":wastebasket: | Your queue has been cleared.")
 
+    @commands.command(aliases = ["Remove", "r", "R"])
+    async def remove(self, ctx, number : int, number2 : int = None):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+        if player.channel_id == ctx.author.voice.channel.id:
+            if not controller.queue._queue:
+                await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
+            else:
+                controller.queue._queue.pop(number - 1)
+            
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
