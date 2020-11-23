@@ -102,7 +102,7 @@ class Recommendations(commands.Cog):
             playlist_name = playlist['name']
             playlist_owner = playlist['owner']['display_name']
             playlist_tracks_n = playlist['tracks']['total']
-            playlist_link = Shortest.get(playlist['external_urls']['spotify'], st)
+            playlist_link = Shortest.get(str(playlist['external_urls']['spotify']), st)
 
             playlist_id = playlist['uri']
             playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=2, offset=0, market=None, additional_types=('track', ))
