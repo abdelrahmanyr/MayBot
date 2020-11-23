@@ -24,9 +24,8 @@ async def on_ready():
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
     client.load_extension("cogs.recommendations")
-
-
-
+    for server in client.guilds:
+        print(server.name)
 
 
 
@@ -84,7 +83,7 @@ async def shorten(ctx, url : str = None):
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = "Why do I have to pass through an advertisement page ?", value = "The bot services are completely free and it's the only way to support the developer \n__Note:__ if you didn't shorten a link you will be redirected to some cool song, have fun!")
     embed.add_field(name = "What do I benefit from using this command ?", value = "Having a short url instead of a long messy one.")
-    embed.add_field(name = "Wanna try the same things and earn money ?", value = f"__[Click the link and sign in.](http://join-shortest.com/ref/15860a2afd?user-type=new)__")
+    embed.add_field(name = "Wanna try the same things and earn money ?", value = f"__[Click the link and join now.](http://join-shortest.com/ref/15860a2afd?user-type=new)__")
     embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
@@ -132,8 +131,8 @@ async def kill(ctx, *, member : discord.Member):
 async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
-
-    embed = discord.Embed(description = f"**• Avatar link:** __[Link]({Shortest.get(member.avatar_url, st)})__",
+    short = Shortest.get(member.avatar_url, st)
+    embed = discord.Embed(description = f"**• Avatar link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = member, icon_url = member.avatar_url)
@@ -145,8 +144,8 @@ async def avatar(ctx, *, member : discord.Member = None):
 @client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon", "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
 async def icon(ctx):
     guild = ctx.guild
-
-    embed = discord.Embed(description = f"**• Icon link:** __[Link]({Shortest.get(guild.icon_url, st)})__",
+    short = Shortest.get(guild.icon_url, st)
+    embed = discord.Embed(description = f"**• Icon link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
     embed.set_author(name = guild.name, icon_url = guild.icon_url)
