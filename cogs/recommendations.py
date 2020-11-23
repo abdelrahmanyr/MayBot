@@ -104,11 +104,11 @@ class Recommendations(commands.Cog):
             playlist_link = Shortest.get(str(playlist['external_urls']['spotify']), st)
 
             playlist_id = playlist['uri']
-            playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=3, offset=0, market=None, additional_types=('track', ))['items']['track']
+            playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=3, offset=0, market=None, additional_types=('track', ))['items']
             pprint.pprint(playlist_tracks)
             playlist_tr = list(itertools.islice(playlist_tracks, 0, None))
             pprint.pprint(playlist_tr)
-            tracks = "\n".join(f"{track['track_number']} - {track['name']}" for track in playlist_tr)[:1023]
+            tracks = "\n".join(f"{track['track']['track_number']} - {track['track']['name']}" for track in playlist_tr)[:1023]
             image_url = playlist['images'][0]['url']
 
             embed = discord.Embed(description = f"**• Owner:** {str(playlist_owner)}\n **• Total Tracks:** {playlist_tracks_n} \n **• Spotify Link:** __[Link]({playlist_link})__",
