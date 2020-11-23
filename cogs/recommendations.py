@@ -97,7 +97,6 @@ class Recommendations(commands.Cog):
             results = sp.search(q={album}, type='playlist')
             items = results['playlists']['items']
             playlist = items[0]
-            pprint.pprint(playlist)
 
             playlist_name = playlist['name']
             playlist_owner = playlist['owner']['display_name']
@@ -106,9 +105,8 @@ class Recommendations(commands.Cog):
 
             playlist_id = playlist['uri']
             playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=100, offset=0, market=None, additional_types=('track', ))['items']['track']
-            playlist_tr = list(playlist_tracks)
-            tracks = "\n".join(f"{playlist_tr.index(track)} - {playlist_tr['name']}" for track in playlist_tr)
-            pprint.pprint(playlist_tracks)
+            playlist_tr = list(itertools.islice(playlist_tracks, 0, None))
+            tracks = "\n".join(f"{playlist_tr.index(track)} - {playlist_tr['name']}" for track in playlist_tr)[:1023]
             image_url = playlist['images'][0]['url']
 
             embed = discord.Embed(description = f"**• Owner:** {str(playlist_owner)}\n **• Total Tracks:** {playlist_tracks_n} \n **• Spotify Link:** __[Link]({playlist_link})__",
