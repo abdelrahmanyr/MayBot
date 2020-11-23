@@ -575,7 +575,7 @@ class Music(commands.Cog):
 
         if player.channel_id == ctx.author.voice.channel.id:
             if player.current:
-                await ctx.send(f":track_next: | The current track(s) has been skipped.")
+                await ctx.send(f":track_next: | The current track has been skipped.")
             if not player.is_playing:
                 await ctx.send(f":question: | There is no current track to skip.")
             await player.stop()
@@ -604,10 +604,10 @@ class Music(commands.Cog):
                     await player.stop()
                 else:
                     value = controller.queue._queue[number - 1]
-                    await ctx.send(f":track_next: | Track **{value.title}** has been removed")
+                    await ctx.send(f":track_next: | **{value.title}** has been removed")
                     controller.queue._queue.remove(value)
             
-    @commands.command(aliases = ["Skipto"])
+    @commands.command(aliases = ["Skipto", "SkipTo"])
     async def skipto(self, ctx, number : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -620,6 +620,7 @@ class Music(commands.Cog):
                 while skipped < number:
                     value = controller.queue._queue[skipped]
                     controller.queue._queue.remove(value)
+                    print(skipped)
                     skipped += 1
                 await player.stop()
                 await ctx.send("done")
