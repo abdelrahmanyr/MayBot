@@ -601,6 +601,7 @@ class Music(commands.Cog):
                 await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
             else:
                 value = controller.queue._queue[number - 1]
+                await ctx.send(f":track_next: | Track **{value.title}** has been removed")
                 controller.queue._queue.remove(value)
             
     @commands.command(aliases = ["Pause"])
