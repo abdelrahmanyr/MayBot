@@ -107,6 +107,7 @@ class Recommendations(commands.Cog):
             playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=3, offset=0, market=None, additional_types=('track', ))['items']
             pprint.pprint(playlist_tracks)
             playlist_tr = list(itertools.islice(playlist_tracks, 0, None))
+            pprint.pprint(playlist_tr)
             tracks = "\n".join(f"{playlist_tr.index(track)} - {track['track']['name']}" for track in playlist_tr)[:1023]
             image_url = playlist['images'][0]['url']
 
