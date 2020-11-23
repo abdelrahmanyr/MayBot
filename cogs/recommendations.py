@@ -87,6 +87,18 @@ class Recommendations(commands.Cog):
             if not items:
                 await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
+
+    @commands.command(aliases = ["Playlist"])
+    async def playlist(self, ctx, *, album = None):
+
+        if album is None:
+            await ctx.send(":question: | Give a playlisy name to search for.")
+        else:
+            results = sp.search(q={album}, type='playlist')
+            items = results['playlists']['items']
+            playlist = items[0]
+            pprint(pplaylist)
+
     @commands.command(aliases = ["Track"])
     async def track(self, ctx, *, track = None):
 
