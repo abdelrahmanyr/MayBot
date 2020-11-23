@@ -604,7 +604,7 @@ class Music(commands.Cog):
                     await player.stop()
                 else:
                     value = controller.queue._queue[number - 1]
-                    await ctx.send(f":track_next: | **{value.title}** has been removed")
+                    await ctx.send(f":track_next: | **{value.title}** has been removed.")
                     controller.queue._queue.remove(value)
             
     @commands.command(aliases = ["Skipto", "SkipTo"])
@@ -616,12 +616,10 @@ class Music(commands.Cog):
                 await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
             else:
                 number = number - 1
-                skipped = 0
-                while skipped < number:
-                    value = controller.queue._queue[skipped]
+                for n in range(number):
+                    value = controller.queue._queue[0]
                     controller.queue._queue.remove(value)
-                    print(skipped)
-                    skipped += 1
+                    time.sleep(0.001)
                 await player.stop()
                 await ctx.send("done")
 
