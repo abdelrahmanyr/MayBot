@@ -104,11 +104,12 @@ class Recommendations(commands.Cog):
             playlist_tracks_n = playlist['tracks']['total']
             playlist_link = Shortest.get(playlist['external_urls']['spotify'], st)
 
+            playlist_id = playlist['id']
             playlist_tracks = sp.playlist_items(playlist_id, fields=None, limit=100, offset=0, market=None, additional_types=('track'))['items']
             pprint.pprint(playlist_tracks)
             image_url = playlist['images'][0]['url']
 
-            embed = discord.Embed(description = f"**• Owner:** {str(owner)}\n **• Total Tracks:** {playlist_tracks_n} \n **• Spotify Link:** __[Link]({playlist_link})__",
+            embed = discord.Embed(description = f"**• Owner:** {str(playlist_owner)}\n **• Total Tracks:** {playlist_tracks_n} \n **• Spotify Link:** __[Link]({playlist_link})__",
                                   color = discord.Colour.dark_red()
                                  )
             embed.set_author(name = playlist_name, icon_url = image_url)
