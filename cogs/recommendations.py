@@ -108,7 +108,7 @@ class Recommendations(commands.Cog):
             pprint.pprint(playlist_tracks)
             playlist_tr = list(itertools.islice(playlist_tracks, 0, None))
             pprint.pprint(playlist_tr)
-            tracks = "\n".join(f"{playlist_tr.index(track)} - {track['track']['name']}" for track in playlist_tr)[:1023]
+            tracks = "\n".join(f"{track['track_number']} - {track['name']}" for track in playlist_tr)[:1023]
             image_url = playlist['images'][0]['url']
 
             embed = discord.Embed(description = f"**• Owner:** {str(playlist_owner)}\n **• Total Tracks:** {playlist_tracks_n} \n **• Spotify Link:** __[Link]({playlist_link})__",
