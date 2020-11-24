@@ -286,7 +286,7 @@ class Music(commands.Cog):
 
 
             embed = discord.Embed(title = "Search Results:",
-                              description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`** \n :two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n :three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n :four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n :five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n :six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n :seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n :eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n :nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n :keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
+                              description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`** \n:two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n:three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n:four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n:five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n:six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n:seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n:eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n:nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n:keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
                               color = discord.Colour.dark_red()
                               )
             embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -423,7 +423,7 @@ class Music(commands.Cog):
             loop_state = "Disabled"
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":play_pause: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n \n [{track_position} {player_tracker} {track_length}]",
+                              description = f":play_pause: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n\n[{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
@@ -476,7 +476,7 @@ class Music(commands.Cog):
             first = results[0]
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**{first.name} - {first.artist}:**__ \n {first.lyrics}"[:2047],
+                             description = f"__**{first.name} - {first.artist}:**__ \n{first.lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -511,7 +511,7 @@ class Music(commands.Cog):
                 loop_state = "Queue Looping"
 
         embed = discord.Embed(title=f"MayBot Queue:",
-                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n {tracks_list}"[:2047], 
+                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n{tracks_list}"[:2047], 
                              colour = discord.Colour.dark_red())
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = False)
@@ -607,7 +607,7 @@ class Music(commands.Cog):
                     await ctx.send(f":track_next: | **{value.title}** has been removed.")
                     controller.queue._queue.remove(value)
             
-    @commands.command(aliases = ["Skipto", "SkipTo"])
+    @commands.command(aliases = ["Skipto", "SkipTo", "st", "St", "ST"])
     async def skipto(self, ctx, number : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -621,7 +621,7 @@ class Music(commands.Cog):
                     controller.queue._queue.remove(value)
                     time.sleep(0.001)
                 await player.stop()
-                await ctx.send(f":track_next: | Player has skipped to {player.current}")
+                await ctx.send(f":track_next: | Player has skipped to {controller.queue._queue[0].title}")
 
 
     @commands.command(aliases = ["Pause"])
@@ -643,7 +643,7 @@ class Music(commands.Cog):
             await player.set_pause(pause = False)
 
 
-    @commands.command(aliases = ["Stop", "st", "St"])
+    @commands.command(aliases = ["Stop", "sp", "Sp", "SP"])
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 

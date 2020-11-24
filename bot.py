@@ -36,7 +36,7 @@ async def help(ctx):
 
     embed = discord.Embed(
         title = "About MayBot:",
-        description = ":guitar: | MayBot is a multipurpose bot which can be used in moderating your server, playing music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n __**Check the list of the commands below:**__",
+        description = ":guitar: | MayBot is a multipurpose bot which can be used in moderating your server, playing music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n__**Check the list of the commands below:**__",
         colour = discord.Colour.dark_red()
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -60,7 +60,7 @@ async def aliases(ctx):
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n• **Avatar:** `av`. \n• **ServerIcon:** `serveravatar`, `icon`. \n• **HowMuch:** `how`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n• **Play:** `p`. \n• **SoundCloud:** `scd`. \n• **Search:** `sc`. \n• **NowPlaying:** `now`, `np`. \n • **Repeat:** `loop`. \n • **Volume:** `vol`. \n • **Queue:** `q`. \n • **Shuffle:** `mix`. \n • **Skip:** `s`. \n• **Remove:** `r`. \n• **ClearQueue:** `cq`. \n • **Stop:** `st`. \n • **Disconnect:** `leave`, `dc`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n• **Play:** `p`. \n• **SoundCloud:** `scd`. \n• **Search:** `sc`. \n• **NowPlaying:** `now`, `np`. \n• **Repeat:** `loop`. \n• **Volume:** `vol`. \n• **Queue:** `q`. \n• **Shuffle:** `mix`. \n• **Skip:** `s`. \n• **Remove:** `r`. \n• **ClearQueue:** `cq`. \n• **Stop:** `st`. \n• **Disconnect:** `leave`, `dc`.", inline = False)
     embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed")
 
     await ctx.send(embed = embed)
@@ -124,8 +124,8 @@ async def kill(ctx, *, member : discord.Member):
              f"While playing Fortnite `{member.name}` died out of cringe.",
              f"`{author.name}` punched `{member.name}`, the murder weapon is unknown but a message beside the body saying __**I am inevitable**__.",
              f"`{author.name}` planted TNT in `{member.name}`'s piano.",
-             f"`{author.name}` threw `{member.name}` out. \n **`{member.name}` was An impostor!** \n **VICTORY**",
-             f"`{author.name}` killed `{member.name}` with a pointed tongue. \n **`{author.name}` was The impostor!** \n **DEFEAT**"
+             f"`{author.name}` threw `{member.name}` out. \n**`{member.name}` was An impostor!** \n**VICTORY**",
+             f"`{author.name}` killed `{member.name}` with a pointed tongue. \n**`{author.name}` was The impostor!** \n**DEFEAT**"
              ]
     await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
