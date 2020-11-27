@@ -634,7 +634,7 @@ class Music(commands.Cog):
                 pos = pos - 1
                 track = track - 1
                 value = controller.queue._queue[pos]
-                controller.queue._queue.insert(value, pos)
+                controller.queue._queue.insert(pos, value)
                 controller.queue._queue.remove(value)
                 await ctx.send(f"**{value.title}** has been moved to position **{pos + 1}**")
 
