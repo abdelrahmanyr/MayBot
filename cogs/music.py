@@ -613,7 +613,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
             if not controller.queue._queue:
-                await ctx.send(f":no_entry: | You can't remove an item from an empty queue.")
+                await ctx.send(f":no_entry: | You can't skip an item from an empty queue.")
             else:
                 number = number - 1
                 for n in range(number):
@@ -623,6 +623,20 @@ class Music(commands.Cog):
                 await player.stop()
                 await ctx.send(f":track_next: | Player has skipped to **{controller.queue._queue[0].title}**.")
 
+    @commands.commnd(aliases = ["Move"])
+    async def move(self, ctx, track : int, pos : int):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+        if player.channel_id == ctx.author.voice.channel.id:
+            if not controller.queue._queue:
+                await ctx.send(f":no_entry: | You can't move an item from an empty queue.")
+            else:
+                pos = pos - 1
+                track = track - 1
+                value = controller.queue._queue[pos]
+                controller.queue._queue.insert(value, pos)
+                controller.queue._queue.remove(value)
+                await ctx.send(f"**{value.title}** has been moved to position **{pos + 1}**")
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
