@@ -623,7 +623,7 @@ class Music(commands.Cog):
                 await player.stop()
                 await ctx.send(f":track_next: | Player has skipped to **{controller.queue._queue[0].title}**.")
 
-    @commands.commnd(aliases = ["Move"])
+    @commands.command(aliases = ["Move"])
     async def move(self, ctx, track : int, pos : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
