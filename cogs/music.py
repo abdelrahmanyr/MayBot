@@ -537,7 +537,7 @@ class Music(commands.Cog):
             else:
                 await ctx.send(f":question: | You need to put more tracks in your queue to shuffle.")
 
-    @commands.command(aliases=['eq'])
+    @commands.command(aliases = ["Equalizer", "eq", "Eq", "EQ"])
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -557,11 +557,12 @@ class Music(commands.Cog):
                            'piano': wavelink.Equalizer.piano()}
             
                     eq = eqs.get(equalizer.lower(), None)
-                    await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
-                    await player.set_eq(eq)
+
                     if not eq:
                         joined = ", ".join(f"`{str(eqs.keys()).capitalize()}`")
                         return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{joined}.")
+                    await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
+                    await player.set_eq(eq)
             else:
                 await ctx.send(f":question: | You can't apply an equializer without playing a song.")
 
