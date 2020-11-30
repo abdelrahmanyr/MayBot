@@ -100,7 +100,7 @@ async def shorten(ctx, url : str = None):
 @client.command(aliases = ["Vote"])
 async def vote(ctx):
     embed = discord.Embed(title = "Vote",
-                          description = f":ballot_box: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__.",          
+                          description = f":ballot_box: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__ or at __**[discordbotlist.com](https://discord.ly/maybot)**__.",          
                           colour = discord.Colour.dark_red()
                          )
     await ctx.send(embed = embed)
@@ -108,7 +108,7 @@ async def vote(ctx):
 
 #fun commands
 @client.command(aliases = ["8ball", "8Ball", "8b", "8B"])
-async def _8ball(ctx, *, question ):
+async def _8ball(ctx, *, question):
     responses = ["It is certain.",
                  "It is decidedly so.",
                  "Yes - definitely.",
