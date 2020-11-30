@@ -92,7 +92,8 @@ async def shorten(ctx, url : str = None):
 @client.command(aliases = ["Vote"])
 async def vote(ctx):
     embed = discord.Embed(title = "Vote",
-                          description = f":chart_with_downwards_trend: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__."          
+                          description = f":ballot_box: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__.",          
+                          colour = discord.Colour.dark_red()
                          )
     await ctx.send(embed = embed)
 
