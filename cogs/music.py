@@ -559,8 +559,9 @@ class Music(commands.Cog):
                     eq = eqs.get(equalizer.lower(), None)
 
                     if not eq:
-                        joined = ", ".join(f"`{str(eqs.keys()).capitalize()}`")
-                        return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{joined}.")
+                        keys = list(eqs)
+                        list_ = ", ".join(f"`{key.capitalize()}`" for key in keys)
+                        return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{list_}.")
                     await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
                     await player.set_eq(eq)
             else:
