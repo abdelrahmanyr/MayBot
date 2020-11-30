@@ -663,12 +663,12 @@ class Music(commands.Cog):
             if not controller.queue._queue:
                 await ctx.send(f":no_entry: | You can't move an item from an empty queue.")
             else:
-                pos = pos 
+                pos = pos - 1
                 track = track - 1
                 value = controller.queue._queue[track]
                 controller.queue._queue.remove(value)
                 controller.queue._queue.insert(pos, value)
-                await ctx.send(f"**:track_next: | {value.title}** has been moved to position **{pos}**")
+                await ctx.send(f"**:track_next: | {value.title}** has been moved to position **{pos + 1}**")
 
     @commands.command(aliases = ["Pause"])
     async def pause(self, ctx):
