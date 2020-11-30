@@ -33,7 +33,7 @@ async def gift(ctx):
     embed = discord.Embed(title = "A WILD GIFT APPEARS!", colour = discord.Colour(0x43b581))
     embed.set_author(name = "Discord", icon_url = "https://logo-logos.com/wp-content/uploads/2018/03/Discord_icon.png")
     embed.add_field(name = "Nitro", value = "Expires in 48 hours")
-    embed.set_thumbnail(url = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdiscord.fandom.com%2Fwiki%2FNitro&psig=AOvVaw1wD0K2VYvJl5itgH9AQSdI&ust=1606786615472000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPDZ0eOQqe0CFQAAAAAdAAAAABAD")
+    embed.set_thumbnail(url = "https://static.wikia.nocookie.net/discord/images/b/b8/Nitro_badge.png/revision/latest/scale-to-width-down/256?cb=20200615092656")
     embed.set_image(url = "https://i.imgur.com/7GlDJJE.png")
     embed.set_footer(text = f"{ctx.message.author} has recieved a gift", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
