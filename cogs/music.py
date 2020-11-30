@@ -547,7 +547,7 @@ class Music(commands.Cog):
 
             if player.current:
                 if equalizer is None:
-                    if player.equalizer.name == "flat":
+                    if player.equalizer.name == "Flat":
                         eq_name = "default"
                     else:
                         eq_name = player.equalizer.name
