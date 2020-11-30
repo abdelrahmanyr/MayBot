@@ -511,8 +511,8 @@ class Music(commands.Cog):
                 loop_state = "Queue Looping"
 
         embed = discord.Embed(title=f"MayBot Queue:",
-                             description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n{tracks_list}"[:2047], 
-                             colour = discord.Colour.dark_red())
+                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n{tracks_list}"[:2047], 
+                              colour = discord.Colour.dark_red())
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = False)
         embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**", inline = True)
@@ -538,14 +538,16 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | You need to put more tracks in your queue to shuffle.")
 
     @commands.command(aliases=['eq'])
-    async def equalizer(self, ctx: commands.Context, *, equalizer: str):
+    async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
         if not player.is_connected:
             return
         if player.channel_id == ctx.author.voice.channel.id:
+            if equalizer is None:
+                await ctx.send(f":level_slider: | The currently applied equalizer is **{player.equalizer.capitalize()}**.")
             if player.current:
-                eqs = {'flat': wavelink.Equalizer.flat(),
+                eqs = {'default': wavelink.Equalizer.flat(),
                        'boost': wavelink.Equalizer.boost(),
                        'metal': wavelink.Equalizer.metal(),
                        'piano': wavelink.Equalizer.piano()}
@@ -553,10 +555,10 @@ class Music(commands.Cog):
                 eq = eqs.get(equalizer.lower(), None)
         
                 if not eq:
-                    joined = "\n".join(eqs.keys())
-                    return await ctx.send(f'Invalid EQ provided. Valid EQs:\n\n{joined}')
+                    joined = ", ".join(f"`{eqs.keys().capitalize()}`")
+                    return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available EQs are:\n{joined}.")
         
-                await ctx.send(f"{equalizer} has been applied.")
+                await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
                 await player.set_eq(eq)
             else:
                 await ctx.send(f":question: | You can't apply an equializer without playing a song.")
@@ -657,7 +659,7 @@ class Music(commands.Cog):
             else:
                 pos = pos - 1
                 track = track - 1
-                value = controller.queue._queue[pos]
+                value = controller.queue._queue[track]
                 controller.queue._queue.insert(pos, value)
                 controller.queue._queue.remove(value)
                 await ctx.send(f"**{value.title}** has been moved to position **{pos + 1}**")
