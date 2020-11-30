@@ -548,8 +548,10 @@ class Music(commands.Cog):
             if player.current:
                 if equalizer is None:
                     if player.equalizer.name == "flat":
-                        player.equalizer.name = "default"
-                    await ctx.send(f":level_slider: | The currently applied equalizer is **{str(player.equalizer.name).capitalize()}**.")
+                        eq_name = "default"
+                    else:
+                        eq_name = player.equalizer.name
+                    await ctx.send(f":level_slider: | The currently applied equalizer is **{str(eq_name).capitalize()}**.")
                 else:
                     eqs = {'default': wavelink.Equalizer.flat(),
                            'boost': wavelink.Equalizer.boost(),
