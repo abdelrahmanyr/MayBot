@@ -545,7 +545,7 @@ class Music(commands.Cog):
             return
         if player.channel_id == ctx.author.voice.channel.id:
             if equalizer is None:
-                await ctx.send(f":level_slider: | The currently applied equalizer is **{player.equalizer.capitalize()}**.")
+                await ctx.send(f":level_slider: | The currently applied equalizer is **{str(player.equalizer).capitalize()}**.")
             if player.current:
                 eqs = {'default': wavelink.Equalizer.flat(),
                        'boost': wavelink.Equalizer.boost(),
@@ -555,8 +555,8 @@ class Music(commands.Cog):
                 eq = eqs.get(equalizer.lower(), None)
         
                 if not eq:
-                    joined = ", ".join(f"`{eqs.keys().capitalize()}`")
-                    return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available EQs are:\n{joined}.")
+                    joined = ", ".join(f"`{str(eqs.keys()).capitalize()}`")
+                    return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{joined}.")
         
                 await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
                 await player.set_eq(eq)
