@@ -89,6 +89,13 @@ async def shorten(ctx, url : str = None):
     embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
+@client.command(aliases = ["Vote"])
+async def vote(ctx):
+    embed = discord.Embed(title = "Vote",
+                          description = f":chart_with_downwards_trend: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__."          
+                         )
+    await ctx.send(embed = embed)
+
 
 #fun commands
 @client.command(aliases = ["8ball", "8Ball", "8b", "8B"])
