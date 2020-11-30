@@ -28,7 +28,15 @@ async def on_ready():
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner}")
 
-
+@client.command(aliases = ["Gift", "nitro", "Nitro"])
+async def gift(ctx):
+    embed = discord.Embed(title = "A WILD GIFT APPEARS!", colour = discord.Colour(0x43b581))
+    embed.set_author(name = "Discord", icon_url = "https://logo-logos.com/wp-content/uploads/2018/03/Discord_icon.png")
+    embed.add_field(name = "Nitro", value = "Expires in 48 hours")
+    embed.set_thumbnail(url = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdiscord.fandom.com%2Fwiki%2FNitro&psig=AOvVaw1wD0K2VYvJl5itgH9AQSdI&ust=1606786615472000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPDZ0eOQqe0CFQAAAAAdAAAAABAD")
+    embed.set_image(url = "https://i.imgur.com/7GlDJJE.png")
+    embed.set_footer(text = f"{ctx.message.author} has recieved a gift", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 #bot info commands
 @client.command(aliases = ["Help"])
@@ -41,7 +49,7 @@ async def help(ctx):
     )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
-    embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`")
+    embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`.")
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n`album`, `artist`, `playlist`, `track`.", inline = False)
