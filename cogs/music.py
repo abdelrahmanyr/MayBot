@@ -544,22 +544,22 @@ class Music(commands.Cog):
         if not player.is_connected:
             return
         if player.channel_id == ctx.author.voice.channel.id:
-            if equalizer is None:
-                await ctx.send(f":level_slider: | The currently applied equalizer is **{str(player.equalizer).capitalize()}**.")
+
             if player.current:
-                eqs = {'default': wavelink.Equalizer.flat(),
-                       'boost': wavelink.Equalizer.boost(),
-                       'metal': wavelink.Equalizer.metal(),
-                       'piano': wavelink.Equalizer.piano()}
-        
-                eq = eqs.get(equalizer.lower(), None)
-        
-                if not eq:
-                    joined = ", ".join(f"`{str(eqs.keys()).capitalize()}`")
-                    return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{joined}.")
-        
-                await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
-                await player.set_eq(eq)
+                if equalizer is None:
+                    await ctx.send(f":level_slider: | The currently applied equalizer is **{str(player.equalizer).capitalize()}**.")
+                else:
+                    eqs = {'default': wavelink.Equalizer.flat(),
+                           'boost': wavelink.Equalizer.boost(),
+                           'metal': wavelink.Equalizer.metal(),
+                           'piano': wavelink.Equalizer.piano()}
+            
+                    eq = eqs.get(equalizer.lower(), None)
+                    await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
+                    await player.set_eq(eq)
+                    if not eq:
+                        joined = ", ".join(f"`{str(eqs.keys()).capitalize()}`")
+                        return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{joined}.")
             else:
                 await ctx.send(f":question: | You can't apply an equializer without playing a song.")
 
