@@ -581,7 +581,7 @@ class Music(commands.Cog):
                     await ctx.send(f":question: | You can't apply an equializer without playing a song.")
         else:
             embed = discord.Embed(title = "Vote",
-                                  description = f":ballot_box: | Vote for me at __**[top.gg]({Shortest.get("https://top.gg/bot/747965125599821914", st)})**__ and __**[discordbotlist.com]({Shortest.get("https://discord.ly/maybot", st)})**__.",          
+                                  description = f":ballot_box: | Vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)
