@@ -14,6 +14,7 @@ import random
 import ksoftapi
 import pprint
 import time
+import dbl
 from shortest import Shortest
 
 st = "67587c0f933aa8ab2e59377a14d0d315"
@@ -75,6 +76,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
+        self.dbl = dbl.DBLClient(self.bot, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA3MjAwMjAzfQ.hGwo5VrTEK59x-YID8lVLUtdWXLEYD8RfJK6b8t2f4I")
 
 
         if not hasattr(bot, 'wavelink'):
@@ -154,9 +156,9 @@ class Music(commands.Cog):
                         await controller.queue.put(track_p)
                         playlist_duration += track_p.length
                     
-                    
+                    link = Shortest.get(str(query), st)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f":play_pause: | __**[{tracks.data['playlistInfo']['name']}]({query})**__",
+                                                description = f":play_pause: | __**[{tracks.data['playlist__Info']['name']}]({link})**____",
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
@@ -171,15 +173,17 @@ class Music(commands.Cog):
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     if player.is_playing:
+                        link = Shortest.get(str(track.uri), st)
                         embed = discord.Embed(title = "Enqueued Stream:",
-                                        description = f":play_pause: | **{str(track)}**",
+                                        description = f":play_pause: | __**[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Stream Player", value = f"**{ctx.message.author.mention}**")
 
                     if not player.is_playing:
+                        link = Shortest.get(str(track.uri), st)
                         embed = discord.Embed(title = "Playing Stream:",
-                                        description = f"**:play_pause: | {str(track)}**",
+                                        description = f"**:play_pause: __| [{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -191,9 +195,10 @@ class Music(commands.Cog):
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
 
+                    link = Shortest.get(str(track.uri), st)
                     if player.is_playing:
                         embed = discord.Embed(title = "Enqueued:",
-                                        description = f":play_pause: | **{str(track)}**",
+                                        description = f":play_pause: | __**[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -201,7 +206,7 @@ class Music(commands.Cog):
 
                     if not player.is_playing:
                         embed = discord.Embed(title = "Playing:",
-                                        description = f"**:play_pause: | {str(track)}**",
+                                        description = f"**:play_pause: | **[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -217,10 +222,10 @@ class Music(commands.Cog):
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
                 
-
+                link = Shortest.get(str(track.uri), st)
                 if player.is_playing:
                     embed = discord.Embed(title = "Enqueued:",
-                                    description = f":play_pause: | **{str(track)}**",
+                                    description = f":play_pause: | __**[{str(track)}]({link})**__",
                                     color = discord.Colour.dark_red()
                                     )
                     embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -228,7 +233,7 @@ class Music(commands.Cog):
 
                 if not player.is_playing:
                     embed = discord.Embed(title = "Playing:",
-                                    description = f"**:play_pause: | {str(track)}**",
+                                    description = f":play_pause: | __**[{str(track)}]({link})**__",
                                     color = discord.Colour.dark_red()
                                     )
                     embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -249,9 +254,11 @@ class Music(commands.Cog):
 
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
+            
+            link = Shortest.get(str(track.uri), st)
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
-                                      description = f":play_pause: | **{str(track)}**",
+                                      description = f":play_pause: | __**[{str(track)}]({link})**__",
                                       color = discord.Colour.dark_red()
                                      )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -259,7 +266,7 @@ class Music(commands.Cog):
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Playing:",
-                                      description = f"**:play_pause: | {str(track)}**",
+                                      description = f":play_pause: | __**[{str(track)}]({link})**__",
                                       color = discord.Colour.dark_red()
                                      )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -303,17 +310,19 @@ class Music(commands.Cog):
             track = Track(tracks[int(msg.content) - 1].id, tracks[int(msg.content) - 1].info, requester=ctx.author)
 
             await controller.queue.put(track)
+
+            link = Shortest.get(str(track.uri), st)
             if player.is_playing:
-                embed2 = discord.Embed(title = "Queued:",
-                                description = f":play_pause: | **{str(track)}**",
+                embed2 = discord.Embed(title = "Enqueued:",
+                                description = f":play_pause: | __**[{str(track)}]({link})**__",
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
                 embed2.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
 
             if not player.is_playing:
-                embed2 = discord.Embed(title = "Now Playing:",
-                                description = f"**:play_pause: | {str(track)}**",
+                embed2 = discord.Embed(title = "Playing:",
+                                description = f":play_pause: | __**{str(track)}({link})**__",
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -339,9 +348,10 @@ class Music(commands.Cog):
 
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
+            link = Shortest.get(str(track.uri), st)
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
-                                description = f":play_pause: | **{str(track)}**",
+                                description = f":play_pause: | __**[{str(track)}]({link})**__",
                                 color = discord.Colour.dark_red()
                                 )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -349,7 +359,7 @@ class Music(commands.Cog):
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Playing:",
-                                description = f"**:play_pause: | {str(track)}**",
+                                description = f":play_pause: | __**[{str(track)}]({link})**__",
                                 color = discord.Colour.dark_red()
                                 )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -540,36 +550,41 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Equalizer", "eq", "Eq", "EQ"])
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-
-        if not player.is_connected:
-            return
-        if player.channel_id == ctx.author.voice.channel.id:
-
-            if player.current:
-                if equalizer is None:
-                    if player.equalizer.name == "Flat":
-                        eq_name = "default"
+        db = self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            if not player.is_connected:
+                return
+            if player.channel_id == ctx.author.voice.channel.id:
+    
+                if player.current:
+                    if equalizer is None:
+                        if player.equalizer.name == "Flat":
+                            eq_name = "default"
+                        else:
+                            eq_name = player.equalizer.name
+                        await ctx.send(f":level_slider: | The currently applied equalizer is **{str(eq_name).capitalize()}**.")
                     else:
-                        eq_name = player.equalizer.name
-                    await ctx.send(f":level_slider: | The currently applied equalizer is **{str(eq_name).capitalize()}**.")
+                        eqs = {'default': wavelink.Equalizer.flat(),
+                               'boost': wavelink.Equalizer.boost(),
+                               'metal': wavelink.Equalizer.metal(),
+                               'piano': wavelink.Equalizer.piano()}
+                
+                        eq = eqs.get(equalizer.lower(), None)
+    
+                        if not eq:
+                            keys = list(eqs)
+                            list_ = ", ".join(f"`{key.capitalize()}`" for key in keys)
+                            return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{list_}.")
+                        await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
+                        await player.set_eq(eq)
                 else:
-                    eqs = {'default': wavelink.Equalizer.flat(),
-                           'boost': wavelink.Equalizer.boost(),
-                           'metal': wavelink.Equalizer.metal(),
-                           'piano': wavelink.Equalizer.piano()}
-            
-                    eq = eqs.get(equalizer.lower(), None)
-
-                    if not eq:
-                        keys = list(eqs)
-                        list_ = ", ".join(f"`{key.capitalize()}`" for key in keys)
-                        return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{list_}.")
-                    await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
-                    await player.set_eq(eq)
-            else:
-                await ctx.send(f":question: | You can't apply an equializer without playing a song.")
-
-
+                    await ctx.send(f":question: | You can't apply an equializer without playing a song.")
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":ballot_box: | Vote for me at __**[top.gg]({Shortest.get("https://top.gg/bot/747965125599821914", st)})**__ and __**[discordbotlist.com]({Shortest.get("https://discord.ly/maybot", st)})**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)
     @commands.command(aliases = ["Volume", "vol", "Vol"])
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -651,7 +666,6 @@ class Music(commands.Cog):
                 for n in range(number):
                     value = controller.queue._queue[0]
                     controller.queue._queue.remove(value)
-                    time.sleep(0.001)
                 await player.stop()
                 await ctx.send(f":track_next: | Player has skipped to **{controller.queue._queue[0].title}**.")
 
