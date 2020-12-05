@@ -581,24 +581,33 @@ class Music(commands.Cog):
                     await ctx.send(f":question: | You can't apply an equializer without playing a song.")
         else:
             embed = discord.Embed(title = "Vote",
-                                  description = f":ballot_box: | Vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)
     @commands.command(aliases = ["Volume", "vol", "Vol"])
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
+
         if vol is None:
             await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
-        if player.channel_id == ctx.author.voice.channel.id:
-
-            controller = self.get_controller(ctx)
-
-            vol = max(min(vol, 1000), 0)
-            controller.volume = vol
-
-            await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
-            await player.set_volume(vol)
+        if db == True:
+            if player.channel_id == ctx.author.voice.channel.id:
+    
+                controller = self.get_controller(ctx)
+    
+                vol = max(min(vol, 1000), 0)
+                controller.volume = vol
+    
+                await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
+                await player.set_volume(vol)
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ["Seek"])
     async def seek(self, ctx,* , position = 0):
