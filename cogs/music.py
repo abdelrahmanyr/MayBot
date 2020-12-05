@@ -550,7 +550,7 @@ class Music(commands.Cog):
     @commands.command(aliases = ["Equalizer", "eq", "Eq", "EQ"])
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = self.dbl.get_user_vote(ctx.author.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
         if db == True:
             if not player.is_connected:
                 return
