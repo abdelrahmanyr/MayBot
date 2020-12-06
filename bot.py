@@ -38,6 +38,12 @@ async def gift(ctx):
     embed.set_footer(text = f"{ctx.message.author} has recieved a gift", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
+@client.event
+async def on_member_join(ctx, member):
+    if ctx.guild.id == 776111238441730049:
+        channel = discord.utils.get_channel(785028709152587786)
+        await channel.send(f"aaaaaaaa")
+
 #bot info commands
 @client.command(aliases = ["Help"])
 async def help(ctx):

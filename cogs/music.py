@@ -322,7 +322,7 @@ class Music(commands.Cog):
 
             if not player.is_playing:
                 embed2 = discord.Embed(title = "Playing:",
-                                description = f":play_pause: | __**{str(track)}({link})**__",
+                                description = f":play_pause: | __**[{str(track)}]({link})**__",
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
@@ -590,11 +590,10 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
 
-        if vol is None:
-            await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
         if db == True:
             if player.channel_id == ctx.author.voice.channel.id:
-    
+                if vol is None:
+                    await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
                 controller = self.get_controller(ctx)
     
                 vol = max(min(vol, 1000), 0)
