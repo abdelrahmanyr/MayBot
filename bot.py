@@ -40,7 +40,7 @@ async def gift(ctx):
 
 @client.event
 async def on_member_join(member):
-    if ctx.guild.id == 776111238441730049:
+    if member.guild.id == 776111238441730049:
         channel = discord.utils.get_channel(785028709152587786)
         await channel.send(f"aaaaaaaa")
 
