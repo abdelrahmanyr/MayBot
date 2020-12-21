@@ -468,7 +468,7 @@ class Music(commands.Cog):
                     controller.loop_state = "0"
                     message = ":arrow_right: | Looping has been **disabled**."
 
-                await ctx.send(Messageable)
+                await ctx.send(message)
             else:
                 await ctx.send(":question: | You have to play a track first.")
 

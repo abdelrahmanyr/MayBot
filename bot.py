@@ -56,7 +56,7 @@ async def help(ctx):
     embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`.")
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `equalizer`, `lyrics`, `volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n`album`, `artist`, `playlist`, `track`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `:star: equalizer`, `lyrics`, `:star: volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
@@ -204,7 +204,7 @@ async def say(ctx, *, message = None):
 async def meme(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     meme = await kclient.images.random_meme()
-    embed = discord.Embed(description = f"**[{meme.title}]({memrce})**",
+    embed = discord.Embed(description = f"**[{meme.title}]({meme.source})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -216,7 +216,7 @@ async def meme(ctx):
 async def cute(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     cute = await kclient.images.random_aww()
-    embed = discord.Embed(description = f"**[{cute.title}]({cutrce})**",
+    embed = discord.Embed(description = f"**[{cute.title}]({cute.source})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
