@@ -27,19 +27,23 @@ async def on_ready():
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
     client.load_extension("cogs.recommendations")
+    client.load_extension("cogs.security")
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
 
 @client.command(aliases = ["Gift", "nitro", "Nitro"])
 async def gift(ctx):
-    embed = discord.Embed(title = "A WILD GIFT APPEARS!", colour = discord.Colour(0x43b581))
-    embed.set_author(name = "Discord", icon_url = "https://logo-logos.com/wp-content/uploads/2018/03/Discord_icon.png")
-    embed.add_field(name = "Nitro", value = "Expires in 48 hours")
-    embed.set_thumbnail(url = "https://static.wikia.nocookie.net/discord/images/b/b8/Nitro_badge.png/revision/latest/scale-to-width-down/256?cb=20200615092656")
-    embed.set_image(url = "https://i.imgur.com/7GlDJJE.png")
-    embed.set_footer(text = f"{ctx.message.author} has recieved a gift", icon_url = ctx.message.author.avatar_url)
-    await ctx.send(embed = embed)
+    if ctx.message.author.id == 732612405858664458:
+        await ctx.send(":robot: | A robot has been detected, no gift for you.")
+    else:
+        embed = discord.Embed(title = "A WILD GIFT APPEARS!", colour = discord.Colour(0x43b581))
+        embed.set_author(name = "Discord", icon_url = "https://logo-logos.com/wp-content/uploads/2018/03/Discord_icon.png")
+        embed.add_field(name = "Nitro", value = "Expires in 48 hours")
+        embed.set_thumbnail(url = "https://static.wikia.nocookie.net/discord/images/b/b8/Nitro_badge.png/revision/latest/scale-to-width-down/256?cb=20200615092656")
+        embed.set_image(url = "https://i.imgur.com/7GlDJJE.png")
+        embed.set_footer(text = f"{ctx.message.author} has recieved a gift", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
 
 
 #bot info commands
