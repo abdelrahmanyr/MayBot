@@ -34,7 +34,7 @@ class Recommendations(commands.Cog):
             artist_genres = artist['genres']
             artist_genre = " - ".join(f"{genre.capitalize()}" for genre in artist_genres)
             artist_followers = artist['followers']['total']
-            artist_link = Shortest.get(str(artist['external_urls']['spotify']), st)
+            artist_link = str(artist['external_urls']['spotify'])
 
             top_tracks_response = sp.artist_top_tracks(artist['id'])['tracks']
             top_tracks = list(itertools.islice(top_tracks_response, 0, None))
@@ -70,7 +70,7 @@ class Recommendations(commands.Cog):
             except IndexError:
                 await ctx.send(":bangbang: | Sorry I couldn't find any results")
             album_name = album['name']
-            album_link = Shortest.get(str(album['external_urls']['spotify']), st)
+            album_link = str(album['external_urls']['spotify'])
             album_artist = album['artists'][0]['name']
             album_date = album['release_date']
             album_tracks_number = album['total_tracks']            
@@ -106,7 +106,7 @@ class Recommendations(commands.Cog):
             playlist_name = playlist['name']
             playlist_owner = playlist['owner']['display_name']
             playlist_tracks_n = playlist['tracks']['total']
-            playlist_link = Shortest.get(str(playlist['external_urls']['spotify']), st)
+            playlist_link = str(playlist['external_urls']['spotify'])
 
             playlist_id = playlist['uri']
             playlist_tracks = sp.playlist_tracks(playlist_id, fields=None, limit=100, offset=0, market=None, additional_types=('track', ))['items']
@@ -136,7 +136,7 @@ class Recommendations(commands.Cog):
                 await ctx.send(":bangbang: | Sorry I couldn't find any results")
 
             track_name = track['name']
-            track_url = Shortest.get(str(track['external_urls']['spotify']), st)
+            track_url = str(track['external_urls']['spotify'])
             track_album = track['album']['name']
             track_artist = track['album']['artists'][0]['name']
 

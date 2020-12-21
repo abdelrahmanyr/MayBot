@@ -1,4 +1,6 @@
 import discord
+from discord import embeds
+from discord.abc import Messageable
 from discord.ext import commands
 from discord import utils
 import typing
@@ -156,7 +158,7 @@ class Music(commands.Cog):
                         await controller.queue.put(track_p)
                         playlist_duration += track_p.length
                     
-                    link = Shortest.get(str(query), st)
+                    link = str(query)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
                                                 description = f":play_pause: | __**[{tracks.data['playlist__Info']['name']}]({link})**____",
                                                 color = discord.Colour.dark_red()
@@ -173,7 +175,7 @@ class Music(commands.Cog):
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     if player.is_playing:
-                        link = Shortest.get(str(track.uri), st)
+                        link = str(track.uri)
                         embed = discord.Embed(title = "Enqueued Stream:",
                                         description = f":play_pause: | __**[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
@@ -181,13 +183,13 @@ class Music(commands.Cog):
                         embed.add_field(name = "Stream Player", value = f"**{ctx.message.author.mention}**")
 
                     if not player.is_playing:
-                        link = Shortest.get(str(track.uri), st)
+                        link = str(track.uri)
                         embed = discord.Embed(title = "Playing Stream:",
                                         description = f"**:play_pause: __| [{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    await ctx.send(embed = embed)
+                    await ctx.send(embed = embeds)
 
                 else:
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
@@ -195,7 +197,7 @@ class Music(commands.Cog):
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
 
-                    link = Shortest.get(str(track.uri), st)
+                    link = str(track.uri)
                     if player.is_playing:
                         embed = discord.Embed(title = "Enqueued:",
                                         description = f":play_pause: | __**[{str(track)}]({link})**__",
@@ -222,7 +224,7 @@ class Music(commands.Cog):
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
                 
-                link = Shortest.get(str(track.uri), st)
+                link = str(track.uri)
                 if player.is_playing:
                     embed = discord.Embed(title = "Enqueued:",
                                     description = f":play_pause: | __**[{str(track)}]({link})**__",
@@ -255,7 +257,7 @@ class Music(commands.Cog):
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
             
-            link = Shortest.get(str(track.uri), st)
+            link = str(track.uri)
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
                                       description = f":play_pause: | __**[{str(track)}]({link})**__",
@@ -311,7 +313,7 @@ class Music(commands.Cog):
 
             await controller.queue.put(track)
 
-            link = Shortest.get(str(track.uri), st)
+            link = str(track.uri)
             if player.is_playing:
                 embed2 = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | __**[{str(track)}]({link})**__",
@@ -348,7 +350,7 @@ class Music(commands.Cog):
 
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
-            link = Shortest.get(str(track.uri), st)
+            link = str(track.uri)
             if player.is_playing:
                 embed = discord.Embed(title = "Enqueued:",
                                 description = f":play_pause: | __**[{str(track)}]({link})**__",
@@ -433,7 +435,7 @@ class Music(commands.Cog):
             loop_state = "Disabled"
 
         embed = discord.Embed(title = "Now Playing:",
-                              description = f":play_pause: | __**[{player.current.title}]({Shortest.get(player.current.uri, st)})**__ \n\n[{track_position} {player_tracker} {track_length}]",
+                              description = f":play_pause: | __**[{player.current.title}]({player.current.uri})**__ \n\n[{track_position} {player_tracker} {track_length}]",
                               color = discord.Colour.dark_red()
                               )
         embed.add_field(name = "Track Player", value = f"{player.current.requester.mention}")
@@ -466,7 +468,7 @@ class Music(commands.Cog):
                     controller.loop_state = "0"
                     message = ":arrow_right: | Looping has been **disabled**."
 
-                await ctx.send(message)
+                await ctx.send(Messageable)
             else:
                 await ctx.send(":question: | You have to play a track first.")
 

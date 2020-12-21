@@ -6,6 +6,9 @@ from discord import Member
 from discord.ext import commands
 from discord.ext import tasks
 from shortest import Shortest
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 st = "67587c0f933aa8ab2e59377a14d0d315"
 
@@ -83,7 +86,7 @@ async def shorten(ctx, url : str = None):
     if url is None:
         url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
     try:
-        short = Shortest.get(url, st)
+        short = urle.sou
     except ValueError:
         raise await ctx.send(":question: | Pass a valid url.")
 
@@ -151,7 +154,7 @@ async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
     url = str(member.avatar_url)
-    short = Shortest.get(url, st)
+    short = urle.sou
     embed = discord.Embed(description = f"**• Avatar link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
@@ -165,7 +168,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 async def icon(ctx):
     guild = ctx.guild
     url = str(guild.icon_url)
-    short = Shortest.get(url, st)
+    short = urle.sou
     embed = discord.Embed(description = f"**• Icon link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
@@ -201,7 +204,7 @@ async def say(ctx, *, message = None):
 async def meme(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     meme = await kclient.images.random_meme()
-    embed = discord.Embed(description = f"**[{meme.title}]({Shortest.get(meme.source, st)})**",
+    embed = discord.Embed(description = f"**[{meme.title}]({meme.source})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -213,7 +216,7 @@ async def meme(ctx):
 async def cute(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     cute = await kclient.images.random_aww()
-    embed = discord.Embed(description = f"**[{cute.title}]({Shortest.get(cute.source, st)})**",
+    embed = discord.Embed(description = f"**[{cute.title}]({cute.source})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -224,7 +227,7 @@ async def cute(ctx):
 
 
 
-#management commands
+#moderation commands
 @client.command(aliases = ["Clear"])
 @commands.has_permissions(manage_messages = True)
 async def clear(ctx, amount = 1):
