@@ -32,6 +32,11 @@ async def on_ready():
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
 
+    channel = client.get_channel(732956308365639745)
+    guild = client.get_guild(732956308365639741)
+    member = guild.get_member(732612405858664458)
+    await channel.send(f":mailbox_with_mail: | Hey {member.mention} just reminding you that you are an awesome robot just like me, be proud! :sparkling_heart:")
+
 @client.command(aliases = ["Gift", "nitro", "Nitro"])
 async def gift(ctx):
     if ctx.message.author.id == 732612405858664458:
