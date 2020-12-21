@@ -29,7 +29,7 @@ async def on_ready():
     client.load_extension("cogs.recommendations")
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
-        print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner}")
+        print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
 
 @client.command(aliases = ["Gift", "nitro", "Nitro"])
 async def gift(ctx):
@@ -56,7 +56,7 @@ async def help(ctx):
     embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`.")
     embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
     embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, ` :star: equalizer`, `lyrics`, ` :star: volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
+    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `⭐ equalizer`, `lyrics`, `⭐ volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
     embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
     embed.set_footer(text = "Command Prefix is: ." )
 
