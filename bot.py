@@ -27,7 +27,7 @@ async def on_ready():
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
     client.load_extension("cogs.recommendations")
-    client.load_extension("cogs.security")
+    client.load_extension("cogs.topgg")
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
