@@ -86,7 +86,7 @@ async def shorten(ctx, url : str = None):
     if url is None:
         url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
     try:
-        short = urle.sou
+        short = url
     except ValueError:
         raise await ctx.send(":question: | Pass a valid url.")
 
@@ -154,7 +154,7 @@ async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
     url = str(member.avatar_url)
-    short = urle.sou
+    short = url
     embed = discord.Embed(description = f"**• Avatar link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
@@ -168,7 +168,7 @@ async def avatar(ctx, *, member : discord.Member = None):
 async def icon(ctx):
     guild = ctx.guild
     url = str(guild.icon_url)
-    short = urle.sou
+    short = url
     embed = discord.Embed(description = f"**• Icon link:** __[Link]({short})__",
                           colour = discord.Colour.dark_red()
                          )
@@ -204,7 +204,7 @@ async def say(ctx, *, message = None):
 async def meme(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     meme = await kclient.images.random_meme()
-    embed = discord.Embed(description = f"**[{meme.title}]({meme.source})**",
+    embed = discord.Embed(description = f"**[{meme.title}]({memrce})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
@@ -216,7 +216,7 @@ async def meme(ctx):
 async def cute(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     cute = await kclient.images.random_aww()
-    embed = discord.Embed(description = f"**[{cute.title}]({cute.source})**",
+    embed = discord.Embed(description = f"**[{cute.title}]({cutrce})**",
                           color = discord.Colour.dark_red()
                          )
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
