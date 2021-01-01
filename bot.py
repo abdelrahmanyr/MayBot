@@ -74,7 +74,7 @@ async def help(ctx, command_arg : str = None):
         command = client.get_command(command_arg.lower())
         if command.description == "":
             command.description = "No description needed."
-        if command.usage == "None":
+        if command.usage is None:
             command.usage = f"`.{command.name}`"
         embed = discord.Embed(title = str(command.name.capitalize()),
                               colour = discord.Colour.dark_red(),
