@@ -226,9 +226,9 @@ async def icon(ctx):
 
 @client.command(aliases = ["how"],
                 description = "Rates how much an adjective describes a member.",
-                usage = "`.howmuch [adjective] [member]`"
+                usage = "`.howmuch [member] [adjective]`"
                )
-async def howmuch(ctx, *, adjective, member : discord.Member = None):
+async def howmuch(ctx, member : discord.Member = None, *, adjective):
     if member is None:
         await ctx.send(":question: | Please mention a specified member.")
     percentage = list(range(0, 101))
