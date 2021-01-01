@@ -83,7 +83,7 @@ async def help(ctx, command_arg : str = None):
         embed.add_field(name = "Format", value = str(command.usage), inline = False)
         if command.aliases:
             aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
-            embed.add_field(name = "Aliases", value = command.aliases, inline = False)
+            embed.add_field(name = "Aliases", value = aliases, inline = False)
         await ctx.send(embed = embed)
     else:
         await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
