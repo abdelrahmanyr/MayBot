@@ -72,16 +72,20 @@ async def help(ctx, command_arg : str = None):
         await ctx.send(embed = embed)
     elif command_arg.lower() in commands:
         command = client.get_command(command_arg.lower())
+        if command.description == "":
+            command.description = "No description needed."
+        if command.usage == "":
+            command.usage = f"`.{command.name}`"
         embed = discord.Embed(title = str(command.name.capitalize()),
                               colour = discord.Colour.dark_red(),
                              )
         embed.add_field(name = "Description", value = str(command.description), inline = False)
         embed.add_field(name = "Format", value = str(command.usage), inline = False)
         if command.aliases:
+            aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
             embed.add_field(name = "Aliases", value = command.aliases, inline = False)
         await ctx.send(embed = embed)
     else:
-        print(str(command_arg).lower(), "no")
         await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
 
 @client.command(description = "Returns a list of commands' aliases.",
