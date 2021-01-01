@@ -18,7 +18,9 @@ class Recommendations(commands.Cog):
         self.bot = bot
 
 
-    @commands.command(aliases = ["Artist"])
+    @commands.command(description = "Returns an artist's information, albums and top tracks based on the input from Spotify.",
+                      usage = "`.artist [artist name]`"
+                     )
     async def artist(self, ctx, *, artist = None):
 
         if artist is None:
@@ -57,7 +59,9 @@ class Recommendations(commands.Cog):
             await ctx.send(embed = embed)
 
 
-    @commands.command(aliases = ["Album"])
+    @commands.command(description = "Returns an album's information, and tracks based on the input from Spotify.",
+                      usage = "`.album [album name]`"
+                     )
     async def album(self, ctx, *, album = None):
 
         if album is None:
@@ -90,7 +94,8 @@ class Recommendations(commands.Cog):
 
 
 
-    @commands.command(aliases = ["Playlist"])
+    @commands.command(description = "Returns a list of tracks in a playlist based on the input from Spotify.",
+                      usage = "`.playlist [playlist name]`")
     async def playlist(self, ctx, *, playlist = None):
 
         if playlist is None:
@@ -122,7 +127,8 @@ class Recommendations(commands.Cog):
             embed.set_image(url = image_url)
             await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["Track"])
+    @commands.command(description = "Returns a track's information, and similar tracks based on the input from Spotify.",
+                      usage = "`.track [track name]`")
     async def track(self, ctx, *, track = None):
 
         if track is None:

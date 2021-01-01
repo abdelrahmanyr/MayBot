@@ -119,7 +119,10 @@ class Music(commands.Cog):
         return controller
 
 
-    @commands.command(name='connect', aliases = ["Connect", "c", "join", "Join"])
+    @commands.command(name = "connect", aliases = ["c", "join"],
+                      description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
+                      usage = "`.connect\n.connect [voice channel]`"
+                     )
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
         if not channel:
             try:
@@ -132,11 +135,16 @@ class Music(commands.Cog):
             await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
 
         await player.connect(channel.id)
-
+        if player.is_paused:
+            await player.set_pause(pause = False)
+            
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
     
-    @commands.command(aliases = ["Play", "p", "P"])
+    @commands.command(aliases = ["p"],
+                      description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result.",
+                      usage = "`.play [query]\n.play [URL]`"
+                     )
     async def play(self, ctx, *, query: str):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -244,7 +252,10 @@ class Music(commands.Cog):
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-    @commands.command(aliases = ["Soundcloud", "SoundCloud", "scd", "Scd", "SCD"])
+    @commands.command(aliases = ["scd"],
+                      description = "Searches SoundCloud for the query and plays the first result found.",
+                      usage = "`.soundcloud [query]`"
+                     )
     async def soundcloud(self, ctx, *, query: str):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -278,7 +289,10 @@ class Music(commands.Cog):
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
 
-    @commands.command(aliases = ["Search", "sc", "Sc", "SC"])
+    @commands.command(aliases = ["sc"],
+                      description = "Searches Youtube for the query then returns a list for the first 10 results (to play a result type its number before the timeout of 20 seconds).",
+                      usage = "`.search [query]`"
+                     )
     async def search(self, ctx, *, query: str):
         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
 
@@ -333,7 +347,9 @@ class Music(commands.Cog):
 
 
 
-    @commands.command(aliases = ["Queen"])
+    @commands.command(description = "Plays a random Queen song of their greatest songs.",
+                      usage = "`.queen`"
+                     )
     async def queen(self, ctx):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/playlist?list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
@@ -370,7 +386,10 @@ class Music(commands.Cog):
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
 
-    @commands.command(aliases = ["Nowplaying", "NowPlaying", "np", "Np", "NP" "now", "Now"])
+    @commands.command(aliases = ["np", "Now"],
+                      description = "Returns an embed containing information about the currently playing song and track looping state.",
+                      usage = "`.nowplaying`"
+                     )
     async def nowplaying(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -445,7 +464,10 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["Loop", "repeat", "Repeat"])
+    @commands.command(aliases = ["repeat"],
+                     description = "Changes the player's loop state depending on the specified state, there are 3 states activated respectively when no state is specified which are:\nQueue looping, Track looping, Disabled.",
+                     usage = "`.loop\n.loop queue/all/on\n.loop track/one/current\n.loop off/disable/stop`"
+                     )
     async def loop(self,ctx, state : str = None):
         controller = self.get_controller(ctx)
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -457,22 +479,34 @@ class Music(commands.Cog):
                     pass
                 controller.previous.append(player.current)
 
-
-                if controller.loop_state == "0" or state in ["queue", "Queue", "all", "All", "on", "On"]:
-                    controller.loop_state = "2"
-                    message = ":repeat: | Queue looping has been **enabled**."
-                elif controller.loop_state == "2" or state in ["track", "Track", "one", "One", "current", "Current"]:
-                    controller.loop_state = "1"
-                    message = ":repeat_one: | Track looping has been **enabled**."
-                elif controller.loop_state == "1" or state in ["off", "Off", "disable", "Disable", "stop", "Stop"]:
-                    controller.loop_state = "0"
-                    message = ":arrow_right: | Looping has been **disabled**."
+                if state is None:
+                    if controller.loop_state == "0" :
+                        controller.loop_state = "2"
+                        message = ":repeat: | Queue looping has been **enabled**."
+                    elif controller.loop_state == "2" :
+                        controller.loop_state = "1"
+                        message = ":repeat_one: | Track looping has been **enabled**."
+                    elif controller.loop_state == "1" :
+                        controller.loop_state = "0"
+                        message = ":arrow_right: | Looping has been **disabled**."
+                else:
+                    if state.lower() in ["queue", "all", "on"]:
+                        controller.loop_state = "2"
+                        message = ":repeat: | Queue looping has been **enabled**."
+                    elif state.lower() in ["track", "one", "current"]:
+                        controller.loop_state = "1"
+                        message = ":repeat_one: | Track looping has been **enabled**."
+                    elif state.lower() in ["off", "disable", "stop"]:
+                        controller.loop_state = "0"
+                        message = ":arrow_right: | Looping has been **disabled**."
 
                 await ctx.send(message)
             else:
                 await ctx.send(":question: | You have to play a track first.")
 
-    @commands.command(aliases = ["Lyrics"])
+    @commands.command(description = "Returns the lyrics depending on the input query, if no input then returns the lyrics of the currently playing track.",
+                      usage = "`.lyrics\n.lyrics [query]`"
+                     )
     async def lyrics(self, ctx, *, query : str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
@@ -497,7 +531,10 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["Queue", "q", "Q"])
+    @commands.command(aliases = ["q"],
+                      description = "Returns the server's queued tracks.",
+                      usage = "`.queue`"
+                     )
     async def queue(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -534,7 +571,10 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command(aliases = ["Shuffle", "mix", "Mix"])
+    @commands.command(aliases = ["mix"],
+                      description = "Shuffles the queue, it must contain more than 3 tracks to be shuffled in a right way.",
+                      usage = "`.shuffle`"
+                     )
     async def shuffle(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -549,7 +589,10 @@ class Music(commands.Cog):
             else:
                 await ctx.send(f":question: | You need to put more tracks in your queue to shuffle.")
 
-    @commands.command(aliases = ["Equalizer", "eq", "Eq", "EQ"])
+    @commands.command(aliases = ["eq"],
+                      description = "Displays the currently applied equalizer or changes the player's equalizer depending on the specified name, the current equalizers are:\nDefault, Boost, Metal, Piano.",
+                      usage = "`.equalizer\n.equalizer [equalizer name]`"
+                     )
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
@@ -587,7 +630,10 @@ class Music(commands.Cog):
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)
-    @commands.command(aliases = ["Volume", "vol", "Vol"])
+    @commands.command(aliases = ["vol"],
+                      description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000",
+                      usage = "`.vol\n.vol [level]`"
+                     )
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
@@ -610,7 +656,9 @@ class Music(commands.Cog):
                                  )
             await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["Seek"])
+    @commands.command(description = "Seeks the current track to the specified position, position must be in seconds.",
+                      usage = "`.seek [position]`"
+                     )
     async def seek(self, ctx,* , position = 0):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -626,7 +674,10 @@ class Music(commands.Cog):
                 else:
                     await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
 
-    @commands.command(aliases = ["Skip", "s", "S"])
+    @commands.command(aliases = ["s"],
+                      description = "Skips to the next track in the queue or stops if no tracks were added to the queue.",
+                      usage = "`.skip`"
+                     )
     async def skip(self, ctx, number : int = 1):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -637,7 +688,10 @@ class Music(commands.Cog):
                 await ctx.send(f":question: | There is no current track to skip.")
             await player.stop()
 
-    @commands.command(aliases = ["Clearqueue", "ClearQueue", "cq", "Cq", "CQ"])
+    @commands.command(aliases = ["cq"],
+                      description = "Clears the queue and the current track.",
+                      usage = "`.clearqueue`"
+                     )
     async def clearqueue(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -649,8 +703,11 @@ class Music(commands.Cog):
                 controller.queue._queue.clear()
                 await ctx.send(":wastebasket: | Your queue has been cleared.")
 
-    @commands.command(aliases = ["Remove", "r", "R"])
-    async def remove(self, ctx, number : int, number2 : int = None):
+    @commands.command(aliases = ["r"],
+                     description = "Removes a track from the queue depending on the number entered.",
+                     usage = "`.remove [track number]`"
+                     )
+    async def remove(self, ctx, number : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
@@ -664,7 +721,10 @@ class Music(commands.Cog):
                     await ctx.send(f":track_next: | **{value.title}** has been removed.")
                     controller.queue._queue.remove(value)
             
-    @commands.command(aliases = ["Skipto", "SkipTo", "st", "St", "ST"])
+    @commands.command(aliases = ["st"],
+                      description = "Skips to a specified song in the queue removing all the songs before it.",
+                      usage = "`.skipto [track number]`"
+                     )
     async def skipto(self, ctx, number : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -679,7 +739,9 @@ class Music(commands.Cog):
                 await player.stop()
                 await ctx.send(f":track_next: | Player has skipped to **{controller.queue._queue[0].title}**.")
 
-    @commands.command(aliases = ["Move"])
+    @commands.command(description = "Moves a song in the queue to a new position depending on the input.",
+                      usage = "`.move [track position] [new position]`"
+                     )
     async def move(self, ctx, track : int, pos : int):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
@@ -694,7 +756,9 @@ class Music(commands.Cog):
                 controller.queue._queue.insert(pos, value)
                 await ctx.send(f"**:track_next: | {value.title}** has been moved to position **{pos + 1}**")
 
-    @commands.command(aliases = ["Pause"])
+    @commands.command(description = "Pauses the player untill it's resumed again.",
+                      usage = "`.pause`"
+                     )
     async def pause(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -703,7 +767,9 @@ class Music(commands.Cog):
                 await ctx.send(f":pause_button: | Player has been paused.")
             await player.set_pause(pause = True)
 
-    @commands.command(aliases = ["Resume"])
+    @commands.command(description = "Resumes the player.",
+                      usage = "`.resume`"
+                     )
     async def resume(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -713,7 +779,10 @@ class Music(commands.Cog):
             await player.set_pause(pause = False)
 
 
-    @commands.command(aliases = ["Stop", "sp", "Sp", "SP"])
+    @commands.command(aliases = ["sp"],
+                      description = "Stops the player, clears the queue, and disconnects the bot from the voice channel.",
+                      usage = "`.stop`"
+                     )
     async def stop(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -728,7 +797,10 @@ class Music(commands.Cog):
             await player.disconnect()
             await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
-    @commands.command(aliases = ["Disconnect", "dc", "DC", "Dc", "leave", "Leave"])
+    @commands.command(aliases = ["dc", "leave"],
+                      description = "Disconnects the bot from the voice channel without clearing the queue but pausing the current track untill it connects again..",
+                      usage = "`.disconnect`"
+                     )
     async def disconnect(self, ctx, *, channel: discord.VoiceChannel = None):
         if not channel:
             channel = ctx.author.voice.channel
@@ -737,6 +809,7 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
             if player.is_connected:
                 await ctx.send(f":eject: | Disconnecting from **`{channel.name}`**.")
+            await player.set_pause(pause = True)
             await player.disconnect()
 
 def setup(client):

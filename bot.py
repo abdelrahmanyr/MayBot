@@ -15,7 +15,7 @@ st = "67587c0f933aa8ab2e59377a14d0d315"
 intents = discord.Intents.default()
 intents.members = True
 
-client = commands.Bot(command_prefix = ".", intents = intents)
+client = commands.Bot(command_prefix = ".", intents = intents, case_insensitive = True)
 client.remove_command("help")
 
 #bot status
@@ -32,12 +32,7 @@ async def on_ready():
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
 
-    channel = client.get_channel(732956308365639745)
-    guild = client.get_guild(732956308365639741)
-    member = guild.get_member(732612405858664458)
-    await channel.send(f":mailbox_with_mail: | Hey {member.mention} just reminding you that you are an awesome robot just like me, be proud! :sparkling_heart:")
-
-@client.command(aliases = ["Gift", "nitro", "Nitro"])
+@client.command(aliases = ["nitro"])
 async def gift(ctx):
     if ctx.message.author.id == 732612405858664458:
         await ctx.send(":robot: | A robot has been detected, no gift for you.")
@@ -52,26 +47,46 @@ async def gift(ctx):
 
 
 #bot info commands
-@client.command(aliases = ["Help"])
-async def help(ctx):
+@client.command(description = "Returns a list of all commands or explains a specific command.",
+                usage = "`.help\n.help [command]`"
+               )
+async def help(ctx, command_arg : str = None):
 
-    embed = discord.Embed(
-        title = "About MayBot:",
-        description = ":guitar: | MayBot is a multipurpose bot which can be used in moderating your server, playing music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n__**Check the list of the commands below:**__",
-        colour = discord.Colour.dark_red()
-    )
-    embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
-    embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
-    embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`.")
-    embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
-    embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
-    embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `⭐ equalizer`, `lyrics`, `⭐ volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
-    embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
-    embed.set_footer(text = "Command Prefix is: ." )
+    commands = []
+    for command in client.commands:
+        commands.append(command.name)
+    if command_arg is None:
+        embed = discord.Embed(
+            title = "About MayBot:",
+            description = ":guitar: | MayBot is a multipurpose bot which can be used in moderating your server, playing music, having fun with friends, etc..\nBut the idea behind the bot name is the famous guitarist **Brian May** who was the guitarist for the Rock n' Roll band **Queen**. | :guitar: \n__**Check the list of the commands below:**__\nFor more inforamtion about a specific command, type `.help [command]`.",
+            colour = discord.Colour.dark_red()
+        )
+        embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
+        embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
+        embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `short`, `vote`.")
+        embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
+        embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
+        embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `⭐ equalizer`, `lyrics`, `⭐ volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
+        embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
+        embed.set_footer(text = "Command Prefix is: ." )
+        await ctx.send(embed = embed)
+    elif command_arg.lower() in commands:
+        command = client.get_command(command_arg.lower())
+        embed = discord.Embed(title = str(command.name.capitalize()),
+                              colour = discord.Colour.dark_red(),
+                             )
+        embed.add_field(name = "Description", value = str(command.description), inline = False)
+        embed.add_field(name = "Format", value = str(command.usage), inline = False)
+        if command.aliases:
+            embed.add_field(name = "Aliases", value = command.aliases, inline = False)
+        await ctx.send(embed = embed)
+    else:
+        print(str(command_arg).lower(), "no")
+        await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
 
-    await ctx.send(embed = embed)
-
-@client.command(aliases = ["Aliases"])
+@client.command(description = "Returns a list of commands' aliases.",
+                usage = "`.aliases`"
+               )
 async def aliases(ctx):
 
     embed = discord.Embed(
@@ -82,15 +97,20 @@ async def aliases(ctx):
     embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
     embed.add_field(name = ":tada: | Fun Commands", value = "• **8Ball:** `8b`. \n• **Avatar:** `av`. \n• **ServerIcon:** `serveravatar`, `icon`. \n• **HowMuch:** `how`.", inline = False)
     embed.add_field(name = ":musical_note: | Music Commands", value = " • **Connect:** `join`, `c`. \n• **Play:** `p`. \n• **SoundCloud:** `scd`. \n• **Search:** `sc`. \n• **NowPlaying:** `now`, `np`. \n• **Repeat:** `loop`. \n• **Equalizer:** `eq`. \n• **Volume:** `vol`. \n• **Queue:** `q`. \n• **Shuffle:** `mix`. \n• **Skip:** `s`. \n• **Remove:** `r`. \n• **ClearQueue:** `cq`. \n• **Stop:** `st`. \n• **Disconnect:** `leave`, `dc`.", inline = False)
-    embed.set_footer(text = "Command Prefix is: .\nCapitalizations at first letter is allowed")
+    embed.set_footer(text = "Command Prefix is: .")
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Ping"])
+@client.command(description = "Returns the client latency.",
+                usage = "`.ping`"
+               )
 async def ping(ctx):
     await ctx.send(f":question: | __**Picking speed ?!**__\n:gear: | {round(client.latency * 1000)} ms.")
 
-@client.command(aliases = ["Shorten", "short", "Short"])
+@client.command(aliases = ["short"],
+                description = "Shortens a URL by using shorte.st platform.",
+                usage = "`.shorten [URL]`"
+               )
 async def shorten(ctx, url : str = None):
     if url is None:
         url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
@@ -110,7 +130,9 @@ async def shorten(ctx, url : str = None):
     embed.set_footer(text = f"Shortened by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Vote"])
+@client.command(description = "Returns an embed containing the links of bot's profiles which allows voting",
+                usage = "`.vote`"
+               )
 async def vote(ctx):
     embed = discord.Embed(title = "Vote",
                           description = f":ballot_box: | Vote for me at __**[top.gg](https://top.gg/bot/747965125599821914)**__ or at __**[discordbotlist.com](https://discord.ly/maybot)**__.",          
@@ -120,7 +142,10 @@ async def vote(ctx):
 
 
 #fun commands
-@client.command(aliases = ["8ball", "8Ball", "8b", "8B"])
+@client.command(name = "8ball", aliases = ["8b"],
+                description = "Gives a random answer for a yes/no question.",
+                usage = "`.8ball [question]`"
+               )
 async def _8ball(ctx, *, question):
     responses = ["It is certain.",
                  "It is decidedly so.",
@@ -143,7 +168,9 @@ async def _8ball(ctx, *, question):
                  "Very doubtful."]
     await ctx.send(f":8ball: | {random.choice(responses)}")
 
-@client.command(aliases = ["Kill"])
+@client.command(description = "Returns a weird death for the member specified.",
+                usage = "`.kill [member]`"
+               )
 async def kill(ctx, *, member : discord.Member):
     author = ctx.message.author
     deaths = [f"`{author.name}` killed `{member.name}` with a flying guitar.",
@@ -158,7 +185,10 @@ async def kill(ctx, *, member : discord.Member):
              ]
     await ctx.send(f":crossed_swords: | {random.choice(deaths)}")
 
-@client.command(aliases = ["Avatar", "av", "Av","AV"])
+@client.command(aliases = ["av"],
+                description = "Returns the mentioned member's avatar, if a member was not mentioned then returns the avatar of the message author.",
+                usage = "`.avatar\n.avatar [member]`"
+               )
 async def avatar(ctx, *, member : discord.Member = None):
     if member is None:
         member = ctx.message.author
@@ -173,7 +203,10 @@ async def avatar(ctx, *, member : discord.Member = None):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Icon", "servericon", "ServerIcon", "Servericon", "serveravatar", "ServerAvatar", "Serveravatar", "serverav", "ServerAv", "Server AV"])
+@client.command(aliases = ["servericon", "serveravatar", "serverav", "avatar server"],
+                description = "Returns the server's icon.",
+                usage = "`.icon`"
+               )
 async def icon(ctx):
     guild = ctx.guild
     url = str(guild.icon_url)
@@ -187,8 +220,11 @@ async def icon(ctx):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ("Howmuch", "HowMuch", "how", "How"))
-async def howmuch(ctx, adjective, *, member : discord.Member = None):
+@client.command(aliases = ["how"],
+                description = "Rates how much an adjective describes a member.",
+                usage = "`.howmuch [adjective] [member]`"
+               )
+async def howmuch(ctx, *, adjective, member : discord.Member = None):
     if member is None:
         await ctx.send(":question: | Please mention a specified member.")
     percentage = list(range(0, 101))
@@ -201,15 +237,29 @@ async def howmuch(ctx, adjective, *, member : discord.Member = None):
 
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Say"])
+@client.command(description = "Repeats your message.",
+                usage = "`.say [message]`"
+               )
 async def say(ctx, *, message = None):
+    if message is None:
+        await ctx.send(f":question: | I have nothing to say")
+    elif message is not None:
+        await ctx.send(message)
+        await ctx.message.delete()
+
+@client.command(description = "Repeats your message but with a loudspeaker emoji.",
+                usage = "`.announce [message]`"
+               )
+async def announce(ctx, *, message = None):
     if message is None:
         await ctx.send(f":question: | I have nothing to say")
     elif message is not None:
         await ctx.send(f":loudspeaker: | {message}")
         await ctx.message.delete()
 
-@client.command(aliases = ["Meme"])
+@client.command(description = "Returns a random meme from Reddit.",
+                usage = "`.meme`"
+               )
 async def meme(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     meme = await kclient.images.random_meme()
@@ -221,7 +271,9 @@ async def meme(ctx):
     embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
-@client.command(aliases = ["Cute"])
+@client.command(description = "Returns a random cute picture from Reddit.",
+                usage = "`.cute`"
+               )
 async def cute(ctx):
     kclient = ksoftapi.Client("ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064")
     cute = await kclient.images.random_aww()
@@ -234,28 +286,26 @@ async def cute(ctx):
     await ctx.send(embed = embed)
 
 
-
-
 #moderation commands
-@client.command(aliases = ["Clear"])
+@client.command()
 @commands.has_permissions(manage_messages = True)
 async def clear(ctx, amount = 1):
     await ctx.channel.purge(limit = amount)
 
 
-@client.command(aliases = ["Kick"])
+@client.command()
 @commands.has_permissions(kick_members = True)
 async def kick(ctx, member : discord.Member):
     await member.kick()
     await ctx.send(f":wave: | {member} has been kicked.")
 
-@client.command(aliases = ["Ban"])
+@client.command()
 @commands.has_permissions(ban_members = True)
 async def ban(ctx, member : discord.Member):
     await member.ban()
     await ctx.send(f":wave: | {member} has been banned.")
 
-@client.command(aliases = ["Unban"])
+@client.command()
 @commands.has_permissions(ban_members = True)
 async def unban(ctx, *, member):
     banned_users = await ctx.guild.bans()
@@ -267,14 +317,14 @@ async def unban(ctx, *, member):
             await ctx.send(f":handshake: | {user.name}#{user.discriminator} has been unbanned.")
             return
 
-@client.command(aliases = ["Mute"])
+@client.command()
 @commands.has_permissions(manage_roles = True)
 async def mute(ctx, *, member : discord.Member):
     role = discord.utils.get(member.guild.roles, name="Muted")
     await member.add_roles(role)
     await ctx.send(f":mute: | {member.mention} has been muted.")
 
-@client.command(aliases = ["Unmute"])
+@client.command()
 @commands.has_permissions(manage_roles = True)
 async def unmute(ctx, *, member : discord.Member):
     role = discord.utils.get(member.guild.roles, name="Muted")
