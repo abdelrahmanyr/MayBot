@@ -5,3 +5,6 @@ asyncio
 typing
 aiohttp
 ksoftapi
+dbl
+shortest
+spotipy
