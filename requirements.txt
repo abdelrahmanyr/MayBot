@@ -6,5 +6,5 @@ typing
 aiohttp
 ksoftapi
 dblpy
-shortest
+git+https://github.com/CubexX/shortest-python.git
 spotipy
