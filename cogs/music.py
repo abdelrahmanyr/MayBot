@@ -407,7 +407,6 @@ class Music(commands.Cog):
             time_left = int(player.current.length) - int(player.position)
             track_left = datetime.timedelta(seconds = int(time_left / 1000))
 
-
             player_tracker = ""
             
             length = round(player.current.length // 20) 
@@ -418,7 +417,6 @@ class Music(commands.Cog):
                    player_tracker += ":radio_button:" 
                 else:
                    player_tracker += "▬"
-
 
         if controller.loop_state == "1":
             loop_state = "Enabled"

@@ -21,8 +21,8 @@ client.remove_command("help")
 #bot status
 @client.event
 async def on_ready():
-    activity = discord.Game(name="Bohemian Rhapsody | .help", type=0)
-    await client.change_presence(status=discord.Status.online, activity=activity)
+    activity = discord.Game(name="Bohemian Rhapsody | .help", type = 0)
+    await client.change_presence(status=discord.Status.online, activity = activity)
     print("May is shredding")
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
@@ -30,7 +30,7 @@ async def on_ready():
     client.load_extension("cogs.topgg")
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
-        print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({server.member_count} Members)")
+        print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({len(server.members)} Members)")
 
 @client.command(aliases = ["nitro"])
 async def gift(ctx):
