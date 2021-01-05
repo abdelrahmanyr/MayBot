@@ -410,11 +410,11 @@ class Music(commands.Cog):
 
             player_tracker = ""
             
-            tlpbar = round(player.current.length // 20) 
-            player_tracker = round(player.position // tlpbar)
+            length = round(player.current.length // 20) 
+            position = round(player.position // tlpbar)
             
             for i in range(20):
-                if i == player_tracker:
+                if i == position:
                    player_tracker += ":radio_button:" 
                 else:
                    player_tracker += "▬"
