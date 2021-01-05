@@ -406,47 +406,19 @@ class Music(commands.Cog):
             track_position = datetime.timedelta(seconds = int(player.position / 1000))
             time_left = int(player.current.length) - int(player.position)
             track_left = datetime.timedelta(seconds = int(time_left / 1000))
-            ppp = player.position / player.current.length * 100
-            if ppp >= 0:
-                player_tracker = "🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #1
-            if ppp >= 5:
-                player_tracker = "▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #2
-            if ppp >= 10:
-                player_tracker = "▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #3
-            if ppp >= 15:
-                player_tracker = "▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #4
-            if ppp >= 20:
-                player_tracker = "▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #5
-            if ppp >= 25:
-                player_tracker = "▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬▬" #6
-            if ppp >= 30:
-                player_tracker = "▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬▬" #7
-            if ppp >= 35:
-                player_tracker = "▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬▬" #8
-            if ppp >= 40:
-                player_tracker = "▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬▬" #9
-            if ppp >= 45:
-                player_tracker = "▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬" #10
-            if ppp >= 50:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬" #11
-            if ppp >= 55:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬" #12
-            if ppp >= 60:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬" #13
-            if ppp >= 65:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬" #14
-            if ppp >= 70:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬" #15
-            if ppp >= 75:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬▬" #16
-            if ppp >= 80:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬▬" #17
-            if ppp >= 85:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬▬" #18
-            if ppp >= 90:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘▬" #19
-            if ppp == 100:
-                player_tracker = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔘" #20
+
+
+            player_tracker = ""
+            
+            tlpbar = round(player.current.length // 20) 
+            player_tracker = round(player.position // tlpbar)
+            
+            for i in range(20):
+                if i == player_tracker:
+                   player_tracker += ":radio_button:" 
+                else:
+                   player_tracker += "▬"
+
 
         if controller.loop_state == "1":
             loop_state = "Enabled"
