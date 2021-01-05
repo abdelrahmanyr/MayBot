@@ -411,7 +411,7 @@ class Music(commands.Cog):
             player_tracker = ""
             
             length = round(player.current.length // 20) 
-            position = round(player.position // tlpbar)
+            position = round(player.position // length)
             
             for i in range(20):
                 if i == position:
