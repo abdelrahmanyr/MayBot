@@ -153,7 +153,9 @@ class Music(commands.Cog):
  
 
         if player.channel_id == ctx.author.voice.channel.id:
-
+            if query is None and ctx.message.attachements:
+                query = ctx.message.attachements[0].url
+                
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
@@ -216,7 +218,7 @@ class Music(commands.Cog):
 
                     if not player.is_playing:
                         embed = discord.Embed(title = "Playing:",
-                                        description = f"**:play_pause: | **[{str(track)}]({link})**__",
+                                        description = f":play_pause: | **[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
