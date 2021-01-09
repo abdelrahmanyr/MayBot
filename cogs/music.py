@@ -145,7 +145,7 @@ class Music(commands.Cog):
                       description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result.",
                       usage = "`.play [query]\n.play [URL]`"
                      )
-    async def play(self, ctx, *, query: str):
+    async def play(self, ctx, *, query: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
             await ctx.invoke(self.connect_)
@@ -155,7 +155,7 @@ class Music(commands.Cog):
         if player.channel_id == ctx.author.voice.channel.id:
             if query is None and ctx.message.attachements:
                 query = ctx.message.attachements[0].url
-                
+
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
 
