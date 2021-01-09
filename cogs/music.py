@@ -153,8 +153,8 @@ class Music(commands.Cog):
  
 
         if player.channel_id == ctx.author.voice.channel.id:
-            if query is None and ctx.message.attachements:
-                query = ctx.message.attachements[0].url
+            if query is None and ctx.message.attachments:
+                query = ctx.message.attachments[0].url
 
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
