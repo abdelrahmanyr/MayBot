@@ -142,8 +142,8 @@ class Music(commands.Cog):
         controller.channel = ctx.channel
     
     @commands.command(aliases = ["p"],
-                      description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result.",
-                      usage = "`.play [query]\n.play [URL]`"
+                      description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result and if an attachment was sent with the command without a query your attachment is played.",
+                      usage = "`.play [URL]\n.play [query]\n.play (attatchment)`"
                      )
     async def play(self, ctx, *, query: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -438,7 +438,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases = ["repeat"],
                      description = "Changes the player's loop state depending on the specified state, there are 3 states activated respectively when no state is specified which are:\nQueue looping, Track looping, Disabled.",
-                     usage = "`.loop\n.loop queue/all/on\n.loop track/one/current\n.loop off/disable/stop`"
+                     usage = "`.loop\n.loop 'queue'/'all'/'on'\n.loop 'track'/'one'/'current'\n.loop 'off'/'disable'/'stop'`"
                      )
     async def loop(self,ctx, state : str = None):
         controller = self.get_controller(ctx)
@@ -603,7 +603,7 @@ class Music(commands.Cog):
                                  )
             await ctx.send(embed = embed)
     @commands.command(aliases = ["vol"],
-                      description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000",
+                      description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
                       usage = "`.vol\n.vol [level]`"
                      )
     async def volume(self, ctx, *, vol: int = None):

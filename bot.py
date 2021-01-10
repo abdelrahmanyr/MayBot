@@ -70,6 +70,8 @@ async def help(ctx, command_arg : str = None):
         embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
         embed.set_footer(text = "Command Prefix is: ." )
         await ctx.send(embed = embed)
+
+
     elif command_arg.lower() in commands:
         command = client.get_command(command_arg.lower())
         if command.description == "":
@@ -81,6 +83,7 @@ async def help(ctx, command_arg : str = None):
                              )
         embed.add_field(name = "Description", value = str(command.description), inline = False)
         embed.add_field(name = "Format", value = str(command.usage), inline = False)
+        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge i.e: Roleplay commands, it can take an optional argument which is the member.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
         if command.aliases:
             aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
             embed.add_field(name = "Aliases", value = aliases, inline = False)
