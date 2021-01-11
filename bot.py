@@ -67,7 +67,7 @@ async def help(ctx, command_arg : str = None):
         embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
         embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
         embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `⭐ equalizer`, `lyrics`, `⭐ volume`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
-        embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
+        embed.add_field(name = ":tools: | Moderation Commands", value = "`clear`, `server`, `roles`, mute`, `unmute`, `kick`, `ban`, `unban`.", inline = False)
         embed.set_footer(text = "Command Prefix is: ." )
         await ctx.send(embed = embed)
 
@@ -294,7 +294,7 @@ async def cute(ctx):
 
 
 # Moderation Commands
-@client.command()
+@client.command(aliases = ["guild"])
 async def server(ctx):
     server = ctx.guild
     members = []
