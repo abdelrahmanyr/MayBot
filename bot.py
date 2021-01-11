@@ -83,10 +83,10 @@ async def help(ctx, command_arg : str = None):
                              )
         embed.add_field(name = "Description", value = str(command.description), inline = False)
         embed.add_field(name = "Format", value = str(command.usage), inline = False)
-        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge i.e: Roleplay commands, it can take an optional argument which is the member.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
         if command.aliases:
             aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
             embed.add_field(name = "Aliases", value = aliases, inline = False)
+        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge i.e: Roleplay commands, they can take an optional argument which is the member.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
         await ctx.send(embed = embed)
     else:
         await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
@@ -122,7 +122,7 @@ async def shorten(ctx, url : str = None):
     if url is None:
         url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
     try:
-        short = url
+        short = Shortest.get(url, st)
     except ValueError:
         raise await ctx.send(":question: | Pass a valid url.")
 
@@ -293,7 +293,86 @@ async def cute(ctx):
     await ctx.send(embed = embed)
 
 
-#moderation commands
+# Moderation Commands
+@client.command()
+async def server(ctx):
+    server = ctx.guild
+    members = []
+    bots = []
+    for member in server.members:
+        if member.bot:
+            bots.append(member)
+        else:
+            members.append(member)
+    creation_date = server.created_at.strftime(f"%Y/%m/%d | %I:%M:%S %p (UTC)")
+    tt_emoji = client.get_emoji(798254398575738920)
+    vt_emoji = client.get_emoji(798254398601822214)
+    nitro_emoji = client.get_emoji(798266251562450965)
+    if ctx.guild.owner.color == discord.Colour.default():
+        color = discord.Colour.dark_red()
+    else:
+        color = ctx.guild.owner.color
+    embed = discord.Embed(title = "Server Info",
+                          description = server.description,
+                          colour = color
+                         )
+    embed.set_author(name = server.name, icon_url = server.icon_url)
+    embed.add_field(name = "ID", value = f":id: | `{server.id}`")
+    embed.add_field(name = "Owner", value = f":crown: | {server.owner.mention}")
+    embed.add_field(name = "Creation", value = f":calendar_spiral: | `{creation_date}`")
+    embed.add_field(name = "Members", value = f":busts_in_silhouette: | `{len(server.members)}` Total Members\n:bust_in_silhouette: | `{len(members)}` Persons\n:robot: | `{len(bots)}` Bots", inline = False)
+    embed.add_field(name = "Channels", value = f":file_folder: | `{len(server.categories)}` Categories\n{tt_emoji} | `{len(server.text_channels)}` Text Channels\n{vt_emoji} | `{len(server.voice_channels)}` Voice Channels", inline = False)
+    if server.system_channel:
+        top_channels = f":gear: | {server.system_channel.mention} - System"
+        embed.add_field(name = "Top Channels", value = top_channels)
+    if server.system_channel and server.public_updates_channel:
+        top_channels += f"\n:earth_americas: | {server.public_updates_channel.mention} - Public"
+    if server.system_channel and server.afk_channel:
+        top_channels += f"\n:speech_left: | {server.afk_channel.mention} - AFK"
+    
+    if server.features:
+        embed.add_field(name = "Features", value = "\n".join(f":star: | {str(feature).capitalize()}" for feature in server.features))
+    embed.add_field(name = "Boost", value = f"{nitro_emoji} | `{server.premium_subscription_count}` Boosts • Level `{server.premium_tier}` • `{len(server.premium_subscribers)}` Boosters", inline = False)
+    embed.add_field(name = "Roles", value = f":tools: | `{len(server.roles)}` Roles")
+    embed.add_field(name = "Emojis", value = f":grinning: | `{len(server.emojis)}`/`{server.emoji_limit}` Emojis")
+    embed.add_field(name = "Region", value = f":earth_africa: | *{server.region}*")
+    embed.set_image(url = server.banner_url)
+
+    await ctx.send(embed = embed)
+
+@client.command()
+async def roles(ctx):
+    real_roles = ctx.guild.roles
+    roles = []
+    if ctx.guild.owner.color == discord.Colour.default():
+        color = discord.Colour.dark_red()
+    else:
+        color = ctx.guild.owner.color
+    if len(real_roles) > 50:
+        for role in real_roles:
+            real_roles.remove(role)
+            roles.append(role)
+            if len(roles) == 50:
+                final = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in roles)
+                embed = discord.Embed(title = "Server Roles",
+                                      description = final,
+                                      colour = color)
+                await ctx.send(embed = embed)
+                roles = []
+    else:
+        roles = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in real_roles)
+        embed = discord.Embed(title = "Server Roles",
+                      description = roles,
+                      colour = color)
+        await ctx.send(embed = embed)
+    if len(roles) < 50:
+            final = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in roles)
+            embed2 = discord.Embed(title = "Server Roles",
+                                  description = final,
+                                  colour = color)
+            await ctx.send(embed = embed2)
+    
+
 @client.command()
 @commands.has_permissions(manage_messages = True)
 async def clear(ctx, amount = 1):
