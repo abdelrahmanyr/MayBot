@@ -350,7 +350,6 @@ async def roles(ctx):
         color = ctx.guild.owner.color
     if len(real_roles) > 50:
         for role in real_roles:
-            real_roles.remove(role)
             roles.append(role)
             if len(roles) == 50:
                 final = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in roles)
