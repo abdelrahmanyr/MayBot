@@ -1,6 +1,8 @@
 import discord
 import random
+import math
 import os
+import datetime
 import ksoftapi
 from discord import Member
 from discord.ext import commands
@@ -21,8 +23,10 @@ client.remove_command("help")
 #bot status
 @client.event
 async def on_ready():
-    activity = discord.Game(name="Bohemian Rhapsody | .help", type = 0)
-    await client.change_presence(status=discord.Status.online, activity = activity)
+    activity = discord.Activity(name = "Bohemian Rhapsody | .help",
+                                type = discord.ActivityType.playing,
+                               )
+    await client.change_presence(status = discord.Status.online, activity = activity)
     print("May is shredding")
     client.load_extension("cogs.music")
     client.load_extension("cogs.roleplay")
@@ -305,9 +309,9 @@ async def server(ctx):
         else:
             members.append(member)
     creation_date = server.created_at.strftime(f"%Y/%m/%d | %I:%M:%S %p (UTC)")
-    tt_emoji = client.get_emoji(798254398575738920)
-    vt_emoji = client.get_emoji(798254398601822214)
-    nitro_emoji = client.get_emoji(798266251562450965)
+    tt_emoji = client.get_emoji(799371392033620013)
+    vt_emoji = client.get_emoji(799371392486866984)
+    boost_emoji = client.get_emoji(799372040942387213)
     if ctx.guild.owner.color == discord.Colour.default():
         color = discord.Colour.dark_red()
     else:
@@ -332,7 +336,7 @@ async def server(ctx):
     
     if server.features:
         embed.add_field(name = "Features", value = "\n".join(f":star: | {str(feature).capitalize()}" for feature in server.features))
-    embed.add_field(name = "Boost", value = f"{nitro_emoji} | `{server.premium_subscription_count}` Boosts • Level `{server.premium_tier}` • `{len(server.premium_subscribers)}` Boosters", inline = False)
+    embed.add_field(name = "Boost", value = f"{boost_emoji} | `{server.premium_subscription_count}` Boosts • Level `{server.premium_tier}` • `{len(server.premium_subscribers)}` Boosters", inline = False)
     embed.add_field(name = "Roles", value = f":tools: | `{len(server.roles)}` Roles")
     embed.add_field(name = "Emojis", value = f":grinning: | `{len(server.emojis)}`/`{server.emoji_limit}` Emojis")
     embed.add_field(name = "Region", value = f":earth_africa: | *{server.region}*")
@@ -344,19 +348,22 @@ async def server(ctx):
 async def roles(ctx):
     real_roles = ctx.guild.roles
     roles = []
+    page = 0
+    total_pages = math.ceil(len(real_roles) / 50)
     if ctx.guild.owner.color == discord.Colour.default():
         color = discord.Colour.dark_red()
     else:
         color = ctx.guild.owner.color
     if len(real_roles) > 50:
         for role in real_roles:
-            real_roles.remove(role)
             roles.append(role)
             if len(roles) == 50:
                 final = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in roles)
+                page += 1
                 embed = discord.Embed(title = "Server Roles",
                                       description = final,
                                       colour = color)
+                embed.set_footer(text = f"Page {page} / {total_pages}")
                 await ctx.send(embed = embed)
                 roles = []
     else:
@@ -364,13 +371,96 @@ async def roles(ctx):
         embed = discord.Embed(title = "Server Roles",
                       description = roles,
                       colour = color)
+        embed.set_footer(text = "Page 1 /1")
         await ctx.send(embed = embed)
-    if len(roles) < 50:
+    if 0 < len(roles) < 50:
             final = "\n".join(f"{r.mention} `--> {len(r.members)} Members`"for r in roles)
             embed2 = discord.Embed(title = "Server Roles",
                                   description = final,
                                   colour = color)
+            embed2.set_footer(text = f"Page {page + 1} / {total_pages}")
+
             await ctx.send(embed = embed2)
+
+@client.command(usage = "`.user`\n`.user [user]`")
+async def user(ctx, user : discord.User = None):
+    if user is None:
+        user = ctx.author
+
+    try:
+        member = await ctx.guild.fetch_member(user.id)
+        color = member.color
+    except discord.errors.NotFound:
+        color = discord.Colour.dark_red()
+
+    bot_emoji = client.get_emoji(799399189170618368)
+    at_symbol = client.get_emoji(799400469712863263)
+    staff_emoji = client.get_emoji(799401143109025832)
+    partner_emoji = client.get_emoji(799403821549879301)
+    hunter_emoji = client.get_emoji(799404591845867630)
+    hunter2_emoji = client.get_emoji(799407703708532756)
+    bravery_emoji = client.get_emoji(799371392290258984)
+    brilliance_emoji = client.get_emoji(799371394856517664)
+    balance_emoji = client.get_emoji(799371393610940427)
+    supporter_emoji = client.get_emoji(799406898226790411)
+    dev_emoji = client.get_emoji(799407971125690388)
+    nitro_emoji = client.get_emoji(799371394009006081)
+
+    mention = f"{user.mention} "
+    if user.bot:
+        mention += f"{bot_emoji}"
+    if user.public_flags.staff:
+        mention += f"{staff_emoji}"
+    if user.public_flags.partner:
+        mention += f"{partner_emoji}"
+    if user.public_flags.bug_hunter:
+        mention += f"{hunter_emoji}"
+    if user.public_flags.hypesquad_bravery:
+        mention += f"{bravery_emoji}"
+    if user.public_flags.hypesquad_brilliance:
+        mention += f"{brilliance_emoji}"
+    if user.public_flags.hypesquad_balance:
+        mention += f"{balance_emoji}"
+    if user.public_flags.early_supporter:
+        mention += f"{supporter_emoji}"
+    if user.public_flags.bug_hunter_level_2:
+        mention += f"{hunter2_emoji}"
+    if user.public_flags.verified_bot_developer:
+        mention += f"{dev_emoji}"
+            
+    creation_date = user.created_at.strftime(f"%Y/%m/%d | %I:%M:%S %p (UTC)")
+    creation_since = (datetime.datetime.now() - user.created_at).days
+    
+    def tf(x):
+        if 365 > x > 30:
+            process = int(round(x / 30))
+            number = f"{process} months ago"
+        elif x > 365:
+            process = int(round(x / 365))
+            number = f"{process} years ago"
+        else:
+            number = f"{x} days ago"
+        return number
+
+    embed = discord.Embed(title = "User Info",
+                          colour = color,
+                         )
+    embed.set_author(name = str(user), icon_url = user.avatar_url)
+    embed.add_field(name = "User", value = f"{at_symbol} | {mention} ")
+    embed.add_field(name = "ID", value = f":id: | `{user.id}`")
+    embed.add_field(name = "Account Creation", value = f":calendar_spiral: | `{creation_date}` • `{tf(creation_since)}`", inline = False)
+
+    try:
+        member = await ctx.guild.fetch_member(user.id)
+        roles = ", ".join(f"{role.mention}" for role in member.roles)
+        join = member.joined_at.strftime(f"%Y/%m/%d | %I:%M:%S %p (UTC)")
+        join_since = (datetime.datetime.now() - member.joined_at).days
+        embed.add_field(name = "Server Joining", value = f":calendar: | `{join}` • `{tf(join_since)}`")
+        embed.add_field(name = "Roles", value = f":tools: | {roles}", inline = False)
+    except:
+        pass
+    await ctx.send(embed = embed)
+
     
 
 @client.command()
