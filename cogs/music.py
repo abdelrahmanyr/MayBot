@@ -218,7 +218,7 @@ class Music(commands.Cog):
 
                     if not player.is_playing:
                         embed = discord.Embed(title = "Playing:",
-                                        description = f":play_pause: | **[{str(track)}]({link})**__",
+                                        description = f":play_pause: | __**[{str(track)}]({link})**__",
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")

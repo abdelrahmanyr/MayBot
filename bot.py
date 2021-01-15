@@ -386,6 +386,8 @@ async def roles(ctx):
 async def user(ctx, user : discord.User = None):
     if user is None:
         user = ctx.author
+    if not user:
+        user = client.get_user(user)
 
     try:
         member = await ctx.guild.fetch_member(user.id)
@@ -404,29 +406,28 @@ async def user(ctx, user : discord.User = None):
     balance_emoji = client.get_emoji(799371393610940427)
     supporter_emoji = client.get_emoji(799406898226790411)
     dev_emoji = client.get_emoji(799407971125690388)
-    nitro_emoji = client.get_emoji(799371394009006081)
 
     mention = f"{user.mention} "
     if user.bot:
-        mention += f"{bot_emoji}"
+        mention += f"{bot_emoji} "
     if user.public_flags.staff:
-        mention += f"{staff_emoji}"
+        mention += f"{staff_emoji} "
     if user.public_flags.partner:
-        mention += f"{partner_emoji}"
+        mention += f"{partner_emoji} "
     if user.public_flags.bug_hunter:
-        mention += f"{hunter_emoji}"
+        mention += f"{hunter_emoji} "
     if user.public_flags.hypesquad_bravery:
-        mention += f"{bravery_emoji}"
+        mention += f"{bravery_emoji} "
     if user.public_flags.hypesquad_brilliance:
-        mention += f"{brilliance_emoji}"
+        mention += f"{brilliance_emoji} "
     if user.public_flags.hypesquad_balance:
-        mention += f"{balance_emoji}"
+        mention += f"{balance_emoji} "
     if user.public_flags.early_supporter:
-        mention += f"{supporter_emoji}"
+        mention += f"{supporter_emoji} "
     if user.public_flags.bug_hunter_level_2:
-        mention += f"{hunter2_emoji}"
+        mention += f"{hunter2_emoji} "
     if user.public_flags.verified_bot_developer:
-        mention += f"{dev_emoji}"
+        mention += f"{dev_emoji} "
             
     creation_date = user.created_at.strftime(f"%Y/%m/%d | %I:%M:%S %p (UTC)")
     creation_since = (datetime.datetime.now() - user.created_at).days
@@ -446,8 +447,9 @@ async def user(ctx, user : discord.User = None):
                           colour = color,
                          )
     embed.set_author(name = str(user), icon_url = user.avatar_url)
+    embed.set_thumbnail(url = user.avatar_url)
     embed.add_field(name = "User", value = f"{at_symbol} | {mention} ")
-    embed.add_field(name = "ID", value = f":id: | `{user.id}`")
+    embed.add_field(name = "ID", value = f":id: | `{user.id}`", inline = False)
     embed.add_field(name = "Account Creation", value = f":calendar_spiral: | `{creation_date}` • `{tf(creation_since)}`", inline = False)
 
     try:
