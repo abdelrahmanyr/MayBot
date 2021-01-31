@@ -69,7 +69,7 @@ class MusicController:
 
             await player.play(song)
             
-            self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**.")
+            self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{self.format_time(song.length)}]`**.")
 
             await self.next.wait()
 
@@ -118,6 +118,14 @@ class Music(commands.Cog):
 
         return controller
 
+    def format_time(time):
+        time = round(time)
+        hours, remainder = divmod(time / 1000, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours != 0:
+            return '%02d:%02d:%02d' % (hours, minutes, seconds)
+        else:
+            return '%02d:%02d' % (minutes, seconds)
 
     @commands.command(name = "connect", aliases = ["c", "join"],
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
@@ -174,7 +182,7 @@ class Music(commands.Cog):
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
-                    track_embed.add_field(name = "Total Duration", value = f"`[{(datetime.timedelta(seconds = int(playlist_duration / 1000)))}]`", inline = True)
+                    track_embed.add_field(name = "Total Duration", value = f"`[{self.format_time(playlist_duration)}]`", inline = True)
                     track_embed.add_field(name = "Number of Tracks", value = f"{len(tracks_p)}", inline = True)
                     await ctx.send(embed = track_embed)
                 
@@ -214,7 +222,7 @@ class Music(commands.Cog):
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                        embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                        embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
 
                     if not player.is_playing:
                         embed = discord.Embed(title = "Playing:",
@@ -222,7 +230,7 @@ class Music(commands.Cog):
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                        embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                        embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
                     await ctx.send(embed = embed)
                 
                 
@@ -241,7 +249,7 @@ class Music(commands.Cog):
                                     color = discord.Colour.dark_red()
                                     )
                     embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                    embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
 
                 if not player.is_playing:
                     embed = discord.Embed(title = "Playing:",
@@ -249,7 +257,7 @@ class Music(commands.Cog):
                                     color = discord.Colour.dark_red()
                                     )
                     embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                    embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
                 await ctx.send(embed = embed)
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
@@ -277,7 +285,7 @@ class Music(commands.Cog):
                                       color = discord.Colour.dark_red()
                                      )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Playing:",
@@ -285,7 +293,7 @@ class Music(commands.Cog):
                                       color = discord.Colour.dark_red()
                                      )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
             await ctx.send(embed = embed)
 
             if not tracks:
@@ -309,9 +317,10 @@ class Music(commands.Cog):
 
         if player.channel_id == ctx.author.voice.channel.id:
 
-
+            emojis = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"]
+            list_ = zip(emojis, tracks)
             embed = discord.Embed(title = "Search Results:",
-                              description = f"**:one: | {tracks[0]}** **`[{(datetime.timedelta(seconds = int(tracks[0].length / 1000)))}]`** \n:two: | **{tracks[1]}** **`[{(datetime.timedelta(milliseconds = int(tracks[1].length)))}]`** \n:three: | **{tracks[2]}** **`[{(datetime.timedelta(milliseconds = int(tracks[2].length)))}]`** \n:four: | **{tracks[3]}** **`[{(datetime.timedelta(milliseconds = int(tracks[3].length)))}]`** \n:five: | **{tracks[4]}** **`[{(datetime.timedelta(milliseconds = int(tracks[4].length)))}]`** \n:six: | **{tracks[5]}** **`[{(datetime.timedelta(milliseconds = int(tracks[5].length)))}]`** \n:seven: | **{tracks[6]}** **`[{(datetime.timedelta(milliseconds = int(tracks[6].length)))}]`**\n:eight: | **{tracks[7]}** **`[{(datetime.timedelta(milliseconds = int(tracks[7].length)))}]`** \n:nine: | **{tracks[8]}** **`[{(datetime.timedelta(milliseconds = int(tracks[8].length)))}]`** \n:keycap_ten: | **{tracks[9]}** **`[{(datetime.timedelta(milliseconds = int(tracks[9].length)))}]`**",
+                              description = "\n".join(f"{emoji} | **{track}** **`{self.format_time(track.length)}`**" for emoji, track in list_),
                               color = discord.Colour.dark_red()
                               )
             embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -336,7 +345,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed2.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed2.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
 
             if not player.is_playing:
                 embed2 = discord.Embed(title = "Playing:",
@@ -344,7 +353,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed2.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed2.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
             await ctx.send(embed = embed2)
 
 
@@ -375,7 +384,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
 
             if not player.is_playing:
                 embed = discord.Embed(title = "Playing:",
@@ -383,7 +392,7 @@ class Music(commands.Cog):
                                 color = discord.Colour.dark_red()
                                 )
                 embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{(datetime.timedelta(seconds = int(track.length / 1000)))}]`**", inline = True)
+                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
             await ctx.send(embed = embed)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
@@ -404,10 +413,10 @@ class Music(commands.Cog):
             track_left = " ∞ "
             player_tracker = "🔴▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬🔴"
         else:
-            track_length = datetime.timedelta(seconds = int(player.current.length / 1000))
-            track_position = datetime.timedelta(seconds = int(player.position / 1000))
+            track_length = self.format_time(player.current.length)
+            track_position = self.format_time(player.position)
             time_left = int(player.current.length) - int(player.position)
-            track_left = datetime.timedelta(seconds = int(time_left / 1000))
+            track_left = self.format_time(time_left)
 
             player_tracker = ""
             
@@ -514,7 +523,7 @@ class Music(commands.Cog):
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{(datetime.timedelta(seconds = int(song.length / 1000)))}]`**" for song in upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
@@ -535,8 +544,8 @@ class Music(commands.Cog):
                               description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n{tracks_list}"[:2047], 
                               colour = discord.Colour.dark_red())
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{(datetime.timedelta(seconds = int(player.current.length / 1000)))}]`", inline = False)
-        embed.add_field(name = f"Total Duration", value =f"**[{(datetime.timedelta(seconds = int(totald / 1000)))}]**", inline = True)
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{self.format_time(player.current.length)}]`", inline = False)
+        embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
         embed.add_field(name = f"Loop State", value = loop_state)
         embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
 
@@ -644,7 +653,7 @@ class Music(commands.Cog):
                 if player.current.is_stream:
                     await ctx.send(f":no_entry_sign: | You can't seek in a live stream.")
                 else:
-                    await ctx.send(f":fast_forward: | Your track has been seeked to **`[{(datetime.timedelta(milliseconds = int(position * 1000)))}]`**.")
+                    await ctx.send(f":fast_forward: | Your track has been seeked to **`[{self.format_time(position * 1000)}]`**.")
 
     @commands.command(aliases = ["s"],
                       description = "Skips to the next track in the queue or stops if no tracks were added to the queue.",

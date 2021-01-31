@@ -10,8 +10,6 @@ import json
 class Roleplay(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
-
     @commands.command()
     async def fight(self, ctx, *, member = None):
         gifs = ["https://i.imgur.com/8wCfapg.gif",
