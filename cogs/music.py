@@ -118,7 +118,7 @@ class Music(commands.Cog):
 
         return controller
 
-    def format_time(time):
+    def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
         minutes, seconds = divmod(remainder, 60)
