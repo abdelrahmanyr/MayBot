@@ -45,6 +45,15 @@ class MusicController:
         self.now_playing = None
 
         self.bot.loop.create_task(self.controller_loop())
+    
+    def format_time(self, time):
+        time = round(time)
+        hours, remainder = divmod(time / 1000, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours != 0:
+            return '%02d:%02d:%02d' % (hours, minutes, seconds)
+        else:
+            return '%02d:%02d' % (minutes, seconds)
 
     async def controller_loop(self):
         await self.bot.wait_until_ready()
@@ -320,7 +329,7 @@ class Music(commands.Cog):
             emojis = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:", ":keycap_ten:"]
             list_ = zip(emojis, tracks)
             embed = discord.Embed(title = "Search Results:",
-                              description = "\n".join(f"{emoji} | **{track}** **`{self.format_time(track.length)}`**" for emoji, track in list_),
+                              description = "\n".join(f"{emoji} | **{track}** **`[{self.format_time(track.length)}]`**" for emoji, track in list_),
                               color = discord.Colour.dark_red()
                               )
             embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
