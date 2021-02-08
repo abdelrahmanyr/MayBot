@@ -33,7 +33,7 @@ class TopGG(commands.Cog):
         message = channel.fetch_message(808091364196876288)
         reaction = message.reactions[0]
         users = await reaction.users().flatten()
-        embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](http://gestyy.com/er3AB8)**__", colour = Colour.dark_red())
+        embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](http://gestyy.com/er3AB8)**__", colour = discord.Colour.dark_red())
         for user in users:
             if self.dblpy.get_user_vote(user.id) is False:
                 await user.send(embed = embed)

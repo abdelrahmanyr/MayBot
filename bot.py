@@ -37,7 +37,7 @@ async def on_ready():
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({len(server.members)} Members)")
 
     channel = client.get_channel(808047386052132885)
-    embed = discord.Embed(title = "Votes Counter", description = "", colour = discord.Colour)
+    embed = discord.Embed(title = "Votes Counter", description = "", colour = discord.Colour.dark_red())
     await channel.send(embed = embed)
 
 @client.command(aliases = ["nitro"])
