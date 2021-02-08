@@ -1,6 +1,7 @@
 from discord import Colour
 from discord.ext import commands, tasks
 import discord
+import json
 
 import dbl
 
@@ -37,6 +38,24 @@ class TopGG(commands.Cog):
         for user in users:
             if self.dblpy.get_user_vote(user.id) is False:
                 await user.send(embed = embed)
+
+    @commands.Cog.listener()
+    async def on_dbl_vote(self, data):
+        user_id = data['user']
+        dicti = {
+                 user_id : 0
+                }
+        if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
+            counts = list(json.load('vote.json'))
+            if data['user'] not in counts:
+                with open('vote.json', 'w') as vote:
+                    json.dump(dicti, vote)
+            else:
+                with open('vote.json', 'w') as vote:
+                    vote[user_id] += 1
+
+        user = self.bot.get_user(333639222395142175)
+        await user.send(json.load('vote.json'))
 
 
 def setup(bot):
