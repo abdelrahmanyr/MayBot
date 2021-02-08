@@ -140,7 +140,7 @@ class Music(commands.Cog):
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
                       usage = "`.connect\n.connect [voice channel]`"
                      )
-    async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
+    async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
         if not channel:
             try:
                 channel = ctx.author.voice.channel
@@ -152,11 +152,11 @@ class Music(commands.Cog):
             await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
 
         await player.connect(channel.id)
+        asyncio.sleep(1)
         if player.is_paused:
             await player.set_pause(pause = False)
             
         controller = self.get_controller(ctx)
-        controller.channel = ctx.channel
     
     @commands.command(aliases = ["p"],
                       description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result and if an attachment was sent with the command without a query your attachment is played.",
