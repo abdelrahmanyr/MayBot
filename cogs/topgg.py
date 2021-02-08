@@ -1,4 +1,6 @@
+from discord import Colour
 from discord.ext import commands, tasks
+import discord
 
 import dbl
 
@@ -24,6 +26,17 @@ class TopGG(commands.Cog):
             print(f"Posted server count ({server_count})")
         except Exception as e:
             print(f"Failed to post server count\n{type(e).__name__}: {e}")
+
+    @tasks.loop(hours = 1)
+    async def reminder(self):
+        channel = self.bot.get_channel(710341374188453898)
+        message = channel.fetch_message(808091364196876288)
+        reaction = message.reactions[0]
+        users = await reaction.users().flatten()
+        embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](http://gestyy.com/er3AB8)**__", colour = Colour.dark_red())
+        for user in users:
+            if self.dblpy.get_user_vote(user.id) is False:
+                await user.send(embed = embed)
 
 
 def setup(bot):

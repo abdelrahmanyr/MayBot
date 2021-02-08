@@ -36,6 +36,10 @@ async def on_ready():
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({len(server.members)} Members)")
 
+    channel = client.get_channel()
+    embed = discord.Embed(title = "Votes Counter", description = "", colour = discord.Colour)
+    await channel.send(embed = embed)
+
 @client.command(aliases = ["nitro"])
 async def gift(ctx):
     if ctx.message.author.id == 732612405858664458:
@@ -90,7 +94,7 @@ async def help(ctx, command_arg : str = None):
         if command.aliases:
             aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
             embed.add_field(name = "Aliases", value = aliases, inline = False)
-        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge i.e: Roleplay commands, they can take an optional argument which is the member.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
+        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
         await ctx.send(embed = embed)
     else:
         await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
@@ -123,6 +127,7 @@ async def ping(ctx):
                 usage = "`.shorten [URL]`"
                )
 async def shorten(ctx, url : str = None):
+    pass
     if url is None:
         url = "https://www.youtube.com/watch?v=bR-gZQLO26w"
     try:
