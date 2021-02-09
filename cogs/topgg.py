@@ -42,20 +42,35 @@ class TopGG(commands.Cog):
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
         user_id = data['user']
-        dicti = {
-                 user_id : 0
-                }
-        if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
-            counts = list(json.load('vote.json'))
-            if data['user'] not in counts:
-                with open('vote.json', 'w') as vote:
-                    json.dump(dicti, vote)
-            else:
-                with open('vote.json', 'w') as vote:
-                    vote[user_id] += 1
 
-        user = self.bot.get_user(333639222395142175)
-        await user.send(json.load('vote.json'))
+        with open('vote.json', 'r') as f:
+            votes = json.load(f)
+        counts = list(votes)
+        votes[str(user_id)] = 0
+        
+        if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
+            if str(user_id) not in counts:
+                with open('vote.json', 'w') as new:
+                    json.dump(votes, new, indent = 4)
+            else:
+                with open('vote.json', 'r') as exist:
+                    old = json.load(exist)
+                old[str(user_id)] += 1
+
+                with open('vote.json', 'w') as exist:
+                    json.dump(old, exist, indent = 4)
+
+        with open('vote.json', 'r') as f:
+            votes = json.load(f)
+
+
+        channel = self.bot.get_channel(808047386052132885)
+        message = channel.fetch_messages(808451136821788722)
+        member = channel.guild.fetch_member()
+        my_list = zip(list(votes.keys), list(votes.values))
+        content = "\n".join(f"{channel.guild.fetch_member(key).mention} : {value}" for key, value in my_list)
+        embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
+        await message.edit(embed = embed)
 
 
 def setup(bot):
