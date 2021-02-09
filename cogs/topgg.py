@@ -30,6 +30,8 @@ class TopGG(commands.Cog):
 
     @tasks.loop(hours = 1)
     async def reminder(self):
+        await self.bot.wait_until_ready()
+
         channel = self.bot.get_channel(710341374188453898)
         message = channel.fetch_message(808091364196876288)
         reaction = message.reactions[0]
