@@ -67,7 +67,7 @@ class TopGG(commands.Cog):
 
         channel = self.bot.get_channel(808047386052132885)
         message = channel.fetch_message(808451136821788722)
-        member = channel.guild.fetch_member()
+        
         my_list = zip(list(votes.keys), list(votes.values))
         content = "\n".join(f"{channel.guild.fetch_member(key).mention} : {value}" for key, value in my_list)
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
