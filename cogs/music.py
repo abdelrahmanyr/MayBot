@@ -152,7 +152,7 @@ class Music(commands.Cog):
             await ctx.send(f":gear: | Connecting to **`{channel.name}`**..", delete_after = 5)
 
         await player.connect(channel.id)
-        asyncio.sleep(1)
+        await asyncio.sleep(1)
         if player.is_paused:
             await player.set_pause(pause = False)
             
