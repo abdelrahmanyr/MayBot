@@ -11,7 +11,7 @@ class TopGG(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjEyODcxNjgyfQ.rXjO968rh8zgJRgXJZr3GZzKw8JExp_vVtbB6l5x8Ts" 
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='nice', webhook_port=8080)
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='https://3.15.28.75:8080/dblwebhook', webhook_auth='nice', webhook_port=8080)
         self.update_stats.start()
 
     def cog_unload(self):
@@ -42,7 +42,7 @@ class TopGG(commands.Cog):
                 await user.send(embed = embed)
 
     @commands.Cog.listener()
-    async def on_dbl_test(self, data):
+    async def on_dbl_vote(self, data):
         user_id = data['user']
 
         with open('vote.json', 'r') as f:
@@ -64,8 +64,6 @@ class TopGG(commands.Cog):
 
         with open('vote.json', 'r') as f:
             votes = json.load(f)
-        print("done")
-
 
         channel = self.bot.get_channel(808047386052132885)
         message = channel.fetch_messages(808451136821788722)
@@ -74,6 +72,10 @@ class TopGG(commands.Cog):
         content = "\n".join(f"{channel.guild.fetch_member(key).mention} : {value}" for key, value in my_list)
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
         await message.edit(embed = embed)
+
+    @commands.Cog.listener()
+    async def on_dbl_test(self, data):
+        print(data)
 
 
 def setup(bot):
