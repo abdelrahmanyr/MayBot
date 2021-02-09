@@ -11,7 +11,7 @@ class TopGG(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjEyODcxNjgyfQ.rXjO968rh8zgJRgXJZr3GZzKw8JExp_vVtbB6l5x8Ts" 
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='https://3.15.28.75:8080/dblwebhook', webhook_auth='nice', webhook_port=8080)
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='nice', webhook_port=8080)
         self.update_stats.start()
 
     def cog_unload(self):
