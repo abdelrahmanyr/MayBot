@@ -66,17 +66,21 @@ class TopGG(commands.Cog):
             votes = json.load(f)
 
         channel = self.bot.get_channel(808047386052132885)
-        message = channel.fetch_message(808451136821788722)
-        member = channel.guild.fetch_member()
-        my_list = zip(list(votes.keys), list(votes.values))
-        content = "\n".join(f"{channel.guild.fetch_member(key).mention} : {value}" for key, value in my_list)
+        message = await channel.fetch_message(808451136821788722)
+
+        members = []
+        for key in list(votes.keys()):
+            member = await channel.guild.fetch_member(key)
+            members.append(member)
+        my_list = zip(list(members), list(votes.values()))
+        content = "\n".join(f"{member.mention} **:** `{value}`" for member, value in my_list)
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
         await message.edit(embed = embed)
 
-    @commands.Cog.listener()
-    async def on_dbl_test(self, data):
-        print(data)
-
+    @commands.command()
+    async def please_do_it(self, ctx):
+        data = {'user': 333639222395142175}
+        await self.on_dbl_vote(data)
 
 def setup(bot):
     bot.add_cog(TopGG(bot))
