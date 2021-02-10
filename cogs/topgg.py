@@ -42,13 +42,13 @@ class TopGG(commands.Cog):
                 await user.send(embed = embed)
 
     @commands.Cog.listener()
-    async def on_dbl_vote(self, data):
+    async def on_dbl_test(self, data):
         user_id = data['user']
         print(user_id)
         with open('vote.json', 'r') as f:
             votes = json.load(f)
         counts = list(votes)
-        votes[str(user_id)] = 0
+        votes[str(user_id)] = 1
         print("done making a user key")
         
         if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
