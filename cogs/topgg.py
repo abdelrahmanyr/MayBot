@@ -43,7 +43,7 @@ class TopGG(commands.Cog):
 
     @commands.Cog.listener()
     async def on_dbl_test(self, data):
-        user_id = data['user']
+        user_id = int(data['user'])
         print(user_id)
         with open('vote.json', 'r') as f:
             votes = json.load(f)
