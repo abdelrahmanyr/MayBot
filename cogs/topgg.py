@@ -42,21 +42,18 @@ class TopGG(commands.Cog):
                 await user.send(embed = embed)
 
     @commands.Cog.listener()
-    async def on_dbl_test(self, data):
+    async def on_dbl_vote(self, data):
         user_id = int(data['user'])
-        print(user_id)
         with open('vote.json', 'r') as f:
             votes = json.load(f)
         counts = list(votes)
         votes[str(user_id)] = 1
-        print("done making a user key")
         
         if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
             if str(user_id) not in counts:
                 with open('vote.json', 'w') as new:
                     json.dump(votes, new, indent = 4)
-                print("done adding a new user key")
-                print(votes)
+
             else:
                 with open('vote.json', 'r') as exist:
                     old = json.load(exist)
@@ -64,11 +61,9 @@ class TopGG(commands.Cog):
 
                 with open('vote.json', 'w') as exist:
                     json.dump(old, exist, indent = 4)
-                print("done adding a vote to an old user")
-                print(old)
+
         with open('vote.json', 'r') as f:
             votes = json.load(f)
-        print("done loading the file")
 
         channel = self.bot.get_channel(808047386052132885)
         message = await channel.fetch_message(808451136821788722)
@@ -81,11 +76,6 @@ class TopGG(commands.Cog):
         content = "\n".join(f"{member.mention} **:** `{value}`" for member, value in my_list)
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
         await message.edit(embed = embed)
-
-    @commands.command()
-    async def please_do_it(self, ctx):
-        data = {'user': 333639222395142175}
-        await self.on_dbl_vote(data)
 
 def setup(bot):
     bot.add_cog(TopGG(bot))
