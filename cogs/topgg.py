@@ -44,7 +44,7 @@ class TopGG(commands.Cog):
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
         user_id = data['user']
-
+        print(user_id)
         with open('vote.json', 'r') as f:
             votes = json.load(f)
         counts = list(votes)
