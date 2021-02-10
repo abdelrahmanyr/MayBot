@@ -56,6 +56,7 @@ class TopGG(commands.Cog):
                 with open('vote.json', 'w') as new:
                     json.dump(votes, new, indent = 4)
                 print("done adding a new user key")
+                print(votes)
             else:
                 with open('vote.json', 'r') as exist:
                     old = json.load(exist)
@@ -64,7 +65,7 @@ class TopGG(commands.Cog):
                 with open('vote.json', 'w') as exist:
                     json.dump(old, exist, indent = 4)
                 print("done adding a vote to an old user")
-
+                print(old)
         with open('vote.json', 'r') as f:
             votes = json.load(f)
         print("done loading the file")
