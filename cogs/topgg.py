@@ -49,11 +49,13 @@ class TopGG(commands.Cog):
             votes = json.load(f)
         counts = list(votes)
         votes[str(user_id)] = 0
+        print("done making a user key")
         
         if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
             if str(user_id) not in counts:
                 with open('vote.json', 'w') as new:
                     json.dump(votes, new, indent = 4)
+                print("done adding a new user key")
             else:
                 with open('vote.json', 'r') as exist:
                     old = json.load(exist)
@@ -61,9 +63,11 @@ class TopGG(commands.Cog):
 
                 with open('vote.json', 'w') as exist:
                     json.dump(old, exist, indent = 4)
+                print("done adding a vote to an old user")
 
         with open('vote.json', 'r') as f:
             votes = json.load(f)
+        print("done loading the file")
 
         channel = self.bot.get_channel(808047386052132885)
         message = await channel.fetch_message(808451136821788722)
