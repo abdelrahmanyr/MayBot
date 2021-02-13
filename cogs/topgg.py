@@ -63,8 +63,8 @@ class TopGG(commands.Cog):
                     json.dump(old, exist, indent = 4)
 
         with open('vote.json', 'r') as f:
-            votes = json.load(f)
-
+            votes_unsorted = json.load(f)
+        votes = dict(sorted(votes_unsorted.items(),key=lambda x: x[1], reverse = True))
         channel = self.bot.get_channel(808047386052132885)
         message = await channel.fetch_message(808451136821788722)
 
