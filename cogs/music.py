@@ -157,6 +157,7 @@ class Music(commands.Cog):
             await player.set_pause(pause = False)
             
         controller = self.get_controller(ctx)
+        controller.channel = ctx.channel
     
     @commands.command(aliases = ["p"],
                       description = "Plays a track, livestream or a playlist, if a URL was not specified then searches Youtube for the query and plays the first result and if an attachment was sent with the command without a query your attachment is played.",
