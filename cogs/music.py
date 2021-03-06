@@ -623,7 +623,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed)
 
     @commands.command(description = "Applies nightcore effect on the player.")
-    async def nightcore(self, ctx, *, rate):
+    async def nightcore(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
         if db == True:
