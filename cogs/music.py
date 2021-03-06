@@ -622,7 +622,9 @@ class Music(commands.Cog):
                                  )
             await ctx.send(embed = embed)
 
-    @commands.command(description = "Applies nightcore effect on the player.")
+    @commands.command(description = "Applies nightcore effect on the player, rate of nightcore depends on your input which must be more than 1 (decimals like: 1.1, 2.35 are allowed).",
+                      usage = "`.nightcore [rate]`"
+                     )
     async def nightcore(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
@@ -630,15 +632,42 @@ class Music(commands.Cog):
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
-                filter_ = wavelink.Timescale(rate = rate)
-                await player.set_filter(filter=wavelink.Filter(timescale = filter_))
-                await ctx.send(f":high_brightness: | Nightcore filter has been set to **{rate}**.")
+                if rate < 1:
+                    await ctx.send(f":question: | The rate has to be more than 1, You can use `.vapourwave` instead.")
+                else:
+                    filter_ = wavelink.Timescale(rate = rate)
+                    await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+                    await ctx.send(f":cd: | Nightcore filter has been set to **{rate}**.")
         else:
             embed = discord.Embed(title = "Vote",
                                   description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
                                   colour = discord.Colour.dark_red()
                                  )
-            await ctx.send(embed = embed)            
+            await ctx.send(embed = embed)
+
+    @commands.command(aliases = ["vaporwave"],
+                      description = "Applies vapourwave effect on the player, rate of vapourwave depends on your input which must be less than 1 (decimals like: 0.1, 0.25 are allowed).",
+                      usage = "`.vapourwave [rate]`"
+                     )
+    async def vapourwave(self, ctx, *, rate : float):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            if not player.is_connected:
+                return
+            if player.channel_id == ctx.author.voice.channel.id:
+                if rate > 1:
+                    await ctx.send(f":question: | The rate has to be less than 1, You can use `.nightcore` instead.")
+                else:
+                    filter_ = wavelink.Timescale(rate = rate)
+                    await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+                    await ctx.send(f":dvd: | Vapourwave filter has been set to **{rate}**.")
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)         
 
     @commands.command(aliases = ["vol"],
                       description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
