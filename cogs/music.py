@@ -632,6 +632,7 @@ class Music(commands.Cog):
             if player.channel_id == ctx.author.voice.channel.id:
                 timescale = wavelink.Timescale(rate = rate)
                 await player.set_filter(filter=wavelink.Filter(timescale = timescale))
+                await ctx.send(f":high_brightness: | Nightcore filter has been set to {rate}")
         else:
             embed = discord.Embed(title = "Vote",
                                   description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
