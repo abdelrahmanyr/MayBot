@@ -631,7 +631,7 @@ class Music(commands.Cog):
                 return
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(rate = rate)
-                await player.set_filter(filter=wavelink.Filter(volume=self.volume, equalizer = player.equalizer, timescale = filter_))
+                await player.set_filter(filter=wavelink.Filter(volume=self.volume, timescale = filter_))
                 player.set_filter(filter_)
         else:
             embed = discord.Embed(title = "Vote",
