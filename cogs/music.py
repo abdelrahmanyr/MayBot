@@ -87,8 +87,8 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.controllers = {}
-        self.dbl = dbl.DBLClient(self.bot, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA3MjAwMjAzfQ.hGwo5VrTEK59x-YID8lVLUtdWXLEYD8RfJK6b8t2f4I")
-
+        self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjEyODcxNjgyfQ.rXjO968rh8zgJRgXJZr3GZzKw8JExp_vVtbB6l5x8Ts" 
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='nice', webhook_port=8080)
 
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)
@@ -188,7 +188,7 @@ class Music(commands.Cog):
                     
                     link = str(query)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f":play_pause: | __**[{tracks.data['playlist__Info']['name']}]({link})**____",
+                                                description = f":play_pause: | __**[{tracks.data['playlist_info']['name']}]({link})**__",
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")

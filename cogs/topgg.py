@@ -78,5 +78,10 @@ class TopGG(commands.Cog):
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
         await message.edit(embed = embed)
 
+    @commands.command()
+    async def test(self, ctx, user):
+        votes = await self.dblpy.get_user_vote(user)
+        member = await ctx.guild.fetch_member(user)
+        await ctx.send(f"{member.mention}: {votes}")
 def setup(bot):
     bot.add_cog(TopGG(bot))
