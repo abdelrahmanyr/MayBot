@@ -188,7 +188,7 @@ class Music(commands.Cog):
                     
                     link = str(query)
                     track_embed = discord.Embed(title = "Enqueued Playlist:",
-                                                description = f":play_pause: | __**[{tracks.data['playlist_info']['name']}]({link})**__",
+                                                description = f":play_pause: | __**[{tracks.data['playlistInfo']['name']}]({link})**__",
                                                 color = discord.Colour.dark_red()
                                                )
                     track_embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
@@ -621,6 +621,25 @@ class Music(commands.Cog):
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)
+
+    @commands.command(description = "Applies nightcore effect on the player.")
+    async def nightcore(self, ctx, *, rate):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            if not player.is_connected:
+                return
+            if player.channel_id == ctx.author.voice.channel.id:
+                filter_ = self.bot.wavelink.Timescale(rate = rate)
+                await player.set_filter(filter=wavelink.Filter(volume=self.volume, equalizer = player.equalizer, timescale = filter_))
+                player.set_filter(filter_)
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)            
+
     @commands.command(aliases = ["vol"],
                       description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
                       usage = "`.vol\n.vol [level]`"
