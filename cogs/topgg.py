@@ -36,24 +36,25 @@ class TopGG(commands.Cog):
         message = channel.fetch_message(808091364196876288)
         reaction = message.reactions[0]
         users = await reaction.users().flatten()
+        print(users)
         embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](https://top.gg/bot/747965125599821914)**__", colour = discord.Colour.dark_red())
         for user in users:
-            if self.dblpy.get_user_vote(user.id) is False:
+            if self.dblpy.get_user_vote(user.id) == False:
                 await user.send(embed = embed)
 
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
-        user_id = data['user']
-
+        user_id = int(data['user'])
         with open('vote.json', 'r') as f:
             votes = json.load(f)
         counts = list(votes)
-        votes[str(user_id)] = 0
+        votes[str(user_id)] = 1
         
         if self.bot.get_user(user_id) in self.bot.get_guild(708891955232243792).members:
             if str(user_id) not in counts:
                 with open('vote.json', 'w') as new:
                     json.dump(votes, new, indent = 4)
+
             else:
                 with open('vote.json', 'r') as exist:
                     old = json.load(exist)
@@ -63,8 +64,8 @@ class TopGG(commands.Cog):
                     json.dump(old, exist, indent = 4)
 
         with open('vote.json', 'r') as f:
-            votes = json.load(f)
-
+            votes_unsorted = json.load(f)
+        votes = dict(sorted(votes_unsorted.items(),key=lambda x: x[1], reverse = True))
         channel = self.bot.get_channel(808047386052132885)
         message = await channel.fetch_message(808451136821788722)
 
@@ -76,11 +77,6 @@ class TopGG(commands.Cog):
         content = "\n".join(f"{member.mention} **:** `{value}`" for member, value in my_list)
         embed = discord.Embed(title = "Votes Counter", description = content, colour = discord.Colour.dark_red())
         await message.edit(embed = embed)
-
-    @commands.command()
-    async def please_do_it(self, ctx):
-        data = {'user': 333639222395142175}
-        await self.on_dbl_vote(data)
 
 def setup(bot):
     bot.add_cog(TopGG(bot))
