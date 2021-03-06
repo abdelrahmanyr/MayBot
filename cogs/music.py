@@ -630,7 +630,7 @@ class Music(commands.Cog):
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
-                filter_ = self.bot.wavelink.Timescale(rate = rate)
+                filter_ = wavelink.Timescale(rate = rate)
                 await player.set_filter(filter=wavelink.Filter(volume=self.volume, equalizer = player.equalizer, timescale = filter_))
                 player.set_filter(filter_)
         else:
