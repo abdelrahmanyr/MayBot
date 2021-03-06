@@ -7,7 +7,6 @@ import itertools
 import pprint
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from shortest import Shortest
 
 st = "67587c0f933aa8ab2e59377a14d0d315"
 
@@ -79,8 +78,8 @@ class Recommendations(commands.Cog):
             album_date = album['release_date']
             album_tracks_number = album['total_tracks']            
             album_image = album['images'][0]['url']
-
             album_tracks = sp.album_tracks(album['id'])['items']
+            print(album_tracks)
             tracks_list = list(itertools.islice(album_tracks, 0, None))
             tracks = "\n".join(f"{tracks_list.index(track) + 1} - {track['name']}" for track in tracks_list)
 
