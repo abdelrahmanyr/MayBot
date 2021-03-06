@@ -632,7 +632,6 @@ class Music(commands.Cog):
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(rate = rate)
                 await player.set_filter(filter=wavelink.Filter(volume=self.volume, timescale = filter_))
-                player.set_filter(filter_)
         else:
             embed = discord.Embed(title = "Vote",
                                   description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
