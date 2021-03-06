@@ -88,7 +88,7 @@ class Music(commands.Cog):
         self.bot = bot
         self.controllers = {}
         self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0Nzk2NTEyNTU5OTgyMTkxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjEyODcxNjgyfQ.rXjO968rh8zgJRgXJZr3GZzKw8JExp_vVtbB6l5x8Ts" 
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='nice', webhook_port=8080)
+        self.dbl = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='nice', webhook_port=8080)
 
         if not hasattr(bot, 'wavelink'):
             self.bot.wavelink = wavelink.Client(bot = self.bot)

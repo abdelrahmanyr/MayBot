@@ -2,7 +2,6 @@ from discord import Colour
 from discord.ext import commands, tasks
 import discord
 import json
-
 import dbl
 
 
@@ -39,7 +38,7 @@ class TopGG(commands.Cog):
         print(users)
         embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](https://top.gg/bot/747965125599821914)**__", colour = discord.Colour.dark_red())
         for user in users:
-            if self.dblpy.get_user_vote(user.id) == False:
+            if await self.dblpy.get_user_vote(user.id) == False:
                 await user.send(embed = embed)
 
     @commands.Cog.listener()
@@ -80,7 +79,7 @@ class TopGG(commands.Cog):
 
     @commands.command()
     async def test(self, ctx, user):
-        votes = await self.dblpy.get_user_vote(user)
+        votes = await self.dblpy.get_user_vote(int(user))
         member = await ctx.guild.fetch_member(user)
         await ctx.send(f"{member.mention}: {votes}")
 def setup(bot):
