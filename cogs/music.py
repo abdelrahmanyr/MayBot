@@ -214,7 +214,7 @@ class Music(commands.Cog):
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     embed = self.play_embed(ctx, track, player)
-                    embed.set_thumbnail(cover)
+                    embed.set_thumbnail(url = cover)
                     await ctx.send(embed = embed)
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
