@@ -680,8 +680,7 @@ class Music(commands.Cog):
                 return
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(pitch = pitch)
-                eq = wavelink.Equalizer(player.equalizer)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = eq))
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                 await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
 
         else:
@@ -694,7 +693,7 @@ class Music(commands.Cog):
     @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
                       usage = "`.pitch [pitch]`"
                      )
-    async def pitch(self, ctx, *, speed : float):
+    async def speed(self, ctx, *, speed : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
         if db == True:
@@ -702,8 +701,7 @@ class Music(commands.Cog):
                 return
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(speed = speed)
-                eq = wavelink.Equalizer(player.equalizer)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = eq))
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                 await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
 
         else:
