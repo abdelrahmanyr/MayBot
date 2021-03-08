@@ -165,6 +165,14 @@ class Music(commands.Cog):
         track_cover = track['album']['images'][0]['url']
         return track_name, track_url, track_artist, track_cover
 
+    def spotify_album(self, link):
+        album = sp.album(link)
+        album_tracks = album_tracks = sp.album_tracks(link)
+        tracks = []
+        for track in album_tracks['items']:
+            track = sp.track(track['id'])
+            tracks.append(track)
+        return tracks
 
     @commands.command(name = "connect", aliases = ["c", "join"],
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
@@ -210,11 +218,33 @@ class Music(commands.Cog):
                     name, url, artist, cover = self.spotify_track(query)
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist}")
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
+                    yt_link = track.uri
                     track.title, track.uri, track.thumb = f"{name} - {artist}", url, cover
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     embed = self.play_embed(ctx, track, player)
+                    embed.add_field(name = "Youtube Link", value = f"[Link]({yt_link})")
                     embed.set_thumbnail(url = cover)
+                    await ctx.send(embed = embed)
+
+                elif query.startswith("https://open.spotify.com/album"):
+                    album_name = sp.album(query)['name']
+                    album_url = sp.album(query)['external_urls']['spotify']
+                    tracks = self.spotify_album(query)
+                    for track_ in tracks:
+                        fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
+                        track = Track(fake.id, fake.info, requester = ctx.author)
+                        yt_link = track.uri
+                        track.title, track.uri, track.thumb = f"{track_['name']} - {track['artists'][0]['name']}", str(track['external_urls']['spotify']), track['album']['images'][0]['url']
+                        controller = self.get_controller(ctx)
+                        await controller.queue.put(track)
+                        print(track.id)
+                    embed = discord.Embed(title = "Enqueued Album:",
+                                                description = f":play_pause: | __**[{album_name}]({album_url})**__",
+                                                color = discord.Colour.dark_red()
+                                         )
+                    embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
+                    embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
                     await ctx.send(embed = embed)
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
