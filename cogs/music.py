@@ -232,7 +232,7 @@ class Music(commands.Cog):
                     album_url = sp.album(query)['external_urls']['spotify']
                     tracks = self.spotify_album(query)
                     for track_ in tracks:
-                        fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
+                        fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")[0]
                         track = Track(fake.id, fake.info, requester = ctx.author)
                         yt_link = track.uri
                         track.title, track.uri, track.thumb = f"{track_['name']} - {track['artists'][0]['name']}", str(track['external_urls']['spotify']), track['album']['images'][0]['url']
