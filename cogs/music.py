@@ -82,7 +82,7 @@ class MusicController:
                     old_song = song
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{old_song.title}")
                     song = Track(tracks[0].id, song.info, requester = song.requester)
-                    song.title, song.uri, song.length = old_song.title, old_song.uri, old_song.length
+                    song.title, song.uri = old_song.title, old_song.uri
             await player.play(song)
             
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{self.format_time(song.length)}]`**.")
@@ -177,6 +177,15 @@ class Music(commands.Cog):
             tracks.append(track)
         return tracks
 
+    def spotify_playlist(self, link):
+        album = sp.album(link)
+        album_tracks = album_tracks = sp.album_tracks(link)
+        tracks = []
+        for track in album_tracks['items']:
+            track = sp.track(track['track']['id'])
+            tracks.append(track)
+        return tracks
+
     @commands.command(name = "connect", aliases = ["c", "join"],
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
                       usage = "`.connect\n.connect [voice channel]`"
@@ -248,6 +257,7 @@ class Music(commands.Cog):
                                          )
                     embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
                     embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
+                    embed.set_thumbnail(url = track_['album']['images'][0]['url'])
                     await ctx.send(embed = embed)
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
