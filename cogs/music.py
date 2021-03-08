@@ -209,6 +209,7 @@ class Music(commands.Cog):
                 if query.startswith("https://open.spotify.com/track"):
                     name, url, artist, cover = self.spotify_track(query)
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist}")
+                    print(tracks)
                     tracks[0].name, tracks[0].uri, tracks[0].thumb = f"{name} - {artist}", url, cover
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
                     controller = self.get_controller(ctx)
