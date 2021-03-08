@@ -84,7 +84,6 @@ class MusicController:
                 else:
                     song = await self.queue.get()
 
-
             await player.play(song)
             
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{self.format_time(song.length)}]`**.")
@@ -240,7 +239,7 @@ class Music(commands.Cog):
                         fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
                         track = Track(fake[0].id, fake[0].info, requester = ctx.author)
                         yt_link = track.uri
-                        track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track['duration_ms']
+                        track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track_['duration_ms']
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track)
                         print(track.id)
