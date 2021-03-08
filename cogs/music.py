@@ -667,7 +667,49 @@ class Music(commands.Cog):
                                   description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
                                   colour = discord.Colour.dark_red()
                                  )
-            await ctx.send(embed = embed)         
+            await ctx.send(embed = embed)
+
+    @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
+                      usage = "`.pitch [pitch]`"
+                     )
+    async def pitch(self, ctx, *, pitch : float):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            if not player.is_connected:
+                return
+            if player.channel_id == ctx.author.voice.channel.id:
+                filter_ = wavelink.Timescale(pitch = pitch)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = player.equalizer))
+                await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
+
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)
+
+    @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
+                      usage = "`.pitch [pitch]`"
+                     )
+    async def pitch(self, ctx, *, speed : float):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        db = await self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            if not player.is_connected:
+                return
+            if player.channel_id == ctx.author.voice.channel.id:
+                filter_ = wavelink.Timescale(speed = speed)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = player.equalizer))
+                await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
+
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ["vol"],
                       description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
