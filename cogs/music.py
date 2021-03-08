@@ -77,12 +77,10 @@ class MusicController:
                 await self.queue.put(self.previous[0])
                 song = await self.queue.get()
             else:
+                song = self.queue.get()
                 if song.id == "QAAAkQIAKEhPVyBUTyBNQVNURVIgQSBUUkFDSyBJTiBVTkRFUiAzIFNFQ09ORFMAD0R5bGFuIFRhbGxjaGllZgAAAAAAAAu4AAswY0t0eDI5MUktRQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTBjS3R4MjkxSS1FAAd5b3V0dWJlAAAAAAAAAAA=":
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{song.title}")
-                    self.queue._queue.remove()
                     song = Track(tracks[0].id, song.info, requester = song.requester)
-                else:
-                    song = await self.queue.get()
 
             await player.play(song)
             
