@@ -81,7 +81,7 @@ class MusicController:
                 if song.id == "QAAAkQIAKEhPVyBUTyBNQVNURVIgQSBUUkFDSyBJTiBVTkRFUiAzIFNFQ09ORFMAD0R5bGFuIFRhbGxjaGllZgAAAAAAAAu4AAswY0t0eDI5MUktRQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTBjS3R4MjkxSS1FAAd5b3V0dWJlAAAAAAAAAAA=":
                     old_song = song
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{old_song.title}")
-                    song = Track(tracks[0].id, song.info, requester = song.requester)
+                    song = Track(tracks[0].id, tracks[0].info, requester = song.requester)
                     song.title, song.uri = old_song.title, old_song.uri
             await player.play(song)
             
@@ -169,8 +169,7 @@ class Music(commands.Cog):
         return track_name, track_url, track_artist, track_cover
 
     def spotify_album(self, link):
-        album = sp.album(link)
-        album_tracks = album_tracks = sp.album_tracks(link)
+        album_tracks = sp.album_tracks(link)
         tracks = []
         for track in album_tracks['items']:
             track = sp.track(track['id'])
@@ -178,10 +177,9 @@ class Music(commands.Cog):
         return tracks
 
     def spotify_playlist(self, link):
-        album = sp.album(link)
-        album_tracks = album_tracks = sp.album_tracks(link)
+        playlist_tracks = sp.playlist_tracks(link)
         tracks = []
-        for track in album_tracks['items']:
+        for track in playlist_tracks['items']:
             track = sp.track(track['track']['id'])
             tracks.append(track)
         return tracks
@@ -272,7 +270,7 @@ class Music(commands.Cog):
                         track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track_['duration_ms']
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track)
-                    embed = discord.Embed(title = "Enqueued Album:",
+                    embed = discord.Embed(title = "Enqueued Playlist:",
                                                 description = f":play_pause: | __**[{playlist_name}]({playlist_url})**__",
                                                 color = discord.Colour.dark_red()
                                          )
