@@ -680,7 +680,8 @@ class Music(commands.Cog):
                 return
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(pitch = pitch)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = player.equalizer))
+                eq = wavelink.Equalizer(player.equalizer)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = eq))
                 await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
 
         else:
@@ -701,7 +702,8 @@ class Music(commands.Cog):
                 return
             if player.channel_id == ctx.author.voice.channel.id:
                 filter_ = wavelink.Timescale(speed = speed)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = player.equalizer))
+                eq = wavelink.Equalizer(player.equalizer)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_, equalizer = eq))
                 await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
 
         else:
