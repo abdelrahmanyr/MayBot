@@ -247,7 +247,6 @@ class Music(commands.Cog):
 
                     for track_ in tracks:
                         track = Track(fake[0].id, fake[0].info, requester = ctx.author)
-                        yt_link = track.uri
                         track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track_['duration_ms']
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track)
@@ -258,6 +257,27 @@ class Music(commands.Cog):
                     embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
                     embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
                     embed.set_thumbnail(url = track_['album']['images'][0]['url'])
+                    await ctx.send(embed = embed)
+
+                elif query.startswith(" https://open.spotify.com/playlist"):
+                    playlist = sp.playlist(query)
+                    playlist_name = playlist['name']
+                    playlist_url = playlist['external_urls']['spotify']
+                    tracks = self.spotify_playlist(query)
+                    fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
+
+                    for track_ in tracks:
+                        track = Track(fake[0].id, fake[0].info, requester = ctx.author)
+                        track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track_['duration_ms']
+                        controller = self.get_controller(ctx)
+                        await controller.queue.put(track)
+                    embed = discord.Embed(title = "Enqueued Album:",
+                                                description = f":play_pause: | __**[{playlist_name}]({playlist_url})**__",
+                                                color = discord.Colour.dark_red()
+                                         )
+                    embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
+                    embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
+                    embed.set_thumbnail(url = playlist['images'][0]['url'])
                     await ctx.send(embed = embed)
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
