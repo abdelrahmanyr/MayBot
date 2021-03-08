@@ -162,7 +162,8 @@ class Music(commands.Cog):
         track_name = track['name']
         track_url = str(track['external_urls']['spotify'])
         track_artist = track['artists'][0]['name']
-        return track_name, track_url, track_artist
+        track_cover = track['album']['images'][0]['url']
+        return track_name, track_url, track_artist, track_cover
 
 
     @commands.command(name = "connect", aliases = ["c", "join"],
@@ -206,13 +207,15 @@ class Music(commands.Cog):
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
                 if query.startswith("https://open.spotify.com/track"):
-                    name, url, artist = self.spotify_track(query)
+                    name, url, artist, cover = self.spotify_track(query)
                     tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist}")
-                    tracks[0].name, tracks[0].uri, = f"{name} - {artist}", url
+                    tracks[0].name, tracks[0].uri, tracks[0].thumb = f"{name} - {artist}", url, cover
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
                     embed = self.play_embed(ctx, track, player)
+                    embed.set_thumbnail(cover)
+                    await ctx.send(embed = embed)
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks_p = tracks.tracks
