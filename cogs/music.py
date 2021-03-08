@@ -259,11 +259,12 @@ class Music(commands.Cog):
                     embed.set_thumbnail(url = track_['album']['images'][0]['url'])
                     await ctx.send(embed = embed)
 
-                elif query.startswith(" https://open.spotify.com/playlist"):
+                elif query.startswith("https://open.spotify.com/playlist"):
                     playlist = sp.playlist(query)
                     playlist_name = playlist['name']
                     playlist_url = playlist['external_urls']['spotify']
                     tracks = self.spotify_playlist(query)
+                    print(tracks)
                     fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
 
                     for track_ in tracks:
