@@ -18,8 +18,12 @@ import pprint
 import time
 import dbl
 from shortest import Shortest
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 st = "67587c0f933aa8ab2e59377a14d0d315"
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id = "4d35b62383e543679384be5c9ff3fd6a",
+                                                           client_secret = "100c64fa520d4f98969c5b1bfdd92e46",))
 kclient = ksoftapi.Client('ac8f0be3bfd40393c7c6aa58fb0c8c61de7f4064')
 
 class Track(wavelink.Track):
@@ -136,6 +140,31 @@ class Music(commands.Cog):
         else:
             return '%02d:%02d' % (minutes, seconds)
 
+    def play_embed(self, ctx, track, player):
+        if player.is_playing:
+            embed = discord.Embed(title = "Enqueued:",
+                            description = f":play_pause: | __**[{str(track)}]({track.uri})**__",
+                            color = discord.Colour.dark_red()
+                            )
+            embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+            embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+        if not player.is_playing:
+            embed = discord.Embed(title = "Playing:",
+                            description = f":play_pause: | __**[{str(track)}]({track.uri})**__",
+                            color = discord.Colour.dark_red()
+                            )
+            embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
+            embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+        return embed
+    
+    def spotify_track(self, link):
+        track = sp.track(link)
+        track_name = track['name']
+        track_url = str(track['external_urls']['spotify'])
+        track_artist = track['artists'][0]['name']
+        return track_name, track_url, track_artist
+
+
     @commands.command(name = "connect", aliases = ["c", "join"],
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
                       usage = "`.connect\n.connect [voice channel]`"
@@ -176,8 +205,16 @@ class Music(commands.Cog):
 
             if query.startswith("http"):
                 tracks = await self.bot.wavelink.get_tracks(query)
+                if query.startswith("https://open.spotify.com/track"):
+                    name, url, artist = self.spotify_track(query)
+                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist}")
+                    tracks[0].name, tracks[0].uri, = f"{name} - {artist}", url
+                    track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
+                    controller = self.get_controller(ctx)
+                    await controller.queue.put(track)
+                    embed = self.play_embed(ctx, track, player)
 
-                if isinstance(tracks, wavelink.player.TrackPlaylist):
+                elif isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks_p = tracks.tracks
                     playlist_duration = 0
                     for track_p in tracks_p:
@@ -217,30 +254,14 @@ class Music(commands.Cog):
                                         color = discord.Colour.dark_red()
                                         )
                         embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    await ctx.send(embed = embeds)
+                    await ctx.send(embed = embed)
 
                 else:
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
 
                     controller = self.get_controller(ctx)
                     await controller.queue.put(track)
-
-                    link = str(track.uri)
-                    if player.is_playing:
-                        embed = discord.Embed(title = "Enqueued:",
-                                        description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                        color = discord.Colour.dark_red()
-                                        )
-                        embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                        embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
-
-                    if not player.is_playing:
-                        embed = discord.Embed(title = "Playing:",
-                                        description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                        color = discord.Colour.dark_red()
-                                        )
-                        embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                        embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+                    embed = self.play_embed(ctx, track, player)
                     await ctx.send(embed = embed)
                 
                 
@@ -252,22 +273,7 @@ class Music(commands.Cog):
                 controller = self.get_controller(ctx)
                 await controller.queue.put(track)
                 
-                link = str(track.uri)
-                if player.is_playing:
-                    embed = discord.Embed(title = "Enqueued:",
-                                    description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                    color = discord.Colour.dark_red()
-                                    )
-                    embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
-
-                if not player.is_playing:
-                    embed = discord.Embed(title = "Playing:",
-                                    description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                    color = discord.Colour.dark_red()
-                                    )
-                    embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                    embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+                embed = self.play_embed(ctx, track, player)
                 await ctx.send(embed = embed)
             if not tracks:
                 return await ctx.send(f":grey_question: | No tracks found with this query.")
@@ -288,22 +294,7 @@ class Music(commands.Cog):
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
             
-            link = str(track.uri)
-            if player.is_playing:
-                embed = discord.Embed(title = "Enqueued:",
-                                      description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                      color = discord.Colour.dark_red()
-                                     )
-                embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
-
-            if not player.is_playing:
-                embed = discord.Embed(title = "Playing:",
-                                      description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                      color = discord.Colour.dark_red()
-                                     )
-                embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+            embed = self.play_embed(ctx, track, player)
             await ctx.send(embed = embed)
 
             if not tracks:
@@ -340,30 +331,10 @@ class Music(commands.Cog):
 
 
             msg = await self.bot.wait_for('message', timeout = 20.0)
-        
-
             controller = self.get_controller(ctx)
-
             track = Track(tracks[int(msg.content) - 1].id, tracks[int(msg.content) - 1].info, requester=ctx.author)
-
             await controller.queue.put(track)
-
-            link = str(track.uri)
-            if player.is_playing:
-                embed2 = discord.Embed(title = "Enqueued:",
-                                description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                color = discord.Colour.dark_red()
-                                )
-                embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed2.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
-
-            if not player.is_playing:
-                embed2 = discord.Embed(title = "Playing:",
-                                description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                color = discord.Colour.dark_red()
-                                )
-                embed2.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed2.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+            embed2 = self.play_embed(ctx, track, player)
             await ctx.send(embed = embed2)
 
 
@@ -388,21 +359,7 @@ class Music(commands.Cog):
             await ctx.send(f":headphones: | I picked you a random queen song, have fun.", delete_after = 5)
 
             link = str(track.uri)
-            if player.is_playing:
-                embed = discord.Embed(title = "Enqueued:",
-                                description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                color = discord.Colour.dark_red()
-                                )
-                embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
-
-            if not player.is_playing:
-                embed = discord.Embed(title = "Playing:",
-                                description = f":play_pause: | __**[{str(track)}]({link})**__",
-                                color = discord.Colour.dark_red()
-                                )
-                embed.add_field(name = "Track Player", value = f"**{ctx.message.author.mention}**")
-                embed.add_field(name = "Track Duration", value = f"**`[{self.format_time(track.length)}]`**", inline = True)
+            embed = self.play_embed(ctx, track, player)
             await ctx.send(embed = embed)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
