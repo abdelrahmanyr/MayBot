@@ -77,7 +77,12 @@ class MusicController:
                 await self.queue.put(self.previous[0])
                 song = await self.queue.get()
             else:
-                song = await self.queue.get()
+                if song.id == "QAAAkQIAKEhPVyBUTyBNQVNURVIgQSBUUkFDSyBJTiBVTkRFUiAzIFNFQ09ORFMAD0R5bGFuIFRhbGxjaGllZgAAAAAAAAu4AAswY0t0eDI5MUktRQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTBjS3R4MjkxSS1FAAd5b3V0dWJlAAAAAAAAAAA=":
+                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{song.title}")
+                    self.queue._queue.remove()
+                    song = Track(tracks[0].id, song.info, requester = song.requester)
+                else:
+                    song = await self.queue.get()
 
 
             await player.play(song)
@@ -235,7 +240,7 @@ class Music(commands.Cog):
                         fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
                         track = Track(fake[0].id, fake[0].info, requester = ctx.author)
                         yt_link = track.uri
-                        track.title, track.uri, track.thumb = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url']
+                        track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track['duration_ms']
                         controller = self.get_controller(ctx)
                         await controller.queue.put(track)
                         print(track.id)
