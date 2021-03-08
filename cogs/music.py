@@ -79,9 +79,10 @@ class MusicController:
             else:
                 song = await self.queue.get()
                 if song.id == "QAAAkQIAKEhPVyBUTyBNQVNURVIgQSBUUkFDSyBJTiBVTkRFUiAzIFNFQ09ORFMAD0R5bGFuIFRhbGxjaGllZgAAAAAAAAu4AAswY0t0eDI5MUktRQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTBjS3R4MjkxSS1FAAd5b3V0dWJlAAAAAAAAAAA=":
-                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{song.title}")
+                    old_song = song
+                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{old_song.title}")
                     song = Track(tracks[0].id, song.info, requester = song.requester)
-
+                    song.title, song.uri, song.length = old_song.title, old_song.uri, old_song.length
             await player.play(song)
             
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{self.format_time(song.length)}]`**.")
