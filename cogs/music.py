@@ -1,26 +1,18 @@
 import discord
-from discord import embeds
-from discord.abc import Messageable
+
 from discord.ext import commands
-from discord import utils
-import typing
 from typing import Union
-import math
 import random
 import wavelink
 import asyncio
-import aiohttp
-import datetime
 import itertools
 import random
 import ksoftapi
-import pprint
-import time
 import dbl
-from shortest import Shortest
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-
+from lyricsgenius import Genius
+gn = Genius("-HL3Je0SfWKj5r44QMyoxYxq_ZKERBQ0x0jOmjiXCUXenH8hFtw7_b4LM3aTTd5G")
 st = "67587c0f933aa8ab2e59377a14d0d315"
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id = "4d35b62383e543679384be5c9ff3fd6a",
                                                            client_secret = "100c64fa520d4f98969c5b1bfdd92e46",))
@@ -544,6 +536,36 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
+    @commands.command(aliases = "tl")
+    async def test_lyrics(self, ctx, *, query : str = None):
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        if query is None:
+            query = str(player.current)
+        if query == 'None':
+            await ctx.send(f":question: | Please either play a song or write its name.")
+        try:
+            if query != "None":
+                results = await kclient.music.lyrics(query)
+                song = gn.search_song(query)
+        except:
+            await ctx.send(":question: | No lyrics found for this query")
+        else:
+            song_obj = gn.song(song_id = song.id)
+            cover = song_obj['song']['album']['cover_art_url']
+            artist = song.artist
+            url = song.url
+            name = song.title
+            lyrics = song.lyrics
+
+        embed = discord.Embed(title = "Lyrics:",
+                             description = f"__**({name} - {artist})[{url}]:**__ \n{lyrics}"[:2047],
+                             color = discord.Colour.dark_red()          
+                             )
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.set_image(url = cover)
+        embed.set_footer(text = f"Requested by: {ctx.message.author}\n", icon_url = ctx.message.author.avatar_url)
+
+        await ctx.send(embed = embed)
     @commands.command(aliases = ["q"],
                       description = "Returns the server's queued tracks.",
                       usage = "`.queue`"
