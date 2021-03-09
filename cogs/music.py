@@ -532,7 +532,7 @@ class Music(commands.Cog):
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.set_image(url = first.album_art)
+        embed.set_thumbnail(url = first.album_art)
         embed.set_footer(text = f"Requested by: {ctx.message.author}\nPowered by KSoft.Si", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
@@ -565,7 +565,7 @@ class Music(commands.Cog):
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.set_image(url = cover)
+        embed.set_thumbnail(url = cover)
         embed.set_footer(text = f"Requested by: {ctx.message.author}\n", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)

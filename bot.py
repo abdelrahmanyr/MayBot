@@ -81,8 +81,13 @@ async def help(ctx, command_arg : str = None):
         command = client.get_command(command_arg.lower())
         if command.description == "":
             command.description = "No description needed."
+
         if command.usage is None:
             command.usage = f"`.{command.name}`"
+
+        if command.cog_name == "roleplay":
+            command.usage = f"`.{command.name}\n.{command.name} [member]`"
+            command.description = f"Just a roleplay command."
         embed = discord.Embed(title = str(command.name.capitalize()),
                               colour = discord.Colour.dark_red(),
                              )
@@ -91,7 +96,7 @@ async def help(ctx, command_arg : str = None):
         if command.aliases:
             aliases = " - ".join(f"{alias.capitalize()}" for alias in command.aliases)
             embed.add_field(name = "Aliases", value = aliases, inline = False)
-        embed.add_field(name = "Instructions", value = "• Some commands' don't need a description or uasge.\n• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
+        embed.add_field(name = "Instructions", value = "• **[ ]** explains the argument type.\n• **' '** is a literal argument.\n• **/** means one or other.\n• **( )** is not an argument but the input needed.")
         await ctx.send(embed = embed)
     else:
         await ctx.send(f":question: | Please either specify a command or type `.help` to understand how it works.")
