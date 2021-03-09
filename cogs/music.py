@@ -509,7 +509,8 @@ class Music(commands.Cog):
             else:
                 await ctx.send(":question: | You have to play a track first.")
 
-    @commands.command(description = "Returns the lyrics depending on the input query, if no input then returns the lyrics of the currently playing track.",
+    @commands.command(aliases = ["ls"],
+                      description = "Returns the lyrics depending on the input query, if no input then returns the lyrics of the currently playing track, lyrics source is KSoft.Si API.",
                       usage = "`.lyrics\n.lyrics [query]`"
                      )
     async def lyrics(self, ctx, *, query : str = None):
@@ -536,8 +537,10 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["tl"])
-    async def test_lyrics(self, ctx, *, query : str = None):
+    @commands.command(aliases = ["lsg"],
+                      description = "Returns the lyrics depending on the input query, if no input then returns the lyrics of the currently playing track, lyrics source is Genius.",
+                      usage = "`.lyricsgenius\n.lyricsgenius [query]`")
+    async def lyricsgenius(self, ctx, *, query : str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
             query = str(player.current)
@@ -558,7 +561,7 @@ class Music(commands.Cog):
             lyrics = song.lyrics
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**[{name} - {artist}[({url}):**__ \n{lyrics}"[:2047],
+                             description = f"__**[{name} - {artist}]({url}):**__ \n{lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
