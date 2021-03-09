@@ -402,6 +402,35 @@ class Music(commands.Cog):
     async def queen(self, ctx):
 
         playlist = await self.bot.wavelink.get_tracks("https://www.youtube.com/playlist?list=PLIexzKuu-if5FnrlmC0-cCxzLf1GPErAC")
+        facts = ["**Freddie** designed the Queen crest, using the astrological signs of the four members: two Leos, one Cancer and one Virgo. Despite this, Freddie claimed not to believe in astrology.",
+                 "**Brian**'s guitar (the __Red Special__) is over 200 years old.\nHe and his Dad built it from scratch, using the wood from a 200-year-old mantelpiece.",
+                 "The videos for `We Will Rock You` and `Spread Your Wings` were both shot in Roger's backyard.",
+                 "The song `Keep Yourself Alive` was released as a single twice, in 1973 and 1975. It failed to make the top 40 both times.",
+                 "**Freddie** wrote `Crazy Little Thing Called Love` while in the bath.\nRumour has it that he had his piano moved to his bathside. Did the piano not get wet? Did his bathwater not get cold?",
+                 "The loosely-connected duo of albums `A Night At The Opera` and `A Day At The Races` were both named after silent movies by *The Marx Brothers*. The follow-up, `News Of The World`, was named after *Murdoch's* ill-fated rag.",
+                 "**Freddie** died on November 24 1991, from Aids related pneumonia\nHe had only publicly announced he was suffering from Aids the day before.",
+                 "According to __the Guinness Book Of Records__, *the Official International Queen Fan Club* is the longest running rock group fan club in the world.",
+                 "**Brian May** and **Roger Taylor** were playing in the band *Smile* alongside *Tim Staffell*. But *Tim* wasn’t so interested, so recommended his flatmate **Farrokh Bulsara**.\n**Farrokh** became known to the world as **Freddie Mercury**. *Smile* became known to the world as__** Queen**__.",
+                 "The band only released `Another One Bites The Dust` as a single because *Michael Jackson* suggested they do so (after dropping by backstage at their LA show).",
+                 "__**Queen**__'s collaboration with *David Bowie* on `Under Pressure` wasn't planned, *Bowie* just happened to be by the studio while __**Queen**__ were recording the song.",
+                 "In 2002, __**Queen**__ were given the 2,207th star on the *Hollywood Walk Of Fame*.",
+                 "As **Freddie** had a famously unusual overbite and distinct front teeth as a result of a malocclusion, he had wanted to fix his overbite for quite some time, but feared the operation would damage his voice.",
+                 "**Brian** has a PhD in astrophysics from __Imperial College London__. In 2007, he was appointed __Chancellor of Liverpool John Moores University__.",
+                 "__**Queen**__ released a Christmas song in 1984 called `Thank God It’s Christmas` – and it spent six weeks on the Singles Chart, peaking at No. 21.",
+                 "**Freddie** had a long-term relationship with *Mary Austin*. However, their relationship ended when he began having an affair with someone else.\n**Freddie** and **Mary** remained close friends, though. He once said of her: “All my lovers asked me why they couldn’t replace *Mary*, but it’s simply impossible. The only friend I’ve got is Mary and I don’t want anybody else.”",
+                 "The four tracks **Roger** wrote, were `Radio Ga Ga`, `A Kind of Magic`, `The Invisible Man`, and `These Are the Days of Our Lives`.",
+                 "**Freddie** required his assistants to have a pen and paper with them at all times in case he was inspired and needed to jot down some ideas.",
+                 "The lyrics for __**Queen**__’s song `Life Is Real` began while the band were flying over the Atlantic from New York.",
+                 "In 1999, **Roger** could be seen in the background of a Royal Mail stamp featuring **Freddie**. This caused a stir, since the only living people meant to appear on British stamps are members of the Royal Family.",
+                 "**Roger**’s middle name is **Meddows**. Incidentally, he admitted that he “hated the title of the second album, `Queen II`, it was so unimaginative.”",
+                 "In his will, **Freddie** is said to have left £500,000 to his chef *Joe Fanelli*, £500,000 to his personal assistant *Peter Freestone* and £100,000 to his driver *Terry Giddings*, I wish I were any of them, not just had the chance to meet him and listen to his voice directly but having this money.",
+                 "**John** is not just the band's bassist but also a trained electronics engineer, and he sometimes built equipment for the band to use – including the __Deacy Amp__.",
+                 "According to **Freddie**’s friend *David Wigg*, the star believed his stage image prevented him from keeping relationships.\n“I created a monster. I’m handicapped because people think I’m like that. When I’m trying to get a relationship together I’m the nicest person you could meet, my dear. I’m a peach,” he told his friend.",
+                 "**Freddie** didn’t think he was a very good pianist, and feared playing `Bohemian Rhapsody` live.",
+                 "The __Wembley Live Aid__ show was a platform for performances from some of the UK music industry’s leading lights, including former *Beatle Paul McCartney* and guitar virtuoso *Eric Clapton* – but it was __**Queen**__ that stole the show. In 2005, __**Queen**__'s __Live Aid__ set was voted the greatest rock gig of all time.",
+                 "**Freddie**'s ‘bottomless mic’ was one of the singer’s more memorable trademarks, along with his all-white outfits and chevron moustache.\nBut it actually came by total chance, as in one of __**Queen**__'s early shows, **Freddie**'s microphone stand broke – but instead of finding a new one, he held the stand containing the microphone and kept singing and it acted as a great prop for him."
+                ]
+        fact = random.choice(facts)
         songs = list(playlist.tracks)
         song = random.choice(songs)
         track = Track(song.id, song.info, requester = ctx.author)
@@ -417,6 +446,7 @@ class Music(commands.Cog):
 
             link = str(track.uri)
             embed = self.play_embed(ctx, track, player)
+            embed.add_field(name = "Fun Fact", value = f"{fact}[⁽ᴿᵉᶠᵉʳᵉⁿᶜᵉ⁾](https://www.nme.com/photos/50-geeky-facts-about-queen-1419950)")
             await ctx.send(embed = embed)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
