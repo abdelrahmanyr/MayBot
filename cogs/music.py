@@ -80,7 +80,7 @@ class MusicController:
                 song = await self.queue.get()
                 if song.id == "QAAAkQIAKEhPVyBUTyBNQVNURVIgQSBUUkFDSyBJTiBVTkRFUiAzIFNFQ09ORFMAD0R5bGFuIFRhbGxjaGllZgAAAAAAAAu4AAswY0t0eDI5MUktRQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTBjS3R4MjkxSS1FAAd5b3V0dWJlAAAAAAAAAAA=":
                     old_song = song
-                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{old_song.title}")
+                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{old_song.title} Audio")
                     song = Track(tracks[0].id, tracks[0].info, requester = song.requester)
                     song.title, song.uri = old_song.title, old_song.uri
             await player.play(song)
@@ -226,7 +226,7 @@ class Music(commands.Cog):
                 tracks = await self.bot.wavelink.get_tracks(query)
                 if query.startswith("https://open.spotify.com/track"):
                     name, url, artist, cover = self.spotify_track(query)
-                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist}")
+                    tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{name} - {artist} Audio")
                     track = Track(tracks[0].id, tracks[0].info, requester = ctx.author)
                     yt_link = track.uri
                     track.title, track.uri, track.thumb = f"{name} - {artist}", url, cover
@@ -540,7 +540,7 @@ class Music(commands.Cog):
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.set_image(url = first.album_art)
-        embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"Requested by: {ctx.message.author}\nPowered by KSoft.Si", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
