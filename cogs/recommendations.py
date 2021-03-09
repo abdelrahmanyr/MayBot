@@ -42,8 +42,11 @@ class Recommendations(commands.Cog):
             tracks = "\n".join(f"- {str(track['name'])}" for track in top_tracks)
 
             albums_response = list(sp.artist_albums(artist['id'], album_type = "album")['items'])
-            albums = list(itertools.islice(albums_response, 0, None))
-            album = "\n".join(f"- {str(album['name'])}" for album in albums)
+            albums = []
+            for i in albums_response:
+                albums.append(i['name'])
+            albums = list(dict.fromkeys(albums))
+            album = "\n".join(f"- {str(album)}" for album in albums)
 
             image_url = artist['images'][0]['url']
 
