@@ -435,7 +435,13 @@ class Music(commands.Cog):
         song = random.choice(songs)
         track = Track(song.id, song.info, requester = ctx.author)
 
-
+        results = sp.search(q={track}, type='track')
+        items = results['tracks']['items']
+        if items[0]['album']['id'] == "6i6folBtxKV28WX3msQ4FE":
+            sp_track = items[1]
+        else:
+            sp_track = items[0]
+        image_url = sp_track['album']['images'][0]['url']
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
             await ctx.invoke(self.connect_)
@@ -447,6 +453,7 @@ class Music(commands.Cog):
             link = str(track.uri)
             embed = self.play_embed(ctx, track, player)
             embed.add_field(name = "Fun Fact", value = f"{fact}[⁽ᴿᵉᶠᵉʳᵉⁿᶜᵉ⁾](https://www.nme.com/photos/50-geeky-facts-about-queen-1419950)")
+            embed.set_thumbnail(url = image_url)
             await ctx.send(embed = embed)
             controller = self.get_controller(ctx)
             await controller.queue.put(track)
