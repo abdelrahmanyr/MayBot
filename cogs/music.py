@@ -536,7 +536,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = "tl")
+    @commands.command(aliases = ["tl"])
     async def test_lyrics(self, ctx, *, query : str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
