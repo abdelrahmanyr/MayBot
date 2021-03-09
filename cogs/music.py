@@ -175,6 +175,14 @@ class Music(commands.Cog):
             track = sp.track(track['track']['id'])
             tracks.append(track)
         return tracks
+    
+    def spotify_artist(self, link):
+        artist_tracks = sp.artist_top_tracks(link)
+        tracks = []
+        for track in artist_tracks['tracks']:
+            track = sp.track(track['id'])
+            tracks.append(track)
+        return tracks
 
     @commands.command(name = "connect", aliases = ["c", "join"],
                       description = "Connects the bot to the mentioned voice channel, if a channel was not mentioned then the bot connects to the message author voice channel.",
@@ -254,7 +262,6 @@ class Music(commands.Cog):
                     playlist_name = playlist['name']
                     playlist_url = playlist['external_urls']['spotify']
                     tracks = self.spotify_playlist(query)
-                    print(tracks)
                     fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
 
                     for track_ in tracks:
@@ -270,6 +277,27 @@ class Music(commands.Cog):
                     embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
                     embed.set_thumbnail(url = playlist['images'][0]['url'])
                     await ctx.send(embed = embed)
+                
+                elif query.startswith("https://open.spotify.com/artist"):
+                    artist = sp.artist(query)
+                    artist_name = artist['name']
+                    artist_url = artist['external_urls']['spotify']
+                    tracks = self.spotify_artist(query)
+                    fake = await self.bot.wavelink.get_tracks("https://www.youtube.com/watch?v=0cKtx291I-E")
+
+                    for track_ in tracks:
+                        track = Track(fake[0].id, fake[0].info, requester = ctx.author)
+                        track.title, track.uri, track.thumb, track.length = f"{track_['name']} - {track_['artists'][0]['name']}", str(track_['external_urls']['spotify']), track_['album']['images'][0]['url'], track_['duration_ms']
+                        controller = self.get_controller(ctx)
+                        await controller.queue.put(track)
+                    embed = discord.Embed(title = "Enqueued Playlist:",
+                                                description = f":play_pause: | __**[{artist_name}- Top Tracks]({artist_url})**__",
+                                                color = discord.Colour.dark_red()
+                                         )
+                    embed.add_field(name = "Playlist Player", value = f"{ctx.author.mention}")
+                    embed.add_field(name = "Number of Tracks", value = f"{len(tracks)}", inline = True)
+                    embed.set_thumbnail(url = artist['images'][0]['url'])
+                    await ctx.send(embed = embed)     
 
                 elif isinstance(tracks, wavelink.player.TrackPlaylist):
                     tracks_p = tracks.tracks
