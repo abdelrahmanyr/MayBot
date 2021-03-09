@@ -551,14 +551,14 @@ class Music(commands.Cog):
             await ctx.send(":question: | No lyrics found for this query")
         else:
             song_obj = gn.song(song_id = song.id)
-            cover = song_obj['song']['album']['cover_art_url']
+            cover = song_obj['song']['song_art_image_url']
             artist = song.artist
             url = song.url
             name = song.title
             lyrics = song.lyrics
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**({name} - {artist})[{url}]:**__ \n{lyrics}"[:2047],
+                             description = f"__**[{name} - {artist}[({url}):**__ \n{lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
