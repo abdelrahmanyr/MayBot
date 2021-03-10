@@ -84,9 +84,10 @@ class MusicController:
 class PaginatorSource(menus.ListPageSource):
     """Player queue paginator class."""
 
-    def __init__(self, entries, *, per_page = 10, ctx, player, controller):
+    def __init__(self, entries, *, per_page = 10, ctx, player, controller, bot):
         super().__init__(entries, per_page = per_page)
         self.ctx = ctx
+        self.bot = bot
         self.player = player
         self.controller = controller
     def format_time(self, time):
@@ -112,12 +113,14 @@ class PaginatorSource(menus.ListPageSource):
             loop_state = "Track Looping"
         elif self.controller.loop_state == "2":
             loop_state = "Queue Looping"
-        tracks_list = '\n'.join(f"**{index}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
+        tracks_list = '\n'.join(f"**{list(self.controller.queue._queue).index(song)}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
         embed.description = tracks_list
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Current Track", value = f"**- {self.player.current.title}** `[{self.format_time(self.player.current.length)}]`", inline = False)
         embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
         embed.add_field(name = f"Loop State", value = loop_state)
+        embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
         return embed
 
     def is_paginating(self):
@@ -699,7 +702,7 @@ class Music(commands.Cog):
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
             entries = upcoming
-            pages = PaginatorSource(entries=entries, ctx = ctx, player = player, controller = controller)
+            pages = PaginatorSource(entries=entries, ctx = ctx, player = player, controller = controller, bot = self.bot)
             paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
             await paginator.start(ctx)
