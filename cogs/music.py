@@ -701,7 +701,7 @@ class Music(commands.Cog):
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
-            entries = upcoming
+            entries = upcoming, ctx, player
             pages = PaginatorSource(entries=entries)
             paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
