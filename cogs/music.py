@@ -113,9 +113,9 @@ class PaginatorSource(menus.ListPageSource):
             loop_state = "Track Looping"
         elif self.controller.loop_state == "2":
             loop_state = "Queue Looping"
-        tracks_list = '\n'.join(f"__Upcoming Tracks | {len(self.controller.queue._queue)}__\n**{list(self.controller.queue._queue).index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
+        tracks_list = '\n'.join(f"**{list(self.controller.queue._queue).index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
-        embed.description = tracks_list
+        embed.description = f"__Upcoming Tracks | {len(self.controller.queue._queue)}__\n{tracks_list}"
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.add_field(name = f"Current Track", value = f"**- {self.player.current.title}** `[{self.format_time(self.player.current.length)}]`", inline = False)
         embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
