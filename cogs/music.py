@@ -88,6 +88,25 @@ class PaginatorSource(menus.ListPageSource):
         super().__init__(entries, per_page = per_page)
         self.ctx = ctx
         self.player = player
+
+    async def on_event_hook(self, event):
+        if isinstance(event, (wavelink.TrackEnd, wavelink.TrackException)):
+            controller = self.get_controller(event.player)
+            controller.next.set()
+
+    def get_controller(self, value: Union[commands.Context, wavelink.Player]):
+        if isinstance(value, commands.Context):
+            gid = value.guild.id
+        else:
+            gid = value.guild_id
+
+        try:
+            controller = self.controllers[gid]
+        except KeyError:
+            controller = MusicController(self.bot, gid)
+            self.controllers[gid] = controller
+
+        return controller
     def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
