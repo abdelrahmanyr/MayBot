@@ -84,8 +84,10 @@ class MusicController:
 class PaginatorSource(menus.ListPageSource):
     """Player queue paginator class."""
 
-    def __init__(self, entries, *, per_page = 10):
+    def __init__(self, entries, *, per_page = 10, ctx, player):
         super().__init__(entries, per_page = per_page)
+        self.ctx = ctx
+        self.player = player
     def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
@@ -96,13 +98,26 @@ class PaginatorSource(menus.ListPageSource):
             return '%02d:%02d' % (minutes, seconds)
 
     async def format_page(self, menu: menus.Menu, page):
-
-        tracks_list = '\n'.join(f"**{page.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in page)
-
+        controller = self.get_controller(self.ctx)
+        guild = self.ctx.guild
+        totald = self.player.current.length
+        try:
+            for song in controller.queue._queue:
+                totald += song.length
+        except AttributeError:
+            totald = self.player.current.track_length
+        if controller.loop_state == "0":
+            loop_state = "Disabled"
+        elif controller.loop_state == "1":
+            loop_state = "Track Looping"
+        elif controller.loop_state == "2":
+            loop_state = "Queue Looping"
+        tracks_list = '\n'.join(f"**{index}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
         embed.description = tracks_list
-
-
+        embed.add_field(name = f"Current Track", value = f"**- {self.player.current.title}** `[{self.format_time(self.player.current.length)}]`", inline = False)
+        embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
+        embed.add_field(name = f"Loop State", value = loop_state)
         return embed
 
     def is_paginating(self):
@@ -684,7 +699,7 @@ class Music(commands.Cog):
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
             entries = upcoming
-            pages = PaginatorSource(entries=entries)
+            pages = PaginatorSource(entries=entries, ctx = ctx, player = player)
             paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
             await paginator.start(ctx)
