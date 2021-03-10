@@ -97,30 +97,9 @@ class PaginatorSource(menus.ListPageSource):
 
     async def format_page(self, menu: menus.Menu, page):
 
-        upcoming, ctx, player = page
-        print(upcoming)
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
-        player = self.bot.wavelink.get_player(ctx.guild.id)
-        controller = self.get_controller(ctx)
-        guild = ctx.guild
-        totald = player.current.length
-        try:
-            for song in upcoming:
-                totald += song.length
-        except AttributeError:
-            totald = player.current.track_length
-        if controller.loop_state == "0":
-            loop_state = "Disabled"
-        elif controller.loop_state == "1":
-            loop_state = "Track Looping"
-        elif controller.loop_state == "2":
-            loop_state = "Queue Looping"
+
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
-        embed.description = tracks_list
-        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{self.format_time(player.current.length)}]`", inline = False)
-        embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
-        embed.add_field(name = f"Loop State", value = loop_state)
+        embed.description = '\n'.join(f'`{index}. {title}`' for index, title in enumerate(page, 1))        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         return embed
 
@@ -702,7 +681,7 @@ class Music(commands.Cog):
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
-            entries = upcoming, ctx, player
+            entries = upcoming
             pages = PaginatorSource(entries=entries)
             paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
