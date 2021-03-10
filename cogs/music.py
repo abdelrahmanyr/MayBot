@@ -456,7 +456,16 @@ class Music(commands.Cog):
                  "According to **Freddie**’s friend *David Wigg*, the star believed his stage image prevented him from keeping relationships.\n“I created a monster. I’m handicapped because people think I’m like that. When I’m trying to get a relationship together I’m the nicest person you could meet, my dear. I’m a peach,” he told his friend.",
                  "**Freddie** didn’t think he was a very good pianist, and feared playing `Bohemian Rhapsody` live.",
                  "The __Wembley Live Aid__ show was a platform for performances from some of the UK music industry’s leading lights, including former *Beatle Paul McCartney* and guitar virtuoso *Eric Clapton* – but it was __**Queen**__ that stole the show. In 2005, __**Queen**__'s __Live Aid__ set was voted the greatest rock gig of all time.",
-                 "**Freddie**'s ‘bottomless mic’ was one of the singer’s more memorable trademarks, along with his all-white outfits and chevron moustache.\nBut it actually came by total chance, as in one of __**Queen**__'s early shows, **Freddie**'s microphone stand broke – but instead of finding a new one, he held the stand containing the microphone and kept singing and it acted as a great prop for him."
+                 "**Freddie**'s ‘bottomless mic’ was one of the singer’s more memorable trademarks, along with his all-white outfits and chevron moustache.\nBut it actually came by total chance, as in one of __**Queen**__'s early shows, **Freddie**'s microphone stand broke – but instead of finding a new one, he held the stand containing the microphone and kept singing and it acted as a great prop for him.",
+                 "__**Queen**__ managed to have a total of 26 years in the U.K. Album charts, which is more than any other artist to date.",
+                 "__**Queen**__ wrote the soundtrack to the 1980 film `Flash Gordon`, which included the single `Flash.`",
+                 "*Paul Rogers* joined __**Queen**__ as a lead singer replacement in 2005 in the __Queen + Paul Rodgers__ tour.",
+                 "In 1974, **Brian** was diagnosed with hepatitis after falling in the first month of __**Queen**__'s U.S. tour.",
+                 "**John Deacon** was actually the last in a long line of bassists __**Queen**__ tried, including *Douglas Bogie*. He joined in 1971 and is obviously the most famous and longest bassist they have had",
+                 "In 2002 __**Queen**__'s `Bohemian Rhapsody` was voted “The UK’s favorite hit of all time” in a poll carried out by __Guinness World Records__.",
+                 "**Freddie** chose to have paintings made of his cats. He also loved to call them whilst on tour to chat.",
+                 "In 2006 the `Queen Greatest Hits` album became the best-selling album of all time in the U.K. as proven by a study by the __Official UK Charts Company__, beating the likes of *The Beatles* and *Oasis*.",
+                 "__**Queen**__ won numerous *Ivor Novello* awards for a range of accolades including their 1974 hit `Killer Queen`, the 1975 worldwide hit `Bohemian Rhapsody`, and their overall outstanding contribution to music"
                 ]
         fact = random.choice(facts)
         songs = list(playlist.tracks)
