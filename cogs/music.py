@@ -99,7 +99,8 @@ class PaginatorSource(menus.ListPageSource):
 
 
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
-        embed.description = '\n'.join(f'`{index}. {title}`' for index, title in enumerate(page, 1))        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.description = '\n'.join(f'`{index}. {title}`' for index, title in enumerate(page, 1))
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
 
         return embed
 
