@@ -88,6 +88,7 @@ class PaginatorSource(menus.ListPageSource):
         super().__init__(entries, per_page = per_page)
         self.ctx = ctx
         self.player = player
+        self.controller = controller
     def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
@@ -98,19 +99,18 @@ class PaginatorSource(menus.ListPageSource):
             return '%02d:%02d' % (minutes, seconds)
 
     async def format_page(self, menu: menus.Menu, page):
-        controller = self.get_controller(self.ctx)
         guild = self.ctx.guild
         totald = self.player.current.length
         try:
-            for song in controller.queue._queue:
+            for song in self.controller.queue._queue:
                 totald += song.length
         except AttributeError:
             totald = self.player.current.track_length
-        if controller.loop_state == "0":
+        if self.controller.loop_state == "0":
             loop_state = "Disabled"
-        elif controller.loop_state == "1":
+        elif self.controller.loop_state == "1":
             loop_state = "Track Looping"
-        elif controller.loop_state == "2":
+        elif self.controller.loop_state == "2":
             loop_state = "Queue Looping"
         tracks_list = '\n'.join(f"**{index}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for index, song in enumerate(page, 1))
         embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
