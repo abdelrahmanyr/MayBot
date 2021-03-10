@@ -1,6 +1,6 @@
 import discord
 
-from discord.ext import commands
+from discord.ext import commands, menus
 from typing import Union
 import random
 import wavelink
@@ -80,6 +80,54 @@ class MusicController:
             self.now_playing = await self.channel.send(f":play_pause: | __Now playing:__ **{song}** **`[{self.format_time(song.length)}]`**.")
 
             await self.next.wait()
+
+class PaginatorSource(menus.ListPageSource):
+    """Player queue paginator class."""
+
+    def __init__(self, entries, *, per_page = 10):
+        super().__init__(entries, per_page = per_page)
+
+    def format_time(self, time):
+        time = round(time)
+        hours, remainder = divmod(time / 1000, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours != 0:
+            return '%02d:%02d:%02d' % (hours, minutes, seconds)
+        else:
+            return '%02d:%02d' % (minutes, seconds)
+
+    async def format_page(self, menu: menus.Menu, page):
+
+        upcoming, ctx = page
+        print(upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        controller = self.get_controller(ctx)
+        guild = ctx.guild
+        totald = player.current.length
+        try:
+            for song in upcoming:
+                totald += song.length
+        except AttributeError:
+            totald = player.current.track_length
+        if controller.loop_state == "0":
+            loop_state = "Disabled"
+        elif controller.loop_state == "1":
+            loop_state = "Track Looping"
+        elif controller.loop_state == "2":
+            loop_state = "Queue Looping"
+        embed = discord.Embed(title = "MayBot Queue:", colour = discord.Colour.dark_red())
+        embed.description = tracks_list
+        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
+        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{self.format_time(player.current.length)}]`", inline = False)
+        embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
+        embed.add_field(name = f"Loop State", value = loop_state)
+
+        return embed
+
+    def is_paginating(self):
+        # We always want to embed even on 1 page of results...
+        return True
 
 class Music(commands.Cog):
 
@@ -455,7 +503,7 @@ class Music(commands.Cog):
                  "**John** is not just the band's bassist but also a trained electronics engineer, and he sometimes built equipment for the band to use – including the __Deacy Amp__.",
                  "According to **Freddie**’s friend *David Wigg*, the star believed his stage image prevented him from keeping relationships.\n“I created a monster. I’m handicapped because people think I’m like that. When I’m trying to get a relationship together I’m the nicest person you could meet, my dear. I’m a peach,” he told his friend.",
                  "**Freddie** didn’t think he was a very good pianist, and feared playing `Bohemian Rhapsody` live.",
-                 "The __Wembley Live Aid__ show was a platform for performances from some of the UK music industry’s leading lights, including former *Beatle Paul McCartney* and guitar virtuoso *Eric Clapton* – but it was __**Queen**__ that stole the show. In 2005, __**Queen**__'s __Live Aid__ set was voted the greatest rock gig of all time.",
+                 "The __Wembley Live Aid__ show was a platform for performances from some of the UK music industry’s leading lights, including former *Beatle Paul McCartney* and guitar virtuoso *Eric Clapton* – but it was __**Queen**__ that stole the show.\nIn 2005, __**Queen**__'s __Live Aid__ set was voted the greatest rock gig of all time.",
                  "**Freddie**'s ‘bottomless mic’ was one of the singer’s more memorable trademarks, along with his all-white outfits and chevron moustache.\nBut it actually came by total chance, as in one of __**Queen**__'s early shows, **Freddie**'s microphone stand broke – but instead of finding a new one, he held the stand containing the microphone and kept singing and it acted as a great prop for him.",
                  "__**Queen**__ managed to have a total of 26 years in the U.K. Album charts, which is more than any other artist to date.",
                  "__**Queen**__ wrote the soundtrack to the 1980 film `Flash Gordon`, which included the single `Flash.`",
@@ -602,12 +650,12 @@ class Music(commands.Cog):
             first = results[0]
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**{first.name} - {first.artist}:**__ \n{first.lyrics}"[:2047],
+                             description = f"__**{first.name} - {first.artist}**__ \n{first.lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
         embed.set_thumbnail(url = first.album_art)
-        embed.set_footer(text = f"Requested by: {ctx.message.author}\nPowered by KSoft.Si", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"Requested by: {ctx.message.author}\nPowered by: KSoft.Si", icon_url = ctx.message.author.avatar_url)
 
         await ctx.send(embed = embed)
 
@@ -635,7 +683,7 @@ class Music(commands.Cog):
             lyrics = song.lyrics
 
         embed = discord.Embed(title = "Lyrics:",
-                             description = f"__**[{name} - {artist}]({url}):**__ \n{lyrics}"[:2047],
+                             description = f"__**[{name} - {artist}]({url})**__ \n{lyrics}"[:2047],
                              color = discord.Colour.dark_red()          
                              )
         embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
@@ -650,37 +698,17 @@ class Music(commands.Cog):
     async def queue(self, ctx):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
-        guild = ctx.guild
-
         upcoming = list(itertools.islice(controller.queue._queue, 0, None))
 
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
-            totald = player.current.length
-            try:
-                for song in upcoming:
-                    totald += song.length
-            except AttributeError:
-                totald = player.current.track_length
-            if controller.loop_state == "0":
-                loop_state = "Disabled"
-            elif controller.loop_state == "1":
-                loop_state = "Track Looping"
-            elif controller.loop_state == "2":
-                loop_state = "Queue Looping"
+            entries = [upcoming], ctx
+            pages = PaginatorSource(entries=entries)
+            paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
-        embed = discord.Embed(title=f"MayBot Queue:",
-                              description = f"__**Upcoming Tracks | {len(upcoming)}**__ \n{tracks_list}"[:2047], 
-                              colour = discord.Colour.dark_red())
-        embed.set_author(name = "MayBot 🎸", icon_url = self.bot.user.avatar_url)
-        embed.add_field(name = f"Current Track", value = f"**- {player.current.title}** `[{self.format_time(player.current.length)}]`", inline = False)
-        embed.add_field(name = f"Total Duration", value =f"**[{self.format_time(totald)}]**", inline = True)
-        embed.add_field(name = f"Loop State", value = loop_state)
-        embed.set_footer(text = f"{guild.name}'s queue", icon_url = guild.icon_url)
-
-        await ctx.send(embed=embed)
+            await paginator.start(ctx)
+        
 
 
     @commands.command(aliases = ["mix"],
