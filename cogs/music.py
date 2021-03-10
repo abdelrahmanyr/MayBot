@@ -86,7 +86,7 @@ class PaginatorSource(menus.ListPageSource):
 
     def __init__(self, entries, *, per_page = 10):
         super().__init__(entries, per_page = per_page)
-
+        self.bot = bot
     def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
