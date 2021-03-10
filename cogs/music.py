@@ -98,9 +98,9 @@ class PaginatorSource(menus.ListPageSource):
 
     async def format_page(self, menu: menus.Menu, page):
 
-        upcoming, ctx = page
+        upcoming, ctx, player = page
         print(upcoming)
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming[0])
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         guild = ctx.guild
@@ -703,7 +703,7 @@ class Music(commands.Cog):
         if not player.current:
             await ctx.send(":question: | There are no tracks currently in the queue, you can add more tracks with the `play` command.")
         else:
-            entries = [upcoming], ctx
+            entries = upcoming, ctx, player
             pages = PaginatorSource(entries=entries)
             paginator = menus.MenuPages(source=pages, timeout=None, delete_message_after=True)
 
