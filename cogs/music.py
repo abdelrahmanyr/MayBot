@@ -84,7 +84,7 @@ class MusicController:
 class PaginatorSource(menus.ListPageSource):
     """Player queue paginator class."""
 
-    def __init__(self, entries, *, per_page = 10):
+    def __init__(self, bot, entries, *, per_page = 10):
         super().__init__(entries, per_page = per_page)
         self.bot = bot
     def format_time(self, time):
