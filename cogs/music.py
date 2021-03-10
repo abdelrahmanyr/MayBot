@@ -100,7 +100,7 @@ class PaginatorSource(menus.ListPageSource):
 
         upcoming, ctx = page
         print(upcoming)
-        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming)
+        tracks_list = '\n'.join(f"**{upcoming.index(song) + 1}** • **{str(song)}** **`[{self.format_time(song.length)}]`**" for song in upcoming[0])
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         guild = ctx.guild
