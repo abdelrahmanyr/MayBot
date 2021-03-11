@@ -666,14 +666,14 @@ class Music(commands.Cog):
             query = str(player.current)
         if query == 'None':
             await ctx.send(f":question: | Please either play a song or write its name.")
+        if query != "None":
+            song = gn.search_song(query)
         try:
-            if query != "None":
-                results = await kclient.music.lyrics(query)
-                song = gn.search_song(query)
+            song_obj = gn.song(song_id = song.id)
         except:
             await ctx.send(":question: | No lyrics found for this query")
         else:
-            song_obj = gn.song(song_id = song.id)
+
             cover = song_obj['song']['song_art_image_url']
             artist = song.artist
             url = song.url
