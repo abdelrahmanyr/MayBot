@@ -238,6 +238,15 @@ async def icon(ctx):
 
     await ctx.send(embed = embed)
 
+@client.command(description = "Gives a magnified emoji",
+                usage = "`.emoji [emoji]`")
+async def emoji(ctx, emoji : discord.Emoji):
+    embed = discord.Embed(title = "Emoji",
+                          color = discord.Colour.dark_red())
+    embed.set_image(url = emoji.url)
+    embed.set_footer(text = f"Requested by: {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
+
 @client.command(aliases = ["how"],
                 description = "Rates how much an adjective describes a member.",
                 usage = "`.howmuch [member] [adjective]`"
