@@ -1022,7 +1022,6 @@ class Music(commands.Cog):
                 return await ctx.send(":question: | There was no controller to stop.")
 
             await player.destroy()
-            await player.disconnect()
             await ctx.send(f":stop_button: | Player has stopped and disconnected.")
 
     @commands.command(aliases = ["dc", "leave"],
