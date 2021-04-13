@@ -14,8 +14,8 @@ class Roleplay(commands.Cog):
                                   color = discord.Colour.dark_red()
                                  )
             embed.set_image(url = random.choice(gifs))
-        elif member == ctx.author:
-            member : discord.Member
+        elif member in [str(ctx.author.mention), "me", "myself"]:
+
             embed = discord.Embed(description = f"{emoji} **{ctx.message.author.name}** {verb_2} himself")
             embed.set_image(url = random.choice(gifs))
         else:
