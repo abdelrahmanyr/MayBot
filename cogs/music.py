@@ -112,7 +112,6 @@ class PaginatorSource(menus.ListPageSource):
             await ctx.send(embed = embed)
             return
             
-
     async def format_page(self, menu: menus.Menu, page):
         guild = self.ctx.guild
         totald = self.player.current.length
@@ -878,9 +877,7 @@ class Music(commands.Cog):
                      )
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-
-
+        self.has_voted(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
             if vol is None:
                 await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
