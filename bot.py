@@ -68,7 +68,7 @@ async def help(ctx, command_arg : str = None):
         )
         embed.set_author(name = "MayBot 🎸", icon_url = client.user.avatar_url)
         embed.add_field(name = ":information_source: | Bot Info Commands", value = "`help`, `aliases`, `ping`.", inline = False)
-        embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `vote`.")
+        embed.add_field(name = ":sparkles: | Special Commands", value = "`queen`, `vote`, `premium`.")
         embed.add_field(name = ":tada: | Fun Commands", value = "`8ball`, `avatar`, `icon`, `kill`, `howmuch`, `say`, `cute`, `meme`.", inline = False)
         embed.add_field(name = ":performing_arts: | Roleplay Commands", value = "`blush`, `cry`, `dance`, `eat`, `fight`, `hug`, `kiss`, `like`, `love`, `pat`, `scream`, `shy`, `slap`, `sleep`, `smile`, `tease`, `wink`.", inline = False)
         embed.add_field(name = ":musical_note: | Music Commands", value = "`connect`, `play`, `soundcloud`, `search`, `np`, `loop`, `lyrics`, `lyricsgenius`, `⭐ equalizer`, `⭐ volume`, `⭐ nightcore`, `⭐ vapourwave`, `⭐ pitch`, `⭐ speed`, `queue`, `shuffle`, `seek`, `pause`, `resume`, `move`, `skip`, `remove`, `skipto`, `clearqueue`, `stop`, `disconnect`. \n\n`album`, `artist`, `playlist`, `track`.", inline = False)
@@ -167,7 +167,7 @@ async def premium(ctx):
                           colour = discord.Colour.dark_red()
                          )
     await ctx.send(embed = embed)
-    
+
 #fun commands
 @client.command(name = "8ball", aliases = ["8b"],
                 description = "Gives a random answer for a yes/no question.",

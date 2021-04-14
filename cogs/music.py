@@ -194,7 +194,8 @@ class Music(commands.Cog):
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)
-            return
+            return False
+            
 
     def play_embed(self, ctx, track, player):
         if player.is_playing:
@@ -676,6 +677,7 @@ class Music(commands.Cog):
                       description = "Returns the lyrics depending on the input query, if no input then returns the lyrics of the currently playing track, lyrics source is Genius.",
                       usage = "`.lyricsgenius\n.lyricsgenius [query]`")
     async def lyricsgenius(self, ctx, *, query : str = None):
+        await ctx.channel.trigger_typing()
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if query is None:
             query = str(player.current)
@@ -703,6 +705,7 @@ class Music(commands.Cog):
         embed.set_thumbnail(url = cover)
         embed.set_footer(text = f"Requested by: {ctx.message.author}\n", icon_url = ctx.message.author.avatar_url)
 
+        await ctx.channel.trigger_typing()
         await ctx.send(embed = embed)
     @commands.command(aliases = ["q"],
                       description = "Returns the server's queued tracks.",
@@ -748,8 +751,8 @@ class Music(commands.Cog):
                      )
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-        if db == True:
+        vote = await self.has_voted(ctx)
+        if vote != False:
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
@@ -777,20 +780,15 @@ class Music(commands.Cog):
                         await player.set_eq(eq)
                 else:
                     await ctx.send(f":question: | You can't apply an equializer without playing a song.")
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
+
 
     @commands.command(description = "Applies nightcore effect on the player, rate of nightcore depends on your input which must be more than 1 (decimals like: 1.1, 2.35 are allowed).",
                       usage = "`.nightcore [rate]`"
                      )
     async def nightcore(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-        if db == True:
+        vote = await self.has_voted(ctx)
+        if vote != False:
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
@@ -800,12 +798,7 @@ class Music(commands.Cog):
                     filter_ = wavelink.Timescale(rate = rate)
                     await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                     await ctx.send(f":cd: | Nightcore filter has been set to **{rate}**.")
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
+
 
     @commands.command(aliases = ["vaporwave"],
                       description = "Applies vapourwave effect on the player, rate of vapourwave depends on your input which must be less than 1 (decimals like: 0.1, 0.25 are allowed).",
@@ -813,8 +806,8 @@ class Music(commands.Cog):
                      )
     async def vapourwave(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-        if db == True:
+        vote = await self.has_voted(ctx)
+        if vote != False:
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
@@ -824,20 +817,15 @@ class Music(commands.Cog):
                     filter_ = wavelink.Timescale(rate = rate)
                     await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                     await ctx.send(f":dvd: | Vapourwave filter has been set to **{rate}**.")
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
+
 
     @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
                       usage = "`.pitch [pitch]`"
                      )
     async def pitch(self, ctx, *, pitch : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-        if db == True:
+        vote = await self.has_voted(ctx)
+        if vote != False:
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
@@ -845,20 +833,14 @@ class Music(commands.Cog):
                 await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                 await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
 
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
 
     @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
                       usage = "`.pitch [pitch]`"
                      )
     async def speed(self, ctx, *, speed : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        db = await self.dbl.get_user_vote(ctx.author.id)
-        if db == True:
+        vote = await self.has_voted(ctx)
+        if vote != False:
             if not player.is_connected:
                 return
             if player.channel_id == ctx.author.voice.channel.id:
@@ -866,30 +848,24 @@ class Music(commands.Cog):
                 await player.set_filter(filter = wavelink.Filter(timescale = filter_))
                 await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
 
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
-
     @commands.command(aliases = ["vol"],
                       description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
                       usage = "`.vol\n.vol [level]`"
                      )
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await self.has_voted(ctx)
+        vote = await self.has_voted(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
-            if vol is None:
-                await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
-            controller = self.get_controller(ctx)
+            if vote != False:
+                if vol is None:
+                    await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
+                else:
+                    controller = self.get_controller(ctx)
+                    vol = max(min(vol, 1000), 0)
+                    controller.volume = vol
 
-            vol = max(min(vol, 1000), 0)
-            controller.volume = vol
-
-            await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
-            await player.set_volume(vol)
+                await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
+                await player.set_volume(vol)
 
 
     @commands.command(description = "Seeks the current track to the specified position, position must be in seconds.",
