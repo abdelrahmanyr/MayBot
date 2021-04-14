@@ -185,10 +185,12 @@ class Music(commands.Cog):
     async def has_voted(self, ctx):
         db = await self.dbl.get_user_vote(ctx.author.id)
         if db == True:
+            print("true")
             pass
         else:
+            print("not true")
             embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__\nTo avoid going through annoying ads and voting every 12 hours apply a premium plan on our [patreon page](https://www.patreon.com/MayBot1), for more information use `.premium`.",          
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__\nTo avoid going through annoying ads and voting every 12 hours apply a premium plan on our [__**patreon page**__](https://www.patreon.com/MayBot1), for more information use `.premium`.",          
                                   colour = discord.Colour.dark_red()
                                  )
             await ctx.send(embed = embed)

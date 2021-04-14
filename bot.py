@@ -158,7 +158,16 @@ async def vote(ctx):
                          )
     await ctx.send(embed = embed)
 
-
+@client.command(description = "Returns an embed with the patreon page's link and the instructions to subscribe to our premium plans.",
+                usage = "`.premium`"
+               )
+async def premium(ctx):
+    embed = discord.Embed(title = "Premium",
+                          description = "⭐ | To subscribe to the premium plan just go to our [__**patreon page**__](https://www.patreon.com/MayBot1) and subscribe to the desired plan (depending on how many server slots you would need)\n• After that you can just head to the owner's account `Abdelrahman#9987` and send the ID(s) of your server(s) (this is temporarily, it will be an automated process soon.\n• Finally, all of your server members would be able to use the commands with '⭐' symbol.",
+                          colour = discord.Colour.dark_red()
+                         )
+    await ctx.send(embed = embed)
+    
 #fun commands
 @client.command(name = "8ball", aliases = ["8b"],
                 description = "Gives a random answer for a yes/no question.",
