@@ -90,6 +90,7 @@ class PaginatorSource(menus.ListPageSource):
         self.bot = bot
         self.player = player
         self.controller = controller
+
     def format_time(self, time):
         time = round(time)
         hours, remainder = divmod(time / 1000, 3600)
@@ -98,6 +99,19 @@ class PaginatorSource(menus.ListPageSource):
             return '%02d:%02d:%02d' % (hours, minutes, seconds)
         else:
             return '%02d:%02d' % (minutes, seconds)
+
+    async def has_voted(self, ctx):
+        db = await self.dbl.get_user_vote(ctx.author.id)
+        if db == True:
+            pass
+        else:
+            embed = discord.Embed(title = "Vote",
+                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__\nTo avoid going through annoying ads and voting every 12 hours apply a premium plan on our [patreon page](https://www.patreon.com/MayBot1), for more information use `.premium`.",          
+                                  colour = discord.Colour.dark_red()
+                                 )
+            await ctx.send(embed = embed)
+            return
+            
 
     async def format_page(self, menu: menus.Menu, page):
         guild = self.ctx.guild
@@ -866,23 +880,18 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         db = await self.dbl.get_user_vote(ctx.author.id)
 
-        if db == True:
-            if player.channel_id == ctx.author.voice.channel.id:
-                if vol is None:
-                    await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
-                controller = self.get_controller(ctx)
-    
-                vol = max(min(vol, 1000), 0)
-                controller.volume = vol
-    
-                await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
-                await player.set_volume(vol)
-        else:
-            embed = discord.Embed(title = "Vote",
-                                  description = f":o: | To use this command you have to vote for me at __**[top.gg](http://gestyy.com/er3AB8)**__ and __**[discordbotlist.com](http://gestyy.com/er3AMy)**__.",          
-                                  colour = discord.Colour.dark_red()
-                                 )
-            await ctx.send(embed = embed)
+
+        if player.channel_id == ctx.author.voice.channel.id:
+            if vol is None:
+                await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
+            controller = self.get_controller(ctx)
+
+            vol = max(min(vol, 1000), 0)
+            controller.volume = vol
+
+            await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
+            await player.set_volume(vol)
+
 
     @commands.command(description = "Seeks the current track to the specified position, position must be in seconds.",
                       usage = "`.seek [position]`"
