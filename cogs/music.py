@@ -879,7 +879,7 @@ class Music(commands.Cog):
                      )
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        self.has_voted(ctx)
+        await self.has_voted(ctx)
         if player.channel_id == ctx.author.voice.channel.id:
             if vol is None:
                 await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
