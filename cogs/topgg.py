@@ -34,14 +34,13 @@ class TopGG(commands.Cog):
         channel = self.bot.get_channel(710341374188453898)
         message = channel.fetch_message(808091364196876288)
         reaction = message.reactions[0]
-        users = [333639222395142175, 450446752068141057, 613452470966026250, 643075075100246046, 652627834417971239, 674729751604363284]
-        print(users)
+        users = [333639222395142175, 450446752068141057, 613452470966026250, 643075075100246046, 652627834417971239]
         embed = discord.Embed(title = "Vote Reminder", description = "Thanks for voting I really apprreciate this <3\n__**[Click here!](https://top.gg/bot/747965125599821914)**__\n`Note: If you want to cancel the reminder feel free to message the owner.`", colour = discord.Colour.dark_red())
         for user in users:
-            user = self.bot.get_user(user)
-            voted = await self.dblpy.get_user_vote(int(user.id))
+            voted = await self.dblpy.get_user_vote(user)
             if voted == False:
                 await user.send(embed = embed)
+                print(f"Sent a reminder to {user}")
 
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
