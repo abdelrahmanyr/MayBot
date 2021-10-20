@@ -23,7 +23,7 @@ client.remove_command("help")
 #bot status
 @client.event
 async def on_ready():
-    activity = discord.Activity(name = "Bohemian Rhapsody | .help",
+    activity = discord.Activity(name = "No more playing | .help",
                                 type = discord.ActivityType.playing,
                                )
     await client.change_presence(status = discord.Status.online, activity = activity)
@@ -35,6 +35,9 @@ async def on_ready():
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({len(server.members)} Members)")
+        embed_bye = discord.Embed(color = discord.Colour.dark_red(),
+                                  description = ":wave: | Hello server members!\nSorry for bothering you with this message, it's actually my last message.\nNot being dramatic or anything but I am very grateful for everyone who actually helped me through my journey but unfortunately it has come to an end.. I will have to go after a few days, so thank you for everything\nYours, May")
+        await server.system_channel.send(embed = embed_bye)
 
 
 @client.command(aliases = ["nitro"])
