@@ -22,7 +22,7 @@ client.remove_command("help")
 
 #bot status
 @client.event
-async def on_error():
+async def on_error(on_ready):
     return
 
 @client.event
