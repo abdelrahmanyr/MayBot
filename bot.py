@@ -21,9 +21,9 @@ client = commands.Bot(command_prefix = ".", intents = intents, case_insensitive 
 client.remove_command("help")
 
 #bot status
-@client.event
+"""@client.event
 async def on_error(on_ready):
-    pass
+    pass"""
 
 @client.event
 async def on_ready():
@@ -42,7 +42,7 @@ async def on_ready():
         embed_bye = discord.Embed(color = discord.Colour.dark_red(),
                                   description = ":wave: | Hello server members!\nSorry for bothering you with this message, it's actually my last message.\nNot being dramatic or anything but I am very grateful for everyone who actually helped me through my journey but unfortunately it has come to an end.. I will have to go after a few days, so thank you for everything\nYours, May")
         await server.system_channel.send(embed = embed_bye)
-
+        continue
 
 @client.command(aliases = ["nitro"])
 async def gift(ctx):
