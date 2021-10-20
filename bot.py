@@ -22,6 +22,10 @@ client.remove_command("help")
 
 #bot status
 @client.event
+async def on_error():
+    return
+
+@client.event
 async def on_ready():
     activity = discord.Activity(name = "No more playing | .help",
                                 type = discord.ActivityType.playing,
