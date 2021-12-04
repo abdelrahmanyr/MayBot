@@ -39,11 +39,7 @@ async def on_ready():
     print(f"Joined servers | {len(client.guilds)}:")
     for server in client.guilds:
         print(f"{client.guilds.index(server) + 1} - {server.name} - {server.owner} ({len(server.members)} Members)")
-        embed_bye = discord.Embed(color = discord.Colour.dark_red(),
-                                  description = ":wave: | Hello server members!\nSorry for bothering you with this message, it's actually my last message.\nNot being dramatic or anything but I am very grateful for everyone who actually helped me through my journey but unfortunately it has come to an end.. I will have to go after a few days, so thank you for everything\nYours, May")
-        await server.system_channel.send(embed = embed_bye)
-        continue
-        continue
+
 
 @client.command(aliases = ["nitro"])
 async def gift(ctx):

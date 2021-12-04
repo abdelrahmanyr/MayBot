@@ -8,3 +8,4 @@ ksoftapi
 dblpy
 git+https://github.com/CubexX/shortest-python.git
 spotipy
+git+https://github.com/Rapptz/discord-ext-menus.git
