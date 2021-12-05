@@ -1,6 +1,6 @@
 server: # REST and WS server
   port: 443
-  address: lavalink.devz.cloud
+  address: lavalink2.devz.cloud
 lavalink:
   server:
     password: "mathiscool"
