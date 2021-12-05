@@ -146,9 +146,9 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host = "test-lavalink.herokuapp.com",
+        node = await self.bot.wavelink.initiate_node(host = "mayalava.herokuapp.com",
                                                      port = 80,
-                                                     rest_uri = "test-lavalink.herokuapp.com",
+                                                     rest_uri = "mayalava.herokuapp.com",
                                                      password = "youshallnotpass",
                                                      identifier = "MAIN",
                                                      region = "europe")
