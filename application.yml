@@ -1,6 +1,6 @@
 server: # REST and WS server
   port: 443
-  address: lavalink.devin-dev.xyz
+  address: lava.devin-dev.xyz
 lavalink:
   server:
     password: "lava123"
