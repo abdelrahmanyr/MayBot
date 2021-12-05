@@ -1,9 +1,9 @@
 server: # REST and WS server
   port: 443
-  address: lava.devin-dev.xyz
+  address: lavalink.devz.cloud
 lavalink:
   server:
-    password: "lava123"
+    password: "mathiscool"
     sources:
       youtube: true
       bandcamp: true
