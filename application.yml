@@ -1,9 +1,9 @@
 server: # REST and WS server
-  port: 80
-  address: mayalava.herokuapp.com
+  port: 443
+  address: lavalink.devin-dev.xyz
 lavalink:
   server:
-    password: "youshallnotpass"
+    password: "lava123"
     sources:
       youtube: true
       bandcamp: true
