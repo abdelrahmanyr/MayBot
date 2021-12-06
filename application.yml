@@ -1,9 +1,9 @@
 server: # REST and WS server
-  port: 3876
-  address: lavalink.pumpdev.org
+  port: 2333
+  address: lavalink.eu
 lavalink:
   server:
-    password: "pumpisfree"
+    password: "Raccoon"
     sources:
       youtube: true
       bandcamp: true
