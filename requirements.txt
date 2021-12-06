@@ -1,6 +1,6 @@
 discord
 lavalink
-wavelink
+git+https://github.com/Axelancerr/Wavelink
 asyncio
 typing
 aiohttp
