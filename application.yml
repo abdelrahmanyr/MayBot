@@ -1,9 +1,9 @@
 server: # REST and WS server
-  port: 443
-  address: lavalink2.devz.cloud
+  port: 3876
+  address: lavalink.pumpdev.org
 lavalink:
   server:
-    password: "mathiscool"
+    password: "pumpisfree"
     sources:
       youtube: true
       bandcamp: true
