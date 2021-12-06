@@ -149,9 +149,9 @@ class Music(commands.Cog):
         node = await self.bot.wavelink.initiate_node(host = "lavalink.eu",
                                                      port = 2333,
                                                      rest_uri = "http://lavalink.eu:2333",
-                                                     password = "Raccoone",
+                                                     password = "Raccoon",
                                                      identifier = "TEST",
-                                                     region = "south_africa")
+                                                     region = "europe")
         node.set_hook(self.on_event_hook)
 
     async def on_event_hook(self, event):
