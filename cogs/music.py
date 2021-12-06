@@ -181,7 +181,7 @@ class Music(commands.Cog):
             return '%02d:%02d:%02d' % (hours, minutes, seconds)
         else:
             return '%02d:%02d' % (minutes, seconds)
-
+    '''
     async def has_voted(self, ctx):
         db = await self.dbl.get_user_vote(ctx.author.id)
         if db == True:
@@ -195,6 +195,7 @@ class Music(commands.Cog):
                                  )
             await ctx.send(embed = embed)
             return False
+            '''
             
 
     def play_embed(self, ctx, track, player):
@@ -751,35 +752,37 @@ class Music(commands.Cog):
                      )
     async def equalizer(self, ctx: commands.Context, *, equalizer: str = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
         if vote != False:
-            if not player.is_connected:
-                return
-            if player.channel_id == ctx.author.voice.channel.id:
-    
-                if player.current:
-                    if equalizer is None:
-                        if player.equalizer.name == "Flat":
-                            eq_name = "default"
-                        else:
-                            eq_name = player.equalizer.name
-                        await ctx.send(f":level_slider: | The currently applied equalizer is **{str(eq_name).capitalize()}**.")
+        '''
+        if not player.is_connected:
+            return
+        if player.channel_id == ctx.author.voice.channel.id:
+
+            if player.current:
+                if equalizer is None:
+                    if player.equalizer.name == "Flat":
+                        eq_name = "default"
                     else:
-                        eqs = {'default': wavelink.Equalizer.flat(),
-                               'boost': wavelink.Equalizer.boost(),
-                               'metal': wavelink.Equalizer.metal(),
-                               'piano': wavelink.Equalizer.piano()}
-                
-                        eq = eqs.get(equalizer.lower(), None)
-    
-                        if not eq:
-                            keys = list(eqs)
-                            list_ = ", ".join(f"`{key.capitalize()}`" for key in keys)
-                            return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{list_}.")
-                        await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
-                        await player.set_eq(eq)
+                        eq_name = player.equalizer.name
+                    await ctx.send(f":level_slider: | The currently applied equalizer is **{str(eq_name).capitalize()}**.")
                 else:
-                    await ctx.send(f":question: | You can't apply an equializer without playing a song.")
+                    eqs = {'default': wavelink.Equalizer.flat(),
+                           'boost': wavelink.Equalizer.boost(),
+                           'metal': wavelink.Equalizer.metal(),
+                           'piano': wavelink.Equalizer.piano()}
+            
+                    eq = eqs.get(equalizer.lower(), None)
+
+                    if not eq:
+                        keys = list(eqs)
+                        list_ = ", ".join(f"`{key.capitalize()}`" for key in keys)
+                        return await ctx.send(f":no_entry: | You have entered a wrong equalizer name, currently available equalizers are:\n{list_}.")
+                    await ctx.send(f":level_slider: | **{equalizer.capitalize()}** equalizer has been applied.")
+                    await player.set_eq(eq)
+            else:
+                await ctx.send(f":question: | You can't apply an equializer without playing a song.")
 
 
     @commands.command(description = "Applies nightcore effect on the player, rate of nightcore depends on your input which must be more than 1 (decimals like: 1.1, 2.35 are allowed).",
@@ -787,17 +790,19 @@ class Music(commands.Cog):
                      )
     async def nightcore(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
         if vote != False:
-            if not player.is_connected:
-                return
-            if player.channel_id == ctx.author.voice.channel.id:
-                if rate < 1:
-                    await ctx.send(f":question: | The rate has to be more than 1, You can use `.vapourwave` instead.")
-                else:
-                    filter_ = wavelink.Timescale(rate = rate)
-                    await player.set_filter(filter = wavelink.Filter(timescale = filter_))
-                    await ctx.send(f":cd: | Nightcore filter has been set to **{rate}**.")
+        '''
+        if not player.is_connected:
+            return
+        if player.channel_id == ctx.author.voice.channel.id:
+            if rate < 1:
+                await ctx.send(f":question: | The rate has to be more than 1, You can use `.vapourwave` instead.")
+            else:
+                filter_ = wavelink.Timescale(rate = rate)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+                await ctx.send(f":cd: | Nightcore filter has been set to **{rate}**.")
 
 
     @commands.command(aliases = ["vaporwave"],
@@ -806,17 +811,19 @@ class Music(commands.Cog):
                      )
     async def vapourwave(self, ctx, *, rate : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
         if vote != False:
-            if not player.is_connected:
-                return
-            if player.channel_id == ctx.author.voice.channel.id:
-                if rate > 1:
-                    await ctx.send(f":question: | The rate has to be less than 1, You can use `.nightcore` instead.")
-                else:
-                    filter_ = wavelink.Timescale(rate = rate)
-                    await player.set_filter(filter = wavelink.Filter(timescale = filter_))
-                    await ctx.send(f":dvd: | Vapourwave filter has been set to **{rate}**.")
+        '''
+        if not player.is_connected:
+            return
+        if player.channel_id == ctx.author.voice.channel.id:
+            if rate > 1:
+                await ctx.send(f":question: | The rate has to be less than 1, You can use `.nightcore` instead.")
+            else:
+                filter_ = wavelink.Timescale(rate = rate)
+                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+                await ctx.send(f":dvd: | Vapourwave filter has been set to **{rate}**.")
 
 
     @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
@@ -824,14 +831,16 @@ class Music(commands.Cog):
                      )
     async def pitch(self, ctx, *, pitch : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
         if vote != False:
-            if not player.is_connected:
-                return
-            if player.channel_id == ctx.author.voice.channel.id:
-                filter_ = wavelink.Timescale(pitch = pitch)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
-                await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
+        '''
+        if not player.is_connected:
+            return
+        if player.channel_id == ctx.author.voice.channel.id:
+            filter_ = wavelink.Timescale(pitch = pitch)
+            await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+            await ctx.send(f":control_knobs: | The pitch has been changed to **{pitch}**")
 
 
     @commands.command(description = "Changes the pitch of the tracks, it could be higher or lower depending on the pitch you choose.",
@@ -839,14 +848,16 @@ class Music(commands.Cog):
                      )
     async def speed(self, ctx, *, speed : float):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
         if vote != False:
-            if not player.is_connected:
-                return
-            if player.channel_id == ctx.author.voice.channel.id:
-                filter_ = wavelink.Timescale(speed = speed)
-                await player.set_filter(filter = wavelink.Filter(timescale = filter_))
-                await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
+        '''
+        if not player.is_connected:
+            return
+        if player.channel_id == ctx.author.voice.channel.id:
+            filter_ = wavelink.Timescale(speed = speed)
+            await player.set_filter(filter = wavelink.Filter(timescale = filter_))
+            await ctx.send(f":control_knobs: | The speed has been changed to **{speed}**")
 
     @commands.command(aliases = ["vol"],
                       description = "Displays the current volume, or changes the player's volume depending on the level input which must be an integer between 0 and 1000.",
@@ -854,18 +865,21 @@ class Music(commands.Cog):
                      )
     async def volume(self, ctx, *, vol: int = None):
         player = self.bot.wavelink.get_player(ctx.guild.id)
+        '''
         vote = await self.has_voted(ctx)
+        '''
         if player.channel_id == ctx.author.voice.channel.id:
+            '''
             if vote != False:
-                if vol is None:
-                    await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
-                else:
-                    controller = self.get_controller(ctx)
-                    vol = max(min(vol, 1000), 0)
-                    controller.volume = vol
-
-                await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
-                await player.set_volume(vol)
+            '''
+            if vol is None:
+                await ctx.send(f":loud_sound: | The current player volume is `{player.volume}`.")
+            else:
+                controller = self.get_controller(ctx)
+                vol = max(min(vol, 1000), 0)
+                controller.volume = vol
+            await ctx.send(f":loud_sound: | Setting the player volume to `{vol}`.")
+            await player.set_volume(vol)
 
 
     @commands.command(description = "Seeks the current track to the specified position, position must be in seconds.",
