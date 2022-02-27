@@ -9,6 +9,7 @@ from discord.ext import commands
 from discord.ext import tasks
 from shortest import Shortest
 import ssl
+import os
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -539,4 +540,4 @@ async def unmute(ctx, *, member : discord.Member):
     await member.remove_roles(role)
     await ctx.send(f":sound: | {member.mention} has been unmuted.")
 
-client.run(TOKEN)
+client.run(os.environ['TOKEN'])
