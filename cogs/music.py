@@ -146,10 +146,10 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host = "lavalink.eu",
-                                                     port = 2333,
-                                                     rest_uri = "http://lavalink.eu:2333",
-                                                     password = "Raccoon",
+        node = await self.bot.wavelink.initiate_node(host = "us1.lavalink.creavite.co",
+                                                     port = 20080,
+                                                     rest_uri = "http://us1.lavalink.creavite.co:20080",
+                                                     password = "auto.creavite.co",
                                                      identifier = "TEST",
                                                      region = "europe")
         node.set_hook(self.on_event_hook)
