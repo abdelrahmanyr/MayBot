@@ -149,7 +149,7 @@ class Music(commands.Cog):
         node = await self.bot.wavelink.initiate_node(host = "lavalink-nitrixexe.ml",
                                                      port = 19147,
                                                      rest_uri = "lavalink-nitrixexe.ml:19147",
-                                                     password = "auto.creavite.co",
+                                                     password = "",
                                                      identifier = "TEST",
                                                      region = "europe")
         node.set_hook(self.on_event_hook)
