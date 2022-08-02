@@ -146,10 +146,10 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host = "connect.freelavalink.ga",
-                                                     port = 443,
-                                                     rest_uri = "connect.freelavalink.ga:443",
-                                                     password = "www.freelavalink.ga",
+        node = await self.bot.wavelink.initiate_node(host = "lavalink-nitrixexe.ml",
+                                                     port = 19147,
+                                                     rest_uri = "lavalink-nitrixexe.ml:19147",
+                                                     password = "dsc.gg/nitrixexe",
                                                      identifier = "TEST",
                                                      region = "europe")
         node.set_hook(self.on_event_hook)
