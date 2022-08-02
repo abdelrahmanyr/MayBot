@@ -147,9 +147,9 @@ class Music(commands.Cog):
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
         node = await self.bot.wavelink.initiate_node(host = "lavalink.oops.wtf",
-                                                     port = 2000,
-                                                     rest_uri = "lavalink.oops.wtf:2000",
-                                                     password = "www.freehosts.ga",
+                                                     port = 443,
+                                                     rest_uri = "lavalink.oops.wtf:443",
+                                                     password = "www.freelavalink.ga",
                                                      identifier = "TEST",
                                                      region = "europe")
         node.set_hook(self.on_event_hook)
