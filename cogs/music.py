@@ -148,7 +148,7 @@ class Music(commands.Cog):
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
         node = await self.bot.wavelink.initiate_node(host = "lavalink.rukchadisa.live",
                                                      port = 8080,
-                                                     rest_uri = "lavalink.rukchadisa.live:8080",
+                                                     rest_uri = "http://lavalink.rukchadisa.live:8080",
                                                      password = "youshallnotpass",
                                                      identifier = "TEST",
                                                      region = "europe")
